@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>AI Trading Journal Coach — Basic ₹499 | thetradingmindset26</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=IBM+Plex+Mono:wght@300;400;500;600&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+:root{
+  --ink:#080604;--paper:#F2EBD9;--cream:#E8DFC8;--parchment:#D9CCAA;
+  --gold:#B8860B;--gold2:#D4A820;--gold3:#F0C84A;
+  --rust:#7A2E1A;--sage:#2D4A35;
+  --dim:#5C4E38;--ghost:rgba(8,6,4,.07);
+  --border:rgba(8,6,4,.12);
+  --serif:'Playfair Display',Georgia,serif;
+  --mono:'IBM Plex Mono',monospace;
+  --sans:'Barlow',sans-serif
+}
+
+/* PAGE */
+body{background:var(--paper);color:var(--ink);font-family:var(--sans);overflow-x:hidden}
+
+/* GRAIN */
+body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:999;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23g)' opacity='.04'/%3E%3C/svg%3E");
+  opacity:.5}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 48px;height:60px;
+  background:rgba(242,235,217,.96);backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--border)}
+.n-logo{display:flex;align-items:center;gap:10px}
+.n-logo-mark{font-family:var(--serif);font-size:18px;font-weight:900;color:var(--ink);letter-spacing:-.02em}
+.n-logo-mark em{font-style:normal;color:var(--gold)}
+.n-pill{font-family:var(--mono);font-size:8px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--gold);border:1px solid var(--gold);padding:3px 8px}
+.n-price{font-family:var(--mono);font-size:12px;font-weight:600;color:var(--ink)}
+.n-cta{font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;
+  background:var(--ink);color:var(--gold3);padding:10px 24px;text-decoration:none;
+  transition:all .2s;border:none;cursor:pointer;display:inline-block}
+.n-cta:hover{background:var(--gold);color:var(--ink)}
+
+/* HERO */
+.hero{max-width:1240px;margin:0 auto;padding:100px 48px 72px;
+  display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:center;
+  position:relative}
+/* Big ruled lines behind */
+.hero::before{content:'';position:absolute;inset:0;pointer-events:none;
+  background:repeating-linear-gradient(transparent,transparent 47px,var(--border) 47px,var(--border) 48px);
+  opacity:.35;z-index:0}
+.hero>*{position:relative;z-index:1}
+
+.h-eyebrow{font-family:var(--mono);font-size:9px;font-weight:600;letter-spacing:.3em;text-transform:uppercase;
+  color:var(--gold);display:flex;align-items:center;gap:12px;margin-bottom:24px}
+.h-eyebrow::before{content:'';width:28px;height:1px;background:var(--gold)}
+
+h1{font-family:var(--serif);font-size:clamp(44px,5.5vw,72px);font-weight:900;line-height:1.03;
+  letter-spacing:-.025em;color:var(--ink);margin-bottom:24px}
+h1 .ital{font-style:italic;color:var(--gold)}
+h1 .rule{display:block;border-top:2px solid var(--gold);width:80px;margin:16px 0}
+
+.h-body{font-size:16px;font-weight:300;color:var(--dim);line-height:1.8;max-width:420px;margin-bottom:36px}
+
+/* PRICE BLOCK */
+.price-block{background:var(--ink);padding:28px 32px;margin-bottom:28px;
+  border-left:5px solid var(--gold);position:relative;overflow:hidden}
+.price-block::after{content:'';position:absolute;top:-40px;right:-40px;
+  width:120px;height:120px;border-radius:50%;
+  background:radial-gradient(circle,rgba(184,134,11,.12),transparent 70%)}
+.pb-row{display:flex;align-items:baseline;gap:16px;margin-bottom:8px}
+.pb-amount{font-family:var(--serif);font-size:52px;font-weight:900;color:var(--gold3);line-height:1}
+.pb-usd{font-family:var(--mono);font-size:13px;color:rgba(240,200,74,.5)}
+.pb-tags{display:flex;gap:8px;flex-wrap:wrap}
+.pb-tag{font-family:var(--mono);font-size:8px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;
+  color:rgba(240,200,74,.6);border:1px solid rgba(240,200,74,.15);padding:3px 8px}
+
+.btn-row{display:flex;gap:12px;flex-wrap:wrap}
+.btn-p{font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  background:var(--gold);color:var(--ink);padding:14px 28px;text-decoration:none;
+  display:inline-flex;align-items:center;gap:8px;
+  transition:all .25s;border:none;cursor:pointer}
+.btn-p:hover{background:var(--gold2);transform:translateY(-2px);box-shadow:0 8px 28px rgba(184,134,11,.28)}
+.btn-s{font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;
+  background:transparent;color:var(--ink);padding:13px 24px;
+  border:1.5px solid rgba(8,6,4,.25);text-decoration:none;
+  display:inline-flex;align-items:center;gap:8px;transition:all .2s}
+.btn-s:hover{background:var(--ink);color:var(--paper)}
+
+/* MOCKUP — right column */
+.mockup{background:var(--ink);position:relative;overflow:hidden}
+.mockup::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;
+  background:linear-gradient(90deg,var(--gold),var(--gold3),var(--gold))}
+.mk-head{padding:16px 20px;border-bottom:1px solid rgba(255,255,255,.06);
+  display:flex;align-items:center;justify-content:space-between}
+.mk-label{font-family:var(--mono);font-size:8px;letter-spacing:.2em;text-transform:uppercase;color:rgba(184,134,11,.6)}
+.mk-dot{display:flex;gap:5px}
+.mk-dot span{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.1)}
+.mk-kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(255,255,255,.05)}
+.mk-kpi{padding:16px 14px;background:var(--ink)}
+.mk-kv{font-family:var(--mono);font-size:22px;font-weight:600;color:var(--gold3);line-height:1}
+.mk-kl{font-family:var(--mono);font-size:7px;letter-spacing:.15em;text-transform:uppercase;
+  color:rgba(184,134,11,.4);margin-top:4px}
+.mk-kv.bad{color:#E05050}
+.mk-body{padding:16px 20px}
+.mk-row-lbl{font-family:var(--mono);font-size:8px;letter-spacing:.1em;text-transform:uppercase;
+  color:rgba(184,134,11,.4);margin-bottom:10px}
+.bar-item{display:flex;align-items:center;gap:10px;margin-bottom:9px}
+.bar-name{font-family:var(--mono);font-size:9px;color:rgba(242,235,217,.5);width:64px;flex-shrink:0}
+.bar-track{flex:1;height:5px;background:rgba(255,255,255,.06)}
+.bar-fill{height:100%;transition:width 1.8s cubic-bezier(.4,0,.2,1)}
+.bar-val{font-family:var(--mono);font-size:8px;color:var(--gold);width:28px;text-align:right;flex-shrink:0}
+.mk-chart{padding:0 20px 0;height:64px;position:relative}
+.mk-chart svg{width:100%;height:100%}
+.mk-insight{margin:0 12px 12px;padding:10px 14px;
+  background:rgba(184,134,11,.06);border-left:2px solid var(--gold);
+  font-family:var(--mono);font-size:8px;color:var(--gold2);line-height:1.6}
+
+/* TICKER */
+.ticker{overflow:hidden;background:var(--ink);
+  border-top:1px solid rgba(184,134,11,.15);border-bottom:1px solid rgba(184,134,11,.15);
+  padding:9px 0}
+.t-inner{display:flex;gap:40px;animation:scroll 30s linear infinite;white-space:nowrap}
+.t-item{font-family:var(--mono);font-size:9px;font-weight:500;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--gold2);flex-shrink:0;opacity:.7}
+.t-item::before{content:'◆ ';font-size:6px;opacity:.4}
+@keyframes scroll{to{transform:translateX(-50%)}}
+
+/* SECTION SHARED */
+section{padding:80px 48px;max-width:1240px;margin:0 auto}
+.s-label{font-family:var(--mono);font-size:8px;font-weight:600;letter-spacing:.3em;text-transform:uppercase;
+  color:var(--gold);display:flex;align-items:center;gap:14px;margin-bottom:18px}
+.s-label::after{content:'';flex:1;height:1px;background:var(--border);max-width:48px}
+h2{font-family:var(--serif);font-size:clamp(30px,4vw,52px);font-weight:900;line-height:1.06;
+  letter-spacing:-.025em;color:var(--ink);margin-bottom:12px}
+h2 em{font-style:italic;color:var(--gold)}
+
+/* SHEETS */
+.sheets-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(272px,1fr));gap:1px;
+  background:var(--border);border:1px solid var(--border);margin-top:40px}
+.sh-card{background:var(--paper);padding:28px 24px;transition:background .2s;position:relative;overflow:hidden}
+.sh-card:hover{background:var(--cream)}
+.sh-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;
+  background:var(--gold);transform:scaleX(0);transform-origin:left;transition:transform .3s}
+.sh-card:hover::after{transform:scaleX(1)}
+.sh-n{font-family:var(--mono);font-size:8px;letter-spacing:.2em;color:var(--gold);opacity:.6;margin-bottom:10px}
+.sh-card h3{font-family:var(--serif);font-size:17px;font-weight:700;color:var(--ink);margin-bottom:8px}
+.sh-card p{font-size:13px;font-weight:300;color:var(--dim);line-height:1.7}
+.sh-tag{display:inline-block;margin-top:14px;font-family:var(--mono);font-size:7px;font-weight:600;
+  letter-spacing:.14em;text-transform:uppercase;padding:3px 9px;
+  background:rgba(184,134,11,.1);color:var(--gold);border:1px solid rgba(184,134,11,.2)}
+
+/* STATS STRIPE */
+.stats-stripe{background:var(--ink);display:grid;grid-template-columns:repeat(4,1fr);margin-top:48px}
+.ss-box{padding:32px 24px;text-align:center;border-right:1px solid rgba(255,255,255,.06)}
+.ss-box:last-child{border-right:none}
+.ss-val{font-family:var(--serif);font-size:44px;font-weight:900;color:var(--gold3);line-height:1;margin-bottom:6px}
+.ss-lbl{font-family:var(--mono);font-size:8px;letter-spacing:.2em;text-transform:uppercase;
+  color:rgba(240,200,74,.4)}
+
+/* WHAT'S INCLUDED */
+.inc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(256px,1fr));gap:14px;margin-top:36px}
+.inc-item{display:flex;gap:16px;padding:22px 20px;border:1px solid var(--border);
+  transition:border-color .2s,transform .2s;align-items:flex-start}
+.inc-item:hover{border-color:var(--gold);transform:translateY(-2px)}
+.inc-icon{width:38px;height:38px;background:var(--ink);display:flex;align-items:center;
+  justify-content:center;font-size:16px;flex-shrink:0}
+.inc-item h4{font-family:var(--serif);font-size:15px;font-weight:700;color:var(--ink);margin-bottom:4px}
+.inc-item p{font-size:12px;font-weight:300;color:var(--dim);line-height:1.6}
+
+/* HOW IT WORKS */
+.how-section{background:var(--cream)}
+.how-inner{max-width:1240px;margin:0 auto;padding:80px 48px}
+.how-steps{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);margin-top:40px}
+.hs-card{background:var(--cream);padding:32px 28px;border-top:3px solid var(--gold)}
+.hs-num{font-family:var(--serif);font-size:56px;font-weight:900;color:rgba(184,134,11,.12);line-height:1;margin-bottom:12px}
+.hs-card h3{font-family:var(--serif);font-size:19px;font-weight:700;color:var(--ink);margin-bottom:10px}
+.hs-card p{font-size:13px;font-weight:300;color:var(--dim);line-height:1.75}
+
+/* TESTIMONIALS */
+.testi-sec{background:var(--ink)}
+.testi-inner{max-width:1240px;margin:0 auto;padding:80px 48px}
+.testi-sec .s-label{color:var(--gold)}
+.testi-sec h2{color:var(--paper)}
+.testi-sec h2 em{color:var(--gold3)}
+.testi-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));
+  gap:1px;background:rgba(255,255,255,.06);margin-top:40px}
+.tc{background:var(--ink);padding:32px;position:relative;overflow:hidden;transition:background .2s}
+.tc:hover{background:#0D0A07}
+.tc::before{content:'\201C';position:absolute;top:10px;right:18px;
+  font-family:var(--serif);font-size:80px;color:rgba(184,134,11,.07);line-height:1}
+.tc-stars{color:var(--gold3);font-size:12px;letter-spacing:3px;margin-bottom:16px}
+.tc-text{font-family:var(--serif);font-size:14px;font-style:italic;
+  color:rgba(242,235,217,.82);line-height:1.78;margin-bottom:22px}
+.tc-author{border-top:1px solid rgba(255,255,255,.07);padding-top:16px}
+.tc-name{font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:.06em;
+  color:var(--gold2);margin-bottom:3px}
+.tc-detail{font-family:var(--mono);font-size:9px;color:rgba(184,134,11,.38)}
+.tc-add{background:rgba(255,255,255,.02);border:1.5px dashed rgba(184,134,11,.18);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;gap:10px;padding:32px 20px;min-height:220px}
+.tc-add strong{font-family:var(--serif);font-size:15px;font-style:italic;color:var(--gold2)}
+.tc-add p{font-family:var(--mono);font-size:9px;color:rgba(184,134,11,.4);line-height:1.6}
+
+/* SEBI */
+.sebi-bar{padding:0 48px;max-width:1240px;margin:0 auto}
+.sebi-inner{background:rgba(122,46,26,.07);border:1px solid rgba(122,46,26,.16);padding:16px 22px}
+.sebi-inner p{font-family:var(--mono);font-size:8px;color:var(--rust);line-height:1.7}
+
+/* UPGRADE BANNER */
+.upgrade-banner{background:var(--cream);border-top:1px solid var(--border);border-bottom:1px solid var(--border);
+  padding:28px 48px;max-width:none;margin:0}
+.ub-inner{max-width:1240px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:20px}
+.ub-text p{font-family:var(--mono);font-size:11px;color:var(--dim);line-height:1.6}
+.ub-text strong{color:var(--ink)}
+.ub-btn{font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  background:var(--ink);color:var(--gold3);padding:12px 24px;text-decoration:none;
+  white-space:nowrap;transition:all .2s;flex-shrink:0}
+.ub-btn:hover{background:var(--gold);color:var(--ink)}
+
+/* CTA SECTION */
+.cta-section{background:var(--ink);padding:100px 48px;text-align:center;position:relative;overflow:hidden}
+.cta-section::before{content:'';position:absolute;top:50%;left:50%;
+  transform:translate(-50%,-50%);width:700px;height:700px;
+  background:radial-gradient(circle,rgba(184,134,11,.06),transparent 65%);pointer-events:none}
+.cta-section h2{color:var(--paper);max-width:580px;margin:0 auto 16px}
+.cta-section h2 em{color:var(--gold3)}
+.cta-section p{font-family:var(--mono);font-size:11px;color:rgba(184,134,11,.4);margin-bottom:36px}
+.cta-price-main{font-family:var(--serif);font-size:72px;font-weight:900;color:var(--gold3);line-height:1;margin-bottom:8px}
+.cta-usd{font-family:var(--mono);font-size:13px;color:rgba(184,134,11,.35);margin-bottom:28px}
+.cta-btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+
+/* FOOTER */
+footer{background:rgba(8,6,4,.98);border-top:1px solid rgba(184,134,11,.1);padding:32px 48px}
+.ft{max-width:1240px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px}
+.ft-logo{font-family:var(--serif);font-size:15px;font-weight:700;color:var(--gold2)}
+.ft-links{display:flex;gap:20px;flex-wrap:wrap}
+.ft-links a{font-family:var(--mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;
+  color:rgba(184,134,11,.35);text-decoration:none;transition:color .2s}
+.ft-links a:hover{color:var(--gold2)}
+.ft-copy{font-family:var(--mono);font-size:8px;color:rgba(255,255,255,.1)}
+
+/* ANIMATIONS */
+.fade-in{opacity:0;transform:translateY(16px);transition:opacity .6s ease,transform .6s ease}
+.fade-in.visible{opacity:1;transform:none}
+
+@media(max-width:800px){
+  .hero{grid-template-columns:1fr;gap:40px;padding:80px 24px 56px}
+  nav{padding:0 24px}
+  section{padding:60px 24px}
+  .how-steps{grid-template-columns:1fr}
+  .stats-stripe{grid-template-columns:1fr 1fr}
+  .cta-section{padding:72px 24px}
+  .testi-inner{padding:60px 24px}
+  .how-inner{padding:60px 24px}
+  .sebi-bar{padding:0 24px}
+  .upgrade-banner{padding:24px}
+  .ub-inner{flex-direction:column;align-items:flex-start}
+  footer{padding:28px 24px}
+}
+</style>
+</head>
+<body>
+
+<!--------------- NAV --------------->
+<nav>
+  <div class="n-logo">
+    <div class="n-logo-mark">⬡&nbsp;<em>the</em>tradingmindset26</div>
+    <div class="n-pill">Basic · ₹499</div>
+  </div>
+  <div class="n-price">₹499 / $6 USD</div>
+  <a href="#buy" class="n-cta">Get Access →</a>
+</nav>
+
+<!--------------- HERO --------------->
+<div style="max-width:1240px;margin:0 auto">
+<div class="hero">
+  <!-- LEFT -->
+  <div>
+    <div class="h-eyebrow">Basic Edition · Instant Download · Excel + Google Sheets</div>
+    <h1>Your trades<br>are keeping<br><span class="ital">a secret.</span>
+      <span class="rule"></span>
+    </h1>
+    <p class="h-body">The AI Trading Journal Coach Basic Edition tracks your win rate, discipline score, setup profitability, and emotional patterns — automatically. Log a trade in 2 minutes. Your data tells you what your ego edits out.</p>
+
+    <div class="price-block">
+      <div class="pb-row">
+        <div class="pb-amount">₹499</div>
+        <div class="pb-usd">$6 USD · International</div>
+      </div>
+      <div class="pb-tags">
+        <span class="pb-tag">One-time</span>
+        <span class="pb-tag">No subscriptions</span>
+        <span class="pb-tag">No extra cost ever</span>
+        <span class="pb-tag">Instant download</span>
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <a href="https://gumroad.com/l/ttm-basic" class="btn-p" target="_blank">🌍 Buy on Gumroad</a>
+      <a href="https://instamojo.com/@thetradingmindset26/ttm-basic" class="btn-s" target="_blank">⚡ Pay via UPI</a>
+    </div>
+  </div>
+
+  <!-- RIGHT: JOURNAL MOCKUP -->
+  <div>
+    <div class="mockup">
+      <div class="mk-head">
+        <div class="mk-label">⬡ performance dashboard</div>
+        <div class="mk-dot"><span></span><span style="background:rgba(255,255,255,.18)"></span><span style="background:var(--gold);opacity:.6"></span></div>
+      </div>
+      <div class="mk-kpis">
+        <div class="mk-kpi"><div class="mk-kv">64%</div><div class="mk-kl">Win Rate</div></div>
+        <div class="mk-kpi"><div class="mk-kv">2.1×</div><div class="mk-kl">Prof. Factor</div></div>
+        <div class="mk-kpi"><div class="mk-kv">79%</div><div class="mk-kl">Discipline</div></div>
+      </div>
+      <div class="mk-body">
+        <div class="mk-row-lbl">Setup EV Ranking</div>
+        <div class="bar-item">
+          <span class="bar-name">Breakout</span>
+          <div class="bar-track"><div class="bar-fill" style="width:0%;background:#B8860B" data-w="82%"></div></div>
+          <span class="bar-val">+182</span>
+        </div>
+        <div class="bar-item">
+          <span class="bar-name">VWAP Rev.</span>
+          <div class="bar-track"><div class="bar-fill" style="width:0%;background:#8B6820" data-w="58%"></div></div>
+          <span class="bar-val">+94</span>
+        </div>
+        <div class="bar-item">
+          <span class="bar-name">Order Block</span>
+          <div class="bar-track"><div class="bar-fill" style="width:0%;background:#6B5018" data-w="44%"></div></div>
+          <span class="bar-val">+61</span>
+        </div>
+        <div class="bar-item">
+          <span class="bar-name">Scalping</span>
+          <div class="bar-track"><div class="bar-fill" style="width:0%;background:#3A2808" data-w="18%"></div></div>
+          <span class="bar-val" style="color:#E05050">−22</span>
+        </div>
+      </div>
+      <div class="mk-chart">
+        <svg viewBox="0 0 320 64" preserveAspectRatio="none">
+          <defs>
+            <linearGradient id="eg" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#B8860B" stop-opacity=".25"/>
+              <stop offset="100%" stop-color="#B8860B" stop-opacity="0"/>
+            </linearGradient>
+          </defs>
+          <polyline points="0,60 32,54 60,48 80,56 104,42 124,36 144,40 168,26 188,20 208,24 228,14 252,9 272,13 296,5 320,4"
+            fill="none" stroke="#B8860B" stroke-width="1.8" stroke-linejoin="round"/>
+          <polygon points="0,60 32,54 60,48 80,56 104,42 124,36 144,40 168,26 188,20 208,24 228,14 252,9 272,13 296,5 320,4 320,64 0,64"
+            fill="url(#eg)"/>
+          <line x1="0" y1="40" x2="320" y2="40" stroke="rgba(255,255,255,.06)" stroke-dasharray="4,6"/>
+        </svg>
+      </div>
+      <div class="mk-insight">◈ AI INSIGHT — Breakout is your highest-EV setup (+182 pts avg). Stop trading Scalping (−22 EV). Trade less, trade better.</div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!--------------- TICKER --------------->
+<div class="ticker">
+  <div class="t-inner">
+    <span class="t-item">7 sheets</span><span class="t-item">924 live formulas</span>
+    <span class="t-item">Win rate auto</span><span class="t-item">Profit factor auto</span>
+    <span class="t-item">Discipline score</span><span class="t-item">Psychology pie chart</span>
+    <span class="t-item">Setup EV ranking</span><span class="t-item">Equity curve chart</span>
+    <span class="t-item">Free AI coaching</span><span class="t-item">Excel + Google Sheets</span>
+    <span class="t-item">₹0 extra cost ever</span><span class="t-item">Instant download</span>
+    <span class="t-item">7 sheets</span><span class="t-item">924 live formulas</span>
+    <span class="t-item">Win rate auto</span><span class="t-item">Profit factor auto</span>
+    <span class="t-item">Discipline score</span><span class="t-item">Psychology pie chart</span>
+    <span class="t-item">Setup EV ranking</span><span class="t-item">Equity curve chart</span>
+    <span class="t-item">Free AI coaching</span><span class="t-item">Excel + Google Sheets</span>
+    <span class="t-item">₹0 extra cost ever</span><span class="t-item">Instant download</span>
+  </div>
+</div>
+
+<!--------------- SHEETS --------------->
+<section class="fade-in">
+  <div class="s-label">Inside the journal</div>
+  <h2>Six sheets.<br><em>All automatic.</em></h2>
+  <p style="font-size:15px;font-weight:300;color:var(--dim);max-width:500px;line-height:1.75;margin-top:12px">You fill the Trade Log. Every metric, chart, and pattern builds itself from your data. No formula knowledge needed. No manual calculation. Ever.</p>
+
+  <div class="sheets-grid">
+    <div class="sh-card fade-in">
+      <div class="sh-n">Sheet 01</div>
+      <h3>Trade Log</h3>
+      <p>13 columns with dropdown menus for every field — Instrument, Direction, Setup Type, Market Condition, Emotion Before, Rule Followed, Mistake. Quality score calculates automatically from your data.</p>
+      <span class="sh-tag">Your daily input</span>
+    </div>
+    <div class="sh-card fade-in">
+      <div class="sh-n">Sheet 02</div>
+      <h3>Dashboard</h3>
+      <p>10 live KPIs that update the moment you add a trade: Win Rate, Profit Factor, Discipline %, Expectancy, Average R:R, Average Win, Average Loss, Total PnL. Plus an Equity Curve chart.</p>
+      <span class="sh-tag">100% automatic</span>
+    </div>
+    <div class="sh-card fade-in">
+      <div class="sh-n">Sheet 03</div>
+      <h3>Setup Analysis</h3>
+      <p>Every setup ranked by Expected Value score. Trade count, win rate, average PnL, total PnL per setup. A bar chart that shows your real edge — by actual data, not by gut feeling.</p>
+      <span class="sh-tag">100% automatic</span>
+    </div>
+    <div class="sh-card fade-in">
+      <div class="sh-n">Sheet 04</div>
+      <h3>Psychology Log</h3>
+      <p>Emotion frequency table and pie chart. Automatically tallies every emotion you logged in the Trade Log. Quantifies FOMO, Revenge, Confidence — patterns you cannot see in your head.</p>
+      <span class="sh-tag">Auto + pie chart</span>
+    </div>
+    <div class="sh-card fade-in">
+      <div class="sh-n">Sheet 05</div>
+      <h3>Weekly Review</h3>
+      <p>Type your week-end date in one cell. Five metrics auto-calculate: total trades, PnL, win rate, discipline %, average R:R. Add your honest written reflection below.</p>
+      <span class="sh-tag">Date + your notes</span>
+    </div>
+    <div class="sh-card fade-in">
+      <div class="sh-n">Sheet 06</div>
+      <h3>AI Prompt</h3>
+      <p>A pre-built coaching prompt with your live metrics auto-filled. Copy once, paste into free ChatGPT, Gemini, or Claude. Receive a full 7-section coaching report. Works with any free AI.</p>
+      <span class="sh-tag">Uses free AI</span>
+    </div>
+  </div>
+
+  <div class="stats-stripe">
+    <div class="ss-box"><div class="ss-val">7</div><div class="ss-lbl">Sheets total</div></div>
+    <div class="ss-box"><div class="ss-val">924</div><div class="ss-lbl">Live formulas</div></div>
+    <div class="ss-box"><div class="ss-val">2 min</div><div class="ss-lbl">Per trade entry</div></div>
+    <div class="ss-box"><div class="ss-val">₹0</div><div class="ss-lbl">Extra cost ever</div></div>
+  </div>
+</section>
+
+<!--------------- HOW IT WORKS --------------->
+<div class="how-section">
+  <div class="how-inner">
+    <div class="s-label">How it works</div>
+    <h2>Three steps.<br><em>That is all.</em></h2>
+    <div class="how-steps">
+      <div class="hs-card fade-in">
+        <div class="hs-num">01</div>
+        <h3>Log every trade</h3>
+        <p>Open Trade Log. Fill one row per trade using the dropdown menus. Takes 2 to 3 minutes. The more honestly you log — especially the bad trades — the more accurate your coaching becomes.</p>
+      </div>
+      <div class="hs-card fade-in">
+        <div class="hs-num">02</div>
+        <h3>Read your data daily</h3>
+        <p>Your Dashboard, Setup Analysis, and Psychology Log update automatically every time you add a trade. Check the equity curve daily. Let the data tell you the truth your memory edits.</p>
+      </div>
+      <div class="hs-card fade-in">
+        <div class="hs-num">03</div>
+        <h3>Get free AI coaching weekly</h3>
+        <p>Every Friday, copy the prompt from the AI Prompt sheet. Paste into free ChatGPT, Gemini, or Claude — all free. Receive a full coaching report with 4 specific action rules for your next trading week.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--------------- INCLUDES --------------->
+<section class="fade-in">
+  <div class="s-label">What you receive</div>
+  <h2>Four files.<br><em>Instant download.</em></h2>
+  <p style="font-size:14px;font-weight:300;color:var(--dim);margin-top:10px">Gumroad and Instamojo deliver all files automatically after payment. Zero waiting. Zero manual work from us per sale.</p>
+  <div class="inc-grid">
+    <div class="inc-item fade-in">
+      <div class="inc-icon">📊</div>
+      <div>
+        <h4>Basic Journal (.xlsx)</h4>
+        <p>7 sheets, 924 live formulas, equity curve chart, psychology pie chart. Works in Excel 2016+ and Google Sheets. Delete the 10 sample trades and start logging your own.</p>
+      </div>
+    </div>
+    <div class="inc-item fade-in">
+      <div class="inc-icon">📖</div>
+      <div>
+        <h4>User Guide PDF</h4>
+        <p>Every sheet and every field explained. What to fill, what not to touch, how to read each KPI, how to use the AI coaching prompt. Step-by-step with examples.</p>
+      </div>
+    </div>
+    <div class="inc-item fade-in">
+      <div class="inc-icon">📈</div>
+      <div>
+        <h4>Max Benefit Guide PDF</h4>
+        <p>Your exact daily and weekly workflow. Milestones to track each month. How to read your psychology chart. When upgrading to Pro makes sense for you.</p>
+      </div>
+    </div>
+    <div class="inc-item fade-in">
+      <div class="inc-icon">🧠</div>
+      <div>
+        <h4>20 Emotional Mistakes PDF</h4>
+        <p>Bonus guide in Hindi and English. Every emotional trading mistake with the specific pattern it follows, what it costs you per trade, and the exact rule to eliminate it.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!--------------- TESTIMONIALS --------------->
+<div class="testi-sec">
+  <div class="testi-inner">
+    <div class="s-label">Trader results</div>
+    <h2 style="color:var(--paper)">Real traders.<br><em>Real data.</em></h2>
+    <p style="font-family:var(--mono);font-size:11px;color:rgba(184,134,11,.4);margin-top:10px">These are early users of the Basic Edition. No income claims. Real pattern data.</p>
+    <div class="testi-grid" style="margin-top:32px">
+      <div class="tc fade-in">
+        <div class="tc-stars">★★★★★</div>
+        <p class="tc-text">"I always thought I had a discipline problem but I had no proof. Two weeks of logging and the Discipline Score showed 44%. That number made me take it seriously. I could not argue with my own data."</p>
+        <div class="tc-author">
+          <div class="tc-name">Ravi K.</div>
+          <div class="tc-detail">Bank Nifty intraday · Delhi · Basic Edition user</div>
+        </div>
+      </div>
+      <div class="tc fade-in">
+        <div class="tc-stars">★★★★★</div>
+        <p class="tc-text">"The Setup EV table showed my Liquidity Grab trades had negative 89 EV. I was putting 40% of my trades into my worst setup. I stopped trading it and my results improved within the same week."</p>
+        <div class="tc-author">
+          <div class="tc-name">Meera S.</div>
+          <div class="tc-detail">Nifty 50 options · Pune · Basic Edition user</div>
+        </div>
+      </div>
+      <div class="tc fade-in">
+        <div class="tc-stars">★★★★★</div>
+        <p class="tc-text">"The free AI coaching prompt gave me better feedback than the mentor I was paying ₹5,000 per month for. It uses my actual trade numbers, not generic advice. The data does not protect your feelings."</p>
+        <div class="tc-author">
+          <div class="tc-name">Arjun T.</div>
+          <div class="tc-detail">Bank Nifty scalping · Mumbai · Basic Edition user</div>
+        </div>
+      </div>
+      <div class="tc-add fade-in">
+        <strong>Your result could be here.</strong>
+        <p>Use the Basic Edition for two weeks.<br>DM your honest data improvement<br>to @thetradingmindset26 on Instagram.<br><br>No income claims. Real pattern data only.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--------------- SEBI --------------->
+<div style="background:var(--paper);padding:48px 0 0">
+  <div class="sebi-bar">
+    <div class="sebi-inner">
+      <p><strong style="color:var(--rust)">⚠ SEBI DISCLAIMER:</strong> This is a personal journaling tool for educational self-improvement only. It does NOT provide investment advice, trading signals, or buy/sell recommendations. AI coaching output is for personal self-review only — not a SEBI-registered advisory service. For stocks: AI accuracy may vary due to company-specific events, corporate actions, and circuit limits. Trading involves substantial risk of financial loss. Consult a SEBI-registered investment adviser before making financial decisions. sebi.gov.in</p>
+    </div>
+  </div>
+</div>
+
+<!--------------- UPGRADE BANNER --------------->
+<div class="upgrade-banner">
+  <div class="ub-inner">
+    <div class="ub-text">
+      <p>Want the coaching to <strong>write itself automatically</strong> — no copy-paste ever?</p>
+      <p style="margin-top:4px">Pro Edition (₹9,999 → <strong>₹1,999</strong>) has a Formula AI engine that fills all 8 coaching sections the moment you add a trade. Also adds Emotion After, Mistake tracking, 3 pie charts, Chart Analysis, and market condition win rates.</p>
+    </div>
+    <a href="https://gumroad.com/l/ttm-pro" class="ub-btn" target="_blank">See Pro Edition →</a>
+  </div>
+</div>
+
+<!--------------- CTA --------------->
+<div class="cta-section" id="buy">
+  <div style="position:relative;z-index:1">
+    <div class="s-label" style="justify-content:center">Get access today</div>
+    <h2>Stop guessing.<br><em>Start knowing.</em></h2>
+    <p>Log 5 trades. Your dashboard is live. Your data starts speaking.</p>
+    <div class="cta-price-main">₹499</div>
+    <div class="cta-usd">$6 USD · One-time · Instant download · No subscriptions</div>
+    <div class="cta-btns">
+      <a href="https://gumroad.com/l/ttm-basic" class="btn-p" target="_blank">🌍 Buy on Gumroad — ₹499 / $6</a>
+      <a href="https://instamojo.com/@thetradingmindset26/ttm-basic" class="btn-s" style="color:var(--gold3);border-color:rgba(240,200,74,.2)" target="_blank">⚡ Pay via UPI — Instamojo</a>
+    </div>
+  </div>
+</div>
+
+<!--------------- FOOTER --------------->
+<footer>
+  <div class="ft">
+    <div class="ft-logo">⬡ thetradingmindset26</div>
+    <div class="ft-links">
+      <a href="https://instagram.com/thetradingmindset26" target="_blank">📸 Instagram</a>
+      <a href="https://gumroad.com/l/ttm-basic" target="_blank">Basic ₹499</a>
+      <a href="https://gumroad.com/l/ttm-pro" target="_blank">Pro ₹1,999</a>
+    </div>
+    <div class="ft-copy">© thetradingmindset26 2026 · Educational Only · Not Investment Advice · SEBI compliant</div>
+  </div>
+</footer>
+
+<script>
+// Bar animation on load
+window.addEventListener('load',()=>{
+  document.querySelectorAll('.bar-fill[data-w]').forEach((el,i)=>{
+    setTimeout(()=>{ el.style.width=el.dataset.w; },400+i*120);
+  });
+});
+// Scroll fade-in
+const io=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('visible'); } });
+},{threshold:.12});
+document.querySelectorAll('.fade-in').forEach(el=>io.observe(el));
+</script>
+</body>
+</html>
