@@ -2,154 +2,295 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 <title>Inside a Trader's Mind — thetradingmindset26</title>
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Trader Mind">
+<meta name="theme-color" content="#030712">
+
+<!-- Firebase SDK -->
+<script type="module">
+  import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+  import { getAuth, signInWithPopup, signInWithRedirect, GoogleAuthProvider, onAuthStateChanged, signOut, getRedirectResult } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
+  import { getFirestore, doc, setDoc, getDoc, collection, getDocs, query, orderBy } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+
+  // ── YOUR FIREBASE CONFIG ─────────────────────────────────────────
+  // OWNER SETUP: Replace these values with your own Firebase project
+  // Steps: console.firebase.google.com → New Project → Web App → copy config
+  const firebaseConfig = {
+  apiKey: "AIzaSyBplXhQdyKRpvvdI7bZMMNQ7tv-WwXZVG0",
+  authDomain: "ttm-tradermind.firebaseapp.com",
+  projectId: "ttm-tradermind",
+  storageBucket: "ttm-tradermind.firebasestorage.app",
+  messagingSenderId: "179720811993",
+  appId: "1:179720811993:web:4106aa171a78a9d644d5c8"
+};
+  // ────────────────────────────────────────────────────────────────
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+  const provider = new GoogleAuthProvider();
+
+  let currentUser = null;
+
+  // Expose to global scope for button handlers
+  window._fbAuth = auth;
+  window._fbDb = db;
+  window._fbProvider = provider;
+  window._fbSignInWithPopup = signInWithPopup;
+  window._fbSignInWithRedirect = signInWithRedirect;
+  window._fbSignOut = signOut;
+  window._fbDoc = doc;
+  window._fbSetDoc = setDoc;
+  window._fbGetDoc = getDoc;
+  window._fbCollection = collection;
+  window._fbGetDocs = getDocs;
+  window._fbQuery = query;
+  window._fbOrderBy = orderBy;
+
+  // Handle redirect result (for mobile browsers)
+  getRedirectResult(auth).then((result) => {
+    if (result && result.user) {
+      window._currentUser = result.user;
+      onUserSignedIn(result.user);
+    }
+  }).catch((error) => {
+    console.log('Redirect result error:', error);
+  });
+
+  // Auth state listener
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      window._currentUser = user;
+      onUserSignedIn(user);
+    } else {
+      window._currentUser = null;
+      onUserSignedOut();
+    }
+  });
+</script>
+
 <style>
 :root{
   --g:#00FF41;--gd:#00C853;--a:#FFB300;--o:#FF5000;--r:#FF3B3B;
   --bg:#030712;--bg2:#080F1A;--bg3:#0D1520;--card:#0A1020;
   --br:rgba(0,255,65,0.12);--br2:rgba(0,255,65,0.06);
-  --tx:#E8F4FF;--mu:#6B7280;--white:#FFFFFF;
+  --tx:#E8F4FF;--mu:#6B7280;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
-body{background:var(--bg);color:var(--tx);font-family:'Courier New',monospace;min-height:100vh;overflow-x:hidden;padding-bottom:60px}
+body{background:var(--bg);color:var(--tx);font-family:'Courier New',monospace;min-height:100vh;overflow-x:hidden;padding-bottom:80px}
 body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.025) 2px,rgba(0,0,0,0.025) 4px);pointer-events:none;z-index:900}
 
-/* HEADER */
-.hdr{background:var(--bg2);border-bottom:1px solid var(--br);padding:16px 20px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
-.hdr-brand{font-size:18px;font-weight:700;color:var(--g);letter-spacing:3px}
-.hdr-sub{font-size:9px;color:var(--mu);letter-spacing:2px;margin-top:2px}
-.hdr-right{text-align:right}
-.hdr-date{font-size:11px;color:var(--g);letter-spacing:1px}
-.hdr-streak{font-size:9px;color:var(--a);margin-top:2px}
+/* ── LOGIN SCREEN ── */
+.login-screen{position:fixed;inset:0;background:var(--bg);z-index:500;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px;text-align:center}
+.login-screen::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(0,255,65,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(0,255,65,.03) 1px,transparent 1px);background-size:50px 50px;pointer-events:none}
+.login-screen.hidden{display:none}
+.login-brand{font-size:48px;color:var(--g);margin-bottom:8px;position:relative;z-index:1;text-shadow:0 0 30px rgba(0,255,65,.4)}
+.login-title{font-size:22px;color:#fff;letter-spacing:2px;margin-bottom:6px;position:relative;z-index:1}
+.login-sub{font-size:12px;color:var(--mu);letter-spacing:1px;margin-bottom:40px;position:relative;z-index:1}
+.login-card{background:var(--bg2);border:1px solid var(--br);padding:36px 32px;max-width:380px;width:100%;position:relative;z-index:1}
+.login-card h3{font-size:14px;color:#fff;letter-spacing:2px;margin-bottom:6px}
+.login-card p{font-size:11px;color:var(--mu);line-height:1.7;margin-bottom:24px}
+.google-btn{display:flex;align-items:center;justify-content:center;gap:12px;width:100%;background:#fff;color:#000;border:none;font-family:'Courier New',monospace;font-size:13px;font-weight:700;padding:15px 24px;cursor:pointer;letter-spacing:1px;transition:all .2s;margin-bottom:12px}
+.google-btn:hover{box-shadow:0 0 20px rgba(255,255,255,.2);transform:translateY(-1px)}
+.google-icon{width:18px;height:18px}
+.login-note{font-size:10px;color:rgba(107,114,128,.5);line-height:1.7;margin-top:16px;letter-spacing:.3px}
 
-/* DATE NAV */
-.date-nav{display:flex;align-items:center;justify-content:center;gap:0;background:var(--bg3);border-bottom:1px solid var(--br);padding:12px 20px}
-.nav-btn{background:none;border:1px solid var(--br);color:var(--mu);font-family:'Courier New',monospace;font-size:14px;padding:6px 16px;cursor:pointer;transition:all .2s}
+/* ── LOADING ── */
+.loading-overlay{position:fixed;inset:0;background:var(--bg);z-index:600;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px}
+.loading-overlay.hidden{display:none}
+.loader{width:32px;height:32px;border:2px solid var(--br);border-top-color:var(--g);border-radius:50%;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loading-text{font-size:11px;color:var(--mu);letter-spacing:2px}
+
+/* ── HEADER ── */
+.hdr{background:var(--bg2);border-bottom:1px solid var(--br);padding:12px 16px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+.hdr-left{display:flex;flex-direction:column}
+.hdr-brand{font-size:16px;font-weight:700;color:var(--g);letter-spacing:2px}
+.hdr-sub{font-size:8px;color:var(--mu);letter-spacing:2px;margin-top:1px}
+.hdr-right{display:flex;align-items:center;gap:10px}
+.hdr-user{display:flex;flex-direction:column;align-items:flex-end}
+.hdr-name{font-size:10px;color:var(--tx);letter-spacing:.5px}
+.hdr-sync{font-size:8px;color:var(--g);letter-spacing:1px;margin-top:1px}
+.hdr-sync.syncing{color:var(--a);animation:pulse .8s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.signout-btn{background:none;border:1px solid rgba(107,114,128,.2);color:var(--mu);font-family:'Courier New',monospace;font-size:9px;padding:4px 10px;cursor:pointer;letter-spacing:1px;transition:all .2s}
+.signout-btn:hover{border-color:var(--r);color:var(--r)}
+
+/* ── TABS ── */
+.tabs{display:flex;gap:0;background:var(--bg3);border-bottom:1px solid var(--br);position:sticky;top:57px;z-index:99}
+.tab{flex:1;background:none;border:none;border-bottom:2px solid transparent;color:var(--mu);font-family:'Courier New',monospace;font-size:10px;padding:10px 6px;cursor:pointer;letter-spacing:1.2px;transition:all .2s}
+.tab:hover{color:var(--tx)}
+.tab.active{border-bottom-color:var(--g);color:var(--g)}
+.tab-content{display:none}
+.tab-content.active{display:block}
+
+/* ── DATE NAV ── */
+.date-nav{display:flex;align-items:center;justify-content:center;gap:0;background:var(--bg3);border-bottom:1px solid var(--br);padding:10px 16px}
+.nav-btn{background:none;border:1px solid var(--br);color:var(--mu);font-family:'Courier New',monospace;font-size:14px;padding:6px 14px;cursor:pointer;transition:all .2s}
 .nav-btn:hover{border-color:var(--g);color:var(--g)}
-.date-display{background:var(--bg2);border:1px solid var(--br);color:var(--tx);font-family:'Courier New',monospace;font-size:13px;padding:7px 24px;letter-spacing:1px;text-align:center;min-width:160px}
-.today-btn{background:none;border:1px solid var(--br);color:var(--mu);font-family:'Courier New',monospace;font-size:10px;padding:6px 12px;cursor:pointer;transition:all .2s;margin-left:8px;letter-spacing:1px}
+.date-display{background:var(--bg2);border:1px solid var(--br);color:var(--tx);font-family:'Courier New',monospace;font-size:12px;padding:7px 20px;letter-spacing:1px;text-align:center;min-width:150px}
+.today-btn{background:none;border:1px solid var(--br);color:var(--mu);font-family:'Courier New',monospace;font-size:9px;padding:6px 10px;cursor:pointer;transition:all .2s;margin-left:8px;letter-spacing:1px}
 .today-btn:hover{border-color:var(--a);color:var(--a)}
 
-/* MAIN */
-.main{max-width:680px;margin:0 auto;padding:24px 16px}
+/* ── MAIN ── */
+.main{max-width:680px;margin:0 auto;padding:20px 14px}
 
-/* SECTION HEADERS */
-.sec-hdr{display:flex;align-items:center;gap:10px;margin:28px 0 14px}
+/* ── SECTION HEADERS ── */
+.sec-hdr{display:flex;align-items:center;gap:10px;margin:24px 0 12px}
 .sec-hdr-line{flex:1;height:1px;background:var(--br)}
-.sec-hdr-label{font-size:10px;color:var(--g);letter-spacing:3px;white-space:nowrap;font-weight:700}
+.sec-hdr-label{font-size:10px;letter-spacing:3px;white-space:nowrap;font-weight:700;color:var(--g)}
 .sec-hdr-label.pre{color:var(--a)}
 .sec-hdr-label.post{color:var(--gd)}
 
-/* CARDS */
-.card{background:var(--bg2);border:1px solid var(--br);padding:20px;margin-bottom:12px}
-.card-title{font-size:10px;color:var(--mu);letter-spacing:2px;margin-bottom:14px;font-weight:700}
+/* ── CARDS ── */
+.card{background:var(--bg2);border:1px solid var(--br);padding:18px;margin-bottom:10px}
+.card-title{font-size:10px;color:var(--mu);letter-spacing:2px;margin-bottom:12px;font-weight:700}
 
-/* SLIDERS */
-.slider-row{display:flex;align-items:center;gap:12px;margin-bottom:14px}
-.slider-label{font-size:10px;color:var(--mu);width:90px;flex-shrink:0;letter-spacing:1px}
-.slider{flex:1;-webkit-appearance:none;appearance:none;height:3px;background:var(--bg3);outline:none;border-radius:0}
-.slider::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:14px;height:14px;background:var(--g);cursor:pointer;border-radius:0}
-.slider-val{font-size:11px;color:var(--g);width:24px;text-align:right;font-weight:700}
+/* ── SLIDERS ── */
+.slider-row{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.slider-label{font-size:10px;color:var(--mu);width:86px;flex-shrink:0;letter-spacing:1px}
+.slider{flex:1;-webkit-appearance:none;appearance:none;height:3px;background:var(--bg3);outline:none}
+.slider::-webkit-slider-thumb{-webkit-appearance:none;width:14px;height:14px;background:var(--g);cursor:pointer}
 .slider.amber::-webkit-slider-thumb{background:var(--a)}
-.slider.amber{accent-color:var(--a)}
+.slider-val{font-size:11px;color:var(--g);width:20px;text-align:right;font-weight:700}
 .slider-val.amber{color:var(--a)}
 
-/* CHIPS */
-.chip-group{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:4px}
-.chip{background:var(--bg3);border:1px solid rgba(107,114,128,.25);color:var(--mu);font-size:10px;padding:5px 10px;cursor:pointer;transition:all .2s;letter-spacing:.5px;user-select:none;font-family:'Courier New',monospace}
+/* ── CHIPS ── */
+.chip-group{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:4px}
+.chip{background:var(--bg3);border:1px solid rgba(107,114,128,.22);color:var(--mu);font-size:10px;padding:5px 9px;cursor:pointer;transition:all .2s;letter-spacing:.5px;user-select:none;font-family:'Courier New',monospace}
 .chip:hover{border-color:var(--g);color:var(--tx)}
 .chip.active-g{background:rgba(0,255,65,.1);border-color:var(--g);color:var(--g)}
 .chip.active-r{background:rgba(255,59,59,.1);border-color:var(--r);color:var(--r)}
 .chip.active-a{background:rgba(255,179,0,.1);border-color:var(--a);color:var(--a)}
 .chip.active-o{background:rgba(255,80,0,.1);border-color:var(--o);color:var(--o)}
 
-/* TEXTAREA */
-.ta{width:100%;background:var(--bg3);border:1px solid var(--br2);color:var(--tx);font-family:'Courier New',monospace;font-size:12px;padding:12px;resize:vertical;min-height:70px;outline:none;line-height:1.6;transition:border-color .2s}
+/* ── TEXTAREA ── */
+.ta{width:100%;background:var(--bg3);border:1px solid var(--br2);color:var(--tx);font-family:'Courier New',monospace;font-size:12px;padding:10px;resize:vertical;min-height:65px;outline:none;line-height:1.6;transition:border-color .2s}
 .ta:focus{border-color:rgba(0,255,65,.3)}
 .ta::placeholder{color:var(--mu);font-style:italic}
-.ta.amber:focus{border-color:rgba(255,179,0,.3)}
 
-/* SAVE BUTTON */
-.save-row{display:flex;justify-content:center;margin-top:20px}
-.save-btn{background:var(--g);color:#000;border:none;font-family:'Courier New',monospace;font-size:13px;font-weight:700;padding:14px 48px;cursor:pointer;letter-spacing:2px;transition:all .2s}
-.save-btn:hover{box-shadow:0 0 24px rgba(0,255,65,.4);transform:translateY(-1px)}
-.save-btn.saved{background:var(--gd)}
+/* ── SAVE ── */
+.save-row{display:flex;justify-content:center;margin-top:18px}
+.save-btn{background:var(--g);color:#000;border:none;font-family:'Courier New',monospace;font-size:13px;font-weight:700;padding:14px 44px;cursor:pointer;letter-spacing:2px;transition:all .2s}
+.save-btn:hover{box-shadow:0 0 22px rgba(0,255,65,.4);transform:translateY(-1px)}
+.save-btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
 
-/* PERFORMANCE OVERVIEW */
-.perf-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;margin-bottom:16px}
-.perf-cell{background:var(--bg3);border:1px solid var(--br2);padding:14px 10px;text-align:center}
-.perf-num{font-size:24px;font-weight:700;color:var(--g);line-height:1}
+/* ── OVERVIEW ── */
+.perf-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;margin-bottom:14px}
+.perf-cell{background:var(--bg3);border:1px solid var(--br2);padding:12px 8px;text-align:center}
+.perf-num{font-size:22px;font-weight:700;color:var(--g);line-height:1}
 .perf-num.amber{color:var(--a)}
-.perf-num.red{color:var(--r)}
 .perf-label{font-size:8px;color:var(--mu);letter-spacing:1.5px;margin-top:4px}
-
-/* BAR CHART */
-.chart-wrap{background:var(--bg3);border:1px solid var(--br2);padding:16px;margin-bottom:12px}
-.chart-title{font-size:9px;color:var(--mu);letter-spacing:2px;margin-bottom:12px}
-.bars{display:flex;align-items:flex-end;gap:4px;height:60px}
+.chart-wrap{background:var(--bg3);border:1px solid var(--br2);padding:14px;margin-bottom:10px}
+.chart-title{font-size:9px;color:var(--mu);letter-spacing:2px;margin-bottom:10px}
+.bars{display:flex;align-items:flex-end;gap:3px;height:55px}
 .bar-col{display:flex;flex-direction:column;align-items:center;flex:1;height:100%;justify-content:flex-end}
 .bar-fill{width:100%;background:var(--g);min-height:2px;transition:height .5s;opacity:.8}
 .bar-fill.amber{background:var(--a)}
-.bar-fill.red{background:var(--r)}
-.bar-date{font-size:7px;color:var(--mu);margin-top:4px;letter-spacing:.5px}
+.bar-date{font-size:7px;color:var(--mu);margin-top:3px}
+.insights-card{background:var(--bg2);border:1px solid var(--br);padding:16px;margin-bottom:10px}
+.ins-title{font-size:10px;color:var(--mu);letter-spacing:2px;margin-bottom:8px;font-weight:700}
+.ins-body{font-size:11px;color:var(--mu);line-height:1.9}
+.ins-body .g{color:var(--g)}.ins-body .r{color:var(--r)}.ins-body .a{color:var(--a)}
 
-/* HISTORY */
-.hist-item{background:var(--bg3);border:1px solid var(--br2);border-left:3px solid var(--g);padding:14px 16px;margin-bottom:8px;cursor:pointer;transition:all .2s}
-.hist-item:hover{border-left-color:var(--a)}
-.hist-date{font-size:10px;color:var(--g);letter-spacing:1px;margin-bottom:4px}
+/* ── HISTORY ── */
+.hist-item{background:var(--bg3);border:1px solid var(--br2);border-left:3px solid var(--g);padding:12px 14px;margin-bottom:7px;cursor:pointer;transition:all .2s}
+.hist-item:hover{border-left-color:var(--a);background:var(--bg2)}
+.hist-date{font-size:10px;color:var(--g);letter-spacing:1px;margin-bottom:3px}
 .hist-preview{font-size:11px;color:var(--mu);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.hist-scores{display:flex;gap:12px;margin-top:6px}
-.hist-score{font-size:9px;color:var(--mu);letter-spacing:1px}
-.hist-score span{color:var(--g)}
+.hist-scores{display:flex;gap:10px;margin-top:5px}
+.hs_{font-size:9px;color:var(--mu);letter-spacing:1px}
+.hs_ span{color:var(--g)}
 
-/* UPGRADE NUDGE */
-.upgrade-box{background:linear-gradient(135deg,#0A2E1A,#080F1A);border:1px solid rgba(0,255,65,.3);padding:24px;margin-top:20px;text-align:center;display:none}
+/* ── SYNC STATUS ── */
+.sync-bar{background:var(--bg3);border-bottom:1px solid var(--br);padding:6px 16px;font-family:'Courier New',monospace;font-size:9px;color:var(--mu);display:flex;align-items:center;gap:8px;letter-spacing:1px}
+.sync-dot{width:6px;height:6px;border-radius:50%;background:var(--g);flex-shrink:0}
+.sync-dot.syncing{background:var(--a);animation:pulse .8s infinite}
+.sync-dot.error{background:var(--r)}
+
+/* ── UPGRADE ── */
+.upgrade-box{background:linear-gradient(135deg,#0A2E1A,#080F1A);border:1px solid rgba(0,255,65,.3);padding:22px;margin-top:18px;text-align:center;display:none}
 .upgrade-box.show{display:block}
-.upgrade-box h3{font-size:16px;color:var(--g);letter-spacing:2px;margin-bottom:8px}
-.upgrade-box p{font-size:12px;color:var(--mu);line-height:1.7;margin-bottom:16px}
-.upgrade-features{display:flex;flex-direction:column;gap:4px;margin-bottom:18px;text-align:left}
+.upgrade-box h3{font-size:14px;color:var(--g);letter-spacing:2px;margin-bottom:6px}
+.upgrade-box p{font-size:11px;color:var(--mu);line-height:1.7;margin-bottom:14px}
+.upgrade-feats{display:flex;flex-direction:column;gap:3px;margin-bottom:16px;text-align:left}
 .upgrade-feat{font-size:11px;color:var(--tx)}
 .upgrade-feat span{color:var(--g)}
-.upgrade-btn{display:inline-block;background:var(--g);color:#000;font-family:'Courier New',monospace;font-size:12px;font-weight:700;padding:12px 32px;text-decoration:none;letter-spacing:2px;transition:all .2s}
-.upgrade-btn:hover{box-shadow:0 0 20px rgba(0,255,65,.4)}
-.milestone-tag{font-size:10px;color:var(--a);letter-spacing:2px;margin-bottom:8px}
+.upgrade-btn{display:inline-block;background:var(--g);color:#000;font-family:'Courier New',monospace;font-size:11px;font-weight:700;padding:11px 28px;text-decoration:none;letter-spacing:2px;transition:all .2s}
+.upgrade-btn:hover{box-shadow:0 0 18px rgba(0,255,65,.4)}
 
-/* TOAST */
-.toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--g);color:#000;font-family:'Courier New',monospace;font-size:12px;font-weight:700;padding:12px 28px;letter-spacing:2px;opacity:0;transition:all .3s;z-index:1000;pointer-events:none}
+/* ── TOAST ── */
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--g);color:#000;font-family:'Courier New',monospace;font-size:11px;font-weight:700;padding:10px 24px;letter-spacing:2px;opacity:0;transition:all .3s;z-index:1000;pointer-events:none;white-space:nowrap}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 
-/* FOOTER */
-.site-footer{text-align:center;padding:32px 20px 16px;border-top:1px solid var(--br2);margin-top:32px}
+/* ── FOOTER ── */
+.site-footer{text-align:center;padding:28px 16px 14px;border-top:1px solid var(--br2);margin-top:28px}
 .site-footer p{font-size:9px;color:var(--mu);letter-spacing:.5px;line-height:1.8}
-.site-footer .copy{color:rgba(107,114,128,.5);margin-top:4px}
-
-/* TABS */
-.tabs{display:flex;gap:0;background:var(--bg3);border-bottom:1px solid var(--br);position:sticky;top:57px;z-index:99}
-.tab{flex:1;background:none;border:none;border-bottom:2px solid transparent;color:var(--mu);font-family:'Courier New',monospace;font-size:10px;padding:11px 8px;cursor:pointer;letter-spacing:1.5px;transition:all .2s}
-.tab:hover{color:var(--tx)}
-.tab.active{border-bottom-color:var(--g);color:var(--g)}
-.tab-content{display:none}
-.tab-content.active{display:block}
+.site-footer .copy{color:rgba(107,114,128,.4);margin-top:4px}
 
 @media(max-width:500px){
   .perf-grid{grid-template-columns:repeat(2,1fr)}
-  .hdr{flex-direction:column;gap:6px;text-align:center}
+  .hdr{padding:10px 12px}
 }
 </style>
 </head>
 <body>
 
+<!-- LOADING OVERLAY -->
+<div class="loading-overlay" id="loadingOverlay">
+  <div class="loader"></div>
+  <div class="loading-text">LOADING...</div>
+</div>
+
+<!-- LOGIN SCREEN -->
+<div class="login-screen" id="loginScreen">
+  <div class="login-brand">⬡</div>
+  <div class="login-title">INSIDE A TRADER'S MIND</div>
+  <div class="login-sub">DAILY PSYCHOLOGY JOURNAL · @thetradingmindset26</div>
+
+  <div class="login-card">
+    <h3>SIGN IN TO SYNC</h3>
+    <p>Your journal syncs across all your devices — phone, tablet, desktop — automatically. Sign in once with Google. That's it.</p>
+
+    <button class="google-btn" onclick="signInWithGoogle()">
+      <svg class="google-icon" viewBox="0 0 24 24">
+        <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+        <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+        <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+        <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+      </svg>
+      SIGN IN WITH GOOGLE
+    </button>
+
+    <div class="login-note">
+      ✓ Your data is private — only you can see it<br>
+      ✓ Works on all devices after one sign-in<br>
+      ✓ No password. No subscription. Always free.<br>
+      ✓ Data stored in your personal Google account
+    </div>
+  </div>
+</div>
+
+<!-- MAIN APP (hidden until signed in) -->
+<div id="appShell" style="display:none">
+
 <!-- HEADER -->
 <div class="hdr">
-  <div>
+  <div class="hdr-left">
     <div class="hdr-brand">⬡ TTM</div>
     <div class="hdr-sub">INSIDE A TRADER'S MIND</div>
   </div>
   <div class="hdr-right">
-    <div class="hdr-date" id="hdrDate"></div>
-    <div class="hdr-streak" id="hdrStreak"></div>
+    <div class="hdr-user">
+      <div class="hdr-name" id="hdrName"></div>
+      <div class="hdr-sync" id="hdrSync">SYNCED ✓</div>
+    </div>
+    <button class="signout-btn" onclick="handleSignOut()">EXIT</button>
   </div>
 </div>
 
@@ -160,6 +301,12 @@ body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradi
   <button class="tab" onclick="switchTab('history')">HISTORY</button>
 </div>
 
+<!-- SYNC BAR -->
+<div class="sync-bar" id="syncBar">
+  <div class="sync-dot" id="syncDot"></div>
+  <span id="syncText">ALL DEVICES SYNCED</span>
+</div>
+
 <!-- DATE NAV -->
 <div class="date-nav">
   <button class="nav-btn" onclick="changeDate(-1)">←</button>
@@ -168,38 +315,21 @@ body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradi
   <button class="today-btn" onclick="goToday()">TODAY</button>
 </div>
 
-<!-- JOURNAL TAB -->
+<!-- ═══════════ JOURNAL TAB ═══════════ -->
 <div class="tab-content active" id="tab-journal">
 <div class="main">
 
-  <!-- PRE-MARKET -->
-  <div class="sec-hdr">
-    <div class="sec-hdr-line"></div>
-    <div class="sec-hdr-label pre">PRE-MARKET · BEFORE YOU TRADE</div>
-    <div class="sec-hdr-line"></div>
+  <div class="sec-hdr"><div class="sec-hdr-line"></div><div class="sec-hdr-label pre">PRE-MARKET · BEFORE YOU TRADE</div><div class="sec-hdr-line"></div></div>
+
+  <div class="card">
+    <div class="card-title">MENTAL STATE</div>
+    <div class="slider-row"><div class="slider-label">SLEEP</div><input type="range" class="slider amber" min="1" max="10" value="7" id="sleep" oninput="document.getElementById('sleepVal').textContent=this.value"><div class="slider-val amber" id="sleepVal">7</div></div>
+    <div class="slider-row"><div class="slider-label">CLARITY</div><input type="range" class="slider" min="1" max="10" value="7" id="clarity" oninput="document.getElementById('clarityVal').textContent=this.value"><div class="slider-val" id="clarityVal">7</div></div>
+    <div class="slider-row"><div class="slider-label">CONFIDENCE</div><input type="range" class="slider" min="1" max="10" value="7" id="confidence" oninput="document.getElementById('confidenceVal').textContent=this.value"><div class="slider-val" id="confidenceVal">7</div></div>
   </div>
 
   <div class="card">
-    <div class="card-title">MENTAL STATE CHECK</div>
-    <div class="slider-row">
-      <div class="slider-label">SLEEP</div>
-      <input type="range" class="slider amber" min="1" max="10" value="7" id="sleep" oninput="document.getElementById('sleepVal').textContent=this.value">
-      <div class="slider-val amber" id="sleepVal">7</div>
-    </div>
-    <div class="slider-row">
-      <div class="slider-label">CLARITY</div>
-      <input type="range" class="slider" min="1" max="10" value="7" id="clarity" oninput="document.getElementById('clarityVal').textContent=this.value">
-      <div class="slider-val" id="clarityVal">7</div>
-    </div>
-    <div class="slider-row">
-      <div class="slider-label">CONFIDENCE</div>
-      <input type="range" class="slider" min="1" max="10" value="7" id="confidence" oninput="document.getElementById('confidenceVal').textContent=this.value">
-      <div class="slider-val" id="confidenceVal">7</div>
-    </div>
-  </div>
-
-  <div class="card">
-    <div class="card-title">DOMINANT EMOTION · HOW AM I FEELING?</div>
+    <div class="card-title">DOMINANT EMOTION</div>
     <div class="chip-group" id="preEmoChips">
       <div class="chip" onclick="toggleChip(this,'preEmo','active-g')">Calm</div>
       <div class="chip" onclick="toggleChip(this,'preEmo','active-g')">Confident</div>
@@ -216,7 +346,7 @@ body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradi
   </div>
 
   <div class="card">
-    <div class="card-title">MARKET BIAS TODAY</div>
+    <div class="card-title">MARKET BIAS</div>
     <div class="chip-group" id="biasChips">
       <div class="chip" onclick="toggleChip(this,'bias','active-g')">Bullish</div>
       <div class="chip" onclick="toggleChip(this,'bias','active-r')">Bearish</div>
@@ -227,34 +357,17 @@ body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradi
   </div>
 
   <div class="card">
-    <div class="card-title">PRE-MARKET INTENTION</div>
-    <textarea class="ta amber" id="preIntention" placeholder="What is your plan for today? Setup to watch. Max trades. Daily loss limit. What will make today a good day regardless of P&L?"></textarea>
+    <div class="card-title">TODAY'S INTENTION</div>
+    <textarea class="ta" id="preIntention" placeholder="Plan for today. Setup to watch. Max trades. Daily loss limit. What will make today a good day regardless of P&L?"></textarea>
   </div>
 
-  <!-- POST-MARKET -->
-  <div class="sec-hdr" style="margin-top:32px">
-    <div class="sec-hdr-line"></div>
-    <div class="sec-hdr-label post">POST-MARKET · AFTER THE SESSION</div>
-    <div class="sec-hdr-line"></div>
-  </div>
+  <div class="sec-hdr" style="margin-top:28px"><div class="sec-hdr-line"></div><div class="sec-hdr-label post">POST-MARKET · AFTER THE SESSION</div><div class="sec-hdr-line"></div></div>
 
   <div class="card">
     <div class="card-title">SESSION PERFORMANCE</div>
-    <div class="slider-row">
-      <div class="slider-label">DISCIPLINE</div>
-      <input type="range" class="slider" min="1" max="10" value="7" id="discipline" oninput="document.getElementById('disciplineVal').textContent=this.value">
-      <div class="slider-val" id="disciplineVal">7</div>
-    </div>
-    <div class="slider-row">
-      <div class="slider-label">RULE FOLLOW</div>
-      <input type="range" class="slider" min="1" max="10" value="7" id="ruleFollow" oninput="document.getElementById('ruleFollowVal').textContent=this.value">
-      <div class="slider-val" id="ruleFollowVal">7</div>
-    </div>
-    <div class="slider-row">
-      <div class="slider-label">PATIENCE</div>
-      <input type="range" class="slider" min="1" max="10" value="7" id="patience" oninput="document.getElementById('patienceVal').textContent=this.value">
-      <div class="slider-val" id="patienceVal">7</div>
-    </div>
+    <div class="slider-row"><div class="slider-label">DISCIPLINE</div><input type="range" class="slider" min="1" max="10" value="7" id="discipline" oninput="document.getElementById('disciplineVal').textContent=this.value"><div class="slider-val" id="disciplineVal">7</div></div>
+    <div class="slider-row"><div class="slider-label">RULE FOLLOW</div><input type="range" class="slider" min="1" max="10" value="7" id="ruleFollow" oninput="document.getElementById('ruleFollowVal').textContent=this.value"><div class="slider-val" id="ruleFollowVal">7</div></div>
+    <div class="slider-row"><div class="slider-label">PATIENCE</div><input type="range" class="slider" min="1" max="10" value="7" id="patience" oninput="document.getElementById('patienceVal').textContent=this.value"><div class="slider-val" id="patienceVal">7</div></div>
   </div>
 
   <div class="card">
@@ -267,13 +380,12 @@ body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradi
       <div class="chip" onclick="toggleChip(this,'postEmo','active-o')">Frustrated</div>
       <div class="chip" onclick="toggleChip(this,'postEmo','active-o')">Regretful</div>
       <div class="chip" onclick="toggleChip(this,'postEmo','active-r')">Angry</div>
-      <div class="chip" onclick="toggleChip(this,'postEmo','active-r')">Devastated</div>
       <div class="chip" onclick="toggleChip(this,'postEmo','active-r')">Revenge Mode</div>
     </div>
   </div>
 
   <div class="card">
-    <div class="card-title">TODAY'S MISTAKE (if any)</div>
+    <div class="card-title">TODAY'S MISTAKE</div>
     <div class="chip-group" id="mistakeChips">
       <div class="chip" onclick="toggleChip(this,'mistake','active-a')">None — Clean Session</div>
       <div class="chip" onclick="toggleChip(this,'mistake','active-r')">Moved Stop Loss</div>
@@ -289,30 +401,26 @@ body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradi
 
   <div class="card">
     <div class="card-title">WHAT DID TODAY TEACH ME?</div>
-    <textarea class="ta" id="lesson" placeholder="What is the one insight from today's session? Even a break-even day has a lesson. Write it down — this is your real edge building."></textarea>
+    <textarea class="ta" id="lesson" placeholder="One insight from today. Even a break-even day has a lesson. This is your real edge building."></textarea>
   </div>
 
   <div class="card">
     <div class="card-title">TOMORROW'S INTENTION</div>
-    <textarea class="ta" id="tmrIntention" placeholder="Based on today — what will you do differently tomorrow? Be specific. One thing. Not five."></textarea>
+    <textarea class="ta" id="tmrIntention" placeholder="Based on today — what will you do differently tomorrow? Be specific. One thing."></textarea>
   </div>
 
-  <!-- SAVE -->
   <div class="save-row">
-    <button class="save-btn" id="saveBtn" onclick="saveEntry()">SAVE TODAY'S ENTRY</button>
+    <button class="save-btn" id="saveBtn" onclick="saveEntry()">SAVE & SYNC ↑</button>
   </div>
 
-  <!-- UPGRADE NUDGE -->
   <div class="upgrade-box" id="upgradeBox">
-    <div class="milestone-tag" id="milestoneTag">7 DAYS LOGGED</div>
     <h3 id="upgradeTitle">YOU'RE BUILDING YOUR EDGE.</h3>
-    <p id="upgradeMsg">You've logged 7 days of self-awareness data. The pattern is forming. Now imagine an AI that reads your TRADE DATA and tells you your Killer Mistake, Best Setup, and Action Plan — automatically.</p>
-    <div class="upgrade-features">
-      <div class="upgrade-feat"><span>→</span> AI Coach Report — 8 sections from YOUR trade data</div>
-      <div class="upgrade-feat"><span>→</span> Risk Management Tool — position sizing, SL, target, daily limit</div>
+    <p id="upgradeMsg">7 days of self-awareness. Now combine this with AI that reads your trade data and builds your full coaching report automatically.</p>
+    <div class="upgrade-feats">
+      <div class="upgrade-feat"><span>→</span> AI Coach Report — 8 sections from your trade data</div>
+      <div class="upgrade-feat"><span>→</span> Risk Management Tool — position size, SL, target, daily limit</div>
       <div class="upgrade-feat"><span>→</span> Weekly Review — AI-generated every Friday</div>
-      <div class="upgrade-feat"><span>→</span> Setup Analysis — every setup ranked by Expected Value</div>
-      <div class="upgrade-feat"><span>→</span> Psychology Log — charts of your emotion + mistake patterns</div>
+      <div class="upgrade-feat"><span>→</span> Setup Analysis — every setup ranked by EV</div>
     </div>
     <a href="https://tradingmindset2.gumroad.com/l/ttm-pro" class="upgrade-btn" target="_blank">UPGRADE TO AI PRO — ₹1,499 →</a>
   </div>
@@ -320,411 +428,371 @@ body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradi
 </div>
 </div>
 
-<!-- OVERVIEW TAB -->
+<!-- ═══════════ OVERVIEW TAB ═══════════ -->
 <div class="tab-content" id="tab-overview">
 <div class="main">
   <div class="sec-hdr"><div class="sec-hdr-line"></div><div class="sec-hdr-label">PERFORMANCE OVERVIEW</div><div class="sec-hdr-line"></div></div>
   <div class="perf-grid">
-    <div class="perf-cell"><div class="perf-num" id="ovTotalDays">0</div><div class="perf-label">DAYS LOGGED</div></div>
-    <div class="perf-cell"><div class="perf-num amber" id="ovAvgDiscipline">—</div><div class="perf-label">AVG DISCIPLINE</div></div>
-    <div class="perf-cell"><div class="perf-cell"><div class="perf-num" id="ovAvgClarity">—</div><div class="perf-label">AVG CLARITY</div></div></div>
-    <div class="perf-cell"><div class="perf-num" id="ovStreak">0</div><div class="perf-label">CURRENT STREAK</div></div>
+    <div class="perf-cell"><div class="perf-num" id="ovTotal">0</div><div class="perf-label">DAYS LOGGED</div></div>
+    <div class="perf-cell"><div class="perf-num amber" id="ovDisc">—</div><div class="perf-label">AVG DISCIPLINE</div></div>
+    <div class="perf-cell"><div class="perf-num" id="ovClar">—</div><div class="perf-label">AVG CLARITY</div></div>
+    <div class="perf-cell"><div class="perf-num" id="ovStreak">0</div><div class="perf-label">STREAK 🔥</div></div>
   </div>
-
   <div class="chart-wrap">
-    <div class="chart-title">// DISCIPLINE SCORE — LAST 14 DAYS</div>
-    <div class="bars" id="disciplineChart"></div>
+    <div class="chart-title">// DISCIPLINE — LAST 14 DAYS</div>
+    <div class="bars" id="discChart"></div>
   </div>
-
   <div class="chart-wrap">
-    <div class="chart-title">// SLEEP SCORE — LAST 14 DAYS</div>
+    <div class="chart-title">// SLEEP — LAST 14 DAYS</div>
     <div class="bars" id="sleepChart"></div>
   </div>
-
-  <div class="card" style="margin-top:16px">
-    <div class="card-title">TOP EMOTIONS THIS WEEK (PRE-MARKET)</div>
-    <div id="topEmotions" style="font-size:12px;color:var(--mu);line-height:1.9">Log more entries to see patterns.</div>
+  <div class="insights-card">
+    <div class="ins-title">TOP EMOTIONS THIS WEEK</div>
+    <div class="ins-body" id="topEmotions">Log more entries to see patterns.</div>
   </div>
-
-  <div class="card">
-    <div class="card-title">TOP MISTAKES THIS WEEK</div>
-    <div id="topMistakes" style="font-size:12px;color:var(--mu);line-height:1.9">Log more entries to see patterns.</div>
+  <div class="insights-card">
+    <div class="ins-title">TOP MISTAKES THIS WEEK</div>
+    <div class="ins-body" id="topMistakes">Log more entries this week.</div>
   </div>
 </div>
 </div>
 
-<!-- HISTORY TAB -->
+<!-- ═══════════ HISTORY TAB ═══════════ -->
 <div class="tab-content" id="tab-history">
 <div class="main">
   <div class="sec-hdr"><div class="sec-hdr-line"></div><div class="sec-hdr-label">ENTRY HISTORY</div><div class="sec-hdr-line"></div></div>
-  <div id="historyList"><p style="font-size:12px;color:var(--mu);text-align:center;padding:32px">No entries yet. Start journaling to see your history here.</p></div>
+  <div id="historyList"><p style="font-size:12px;color:var(--mu);text-align:center;padding:28px">No entries yet. Start journaling.</p></div>
 </div>
 </div>
 
+</div><!-- end appShell -->
+
 <!-- TOAST -->
-<div class="toast" id="toast">ENTRY SAVED ✓</div>
+<div class="toast" id="toast">SAVED ✓</div>
 
 <!-- FOOTER -->
 <footer class="site-footer">
-  <p>INSIDE A TRADER'S MIND · Personal Psychology Journal</p>
+  <p>INSIDE A TRADER'S MIND · Daily Psychology Journal</p>
   <p class="copy">© thetradingmindset26 2026 · All rights reserved · Unauthorised redistribution prohibited</p>
   <p style="color:rgba(107,114,128,.4);font-size:8px;margin-top:4px">For educational purposes only. Not financial advice. Not SEBI-registered investment advice.</p>
 </footer>
 
 <script>
-// ── STATE ──────────────────────────────────────────────────────────
-let currentDate = dateToStr(new Date());
-let activeChips = { preEmo:[], bias:[], postEmo:[], mistake:[] };
+// ── HELPERS ───────────────────────────────────────────────────────
+function dateToStr(d){const y=d.getFullYear(),m=String(d.getMonth()+1).padStart(2,'0'),dd=String(d.getDate()).padStart(2,'0');return`${y}-${m}-${dd}`}
+function todayStr(){return dateToStr(new Date())}
+function formatDisplay(s){const[y,m,d]=s.split('-');const mo=['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];return`${d} ${mo[parseInt(m)-1]} ${y}`}
+function showToast(msg,dur=2200){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),dur)}
 
-function dateToStr(d) {
-  const y = d.getFullYear();
-  const m = String(d.getMonth()+1).padStart(2,'0');
-  const dd = String(d.getDate()).padStart(2,'0');
-  return `${y}-${m}-${dd}`;
+// ── STATE ─────────────────────────────────────────────────────────
+let currentDate = todayStr();
+let localCache  = {};      // local mirror of Firestore data
+let activeChips = {preEmo:[],bias:[],postEmo:[],mistake:[]};
+let isSaving    = false;
+
+// ── FIREBASE WRAPPERS ─────────────────────────────────────────────
+function getDb()       { return window._fbDb; }
+function getUser()     { return window._currentUser; }
+
+function setSyncStatus(status){
+  const dot=document.getElementById('syncDot');
+  const txt=document.getElementById('syncText');
+  const hdr=document.getElementById('hdrSync');
+  if(!dot)return;
+  if(status==='synced'){dot.className='sync-dot';txt&&(txt.textContent='ALL DEVICES SYNCED');hdr&&(hdr.textContent='SYNCED ✓',hdr.className='hdr-sync')}
+  else if(status==='syncing'){dot.className='sync-dot syncing';txt&&(txt.textContent='SYNCING...');hdr&&(hdr.textContent='SYNCING...',hdr.className='hdr-sync syncing')}
+  else{dot.className='sync-dot error';txt&&(txt.textContent='SYNC ERROR — CHECK CONNECTION');hdr&&(hdr.textContent='SYNC ERROR',hdr.className='hdr-sync')}
 }
 
-function todayStr() { return dateToStr(new Date()); }
-
-function formatDisplay(str) {
-  const [y,m,d] = str.split('-');
-  const months = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
-  return `${d} ${months[parseInt(m)-1]} ${y}`;
-}
-
-// ── NAVIGATION ────────────────────────────────────────────────────
-function changeDate(delta) {
-  const [y,m,d] = currentDate.split('-').map(Number);
-  const nd = new Date(y, m-1, d+delta);
-  currentDate = dateToStr(nd);
-  loadEntry(currentDate);
-  updateDateDisplay();
-}
-
-function goToday() {
-  currentDate = todayStr();
-  loadEntry(currentDate);
-  updateDateDisplay();
-}
-
-function updateDateDisplay() {
-  document.getElementById('dateDisplay').textContent = formatDisplay(currentDate);
-  const t = todayStr();
-  document.getElementById('hdrDate').textContent = formatDisplay(t);
-}
-
-// ── CHIPS ─────────────────────────────────────────────────────────
-function toggleChip(el, group, activeClass) {
-  const isActive = el.classList.contains(activeClass) || 
-    el.classList.contains('active-g') || el.classList.contains('active-r') ||
-    el.classList.contains('active-a') || el.classList.contains('active-o');
-  
-  if (isActive) {
-    el.classList.remove('active-g','active-r','active-a','active-o');
-    activeChips[group] = activeChips[group].filter(t => t !== el.textContent);
-  } else {
-    el.classList.add(activeClass);
-    if (!activeChips[group]) activeChips[group] = [];
-    if (!activeChips[group].includes(el.textContent)) {
-      activeChips[group].push(el.textContent);
+// ── AUTH ──────────────────────────────────────────────────────────
+async function signInWithGoogle(){
+  try {
+    // Try popup first, fall back to redirect on mobile
+    const isMobile = /Android|iPhone|iPad/i.test(navigator.userAgent);
+    if(isMobile){
+      await window._fbSignInWithRedirect(window._fbAuth, window._fbProvider);
+    } else {
+      await window._fbSignInWithPopup(window._fbAuth, window._fbProvider);
+    }
+  } catch(e) {
+    if(e.code === 'auth/popup-blocked'){
+      await window._fbSignInWithRedirect(window._fbAuth, window._fbProvider);
+    } else {
+      showToast('SIGN IN FAILED — CHECK CONNECTION',3000);
+      console.error(e);
     }
   }
 }
 
-function clearChips() {
-  ['preEmo','bias','postEmo','mistake'].forEach(g => {
-    activeChips[g] = [];
-    const container = document.getElementById(g+'Chips') || 
-      (g === 'preEmo' ? document.getElementById('preEmoChips') : null);
-  });
-  document.querySelectorAll('.chip').forEach(c => {
-    c.classList.remove('active-g','active-r','active-a','active-o');
+function handleSignOut(){
+  if(confirm('Sign out? Your data stays saved in your account.')){
+    window._fbSignOut(window._fbAuth);
+  }
+}
+
+function onUserSignedIn(user){
+  document.getElementById('loadingOverlay').classList.add('hidden');
+  document.getElementById('loginScreen').classList.add('hidden');
+  document.getElementById('appShell').style.display='block';
+  const nameEl=document.getElementById('hdrName');
+  if(nameEl) nameEl.textContent=(user.displayName||user.email||'TRADER').toUpperCase().split(' ')[0];
+  currentDate=todayStr();
+  loadAllEntries().then(()=>{
+    loadEntry(currentDate);
+    updateDateDisplay();
+    checkUpgradeNudge();
   });
 }
 
-function setChips(data) {
+function onUserSignedOut(){
+  document.getElementById('loadingOverlay').classList.add('hidden');
+  document.getElementById('loginScreen').classList.remove('hidden');
+  document.getElementById('appShell').style.display='none';
+  localCache={};
+}
+
+// ── FIRESTORE DATA OPS ────────────────────────────────────────────
+async function loadAllEntries(){
+  const user=getUser();
+  if(!user)return;
+  setSyncStatus('syncing');
+  try {
+    const db=getDb();
+    const col=window._fbCollection(db,'users',user.uid,'entries');
+    const snap=await window._fbGetDocs(col);
+    localCache={};
+    snap.forEach(d=>{ localCache[d.id]=d.data(); });
+    setSyncStatus('synced');
+  } catch(e){
+    setSyncStatus('error');
+    console.error('Load error:',e);
+  }
+}
+
+async function saveToFirestore(dateStr, data){
+  const user=getUser();
+  if(!user) return;
+  setSyncStatus('syncing');
+  try {
+    const db=getDb();
+    const ref=window._fbDoc(db,'users',user.uid,'entries',dateStr);
+    await window._fbSetDoc(ref,{...data, savedAt: new Date().toISOString(), uid: user.uid});
+    localCache[dateStr]=data;
+    setSyncStatus('synced');
+    return true;
+  } catch(e){
+    setSyncStatus('error');
+    console.error('Save error:',e);
+    return false;
+  }
+}
+
+// ── CHIPS ─────────────────────────────────────────────────────────
+function toggleChip(el,group,activeClass){
+  const isActive=['active-g','active-r','active-a','active-o'].some(c=>el.classList.contains(c));
+  if(isActive){el.classList.remove('active-g','active-r','active-a','active-o');activeChips[group]=activeChips[group].filter(t=>t!==el.textContent)}
+  else{el.classList.add(activeClass);if(!activeChips[group])activeChips[group]=[];if(!activeChips[group].includes(el.textContent))activeChips[group].push(el.textContent)}
+}
+
+function clearChips(){
+  Object.keys(activeChips).forEach(g=>{activeChips[g]=[]});
+  document.querySelectorAll('.chip').forEach(c=>c.classList.remove('active-g','active-r','active-a','active-o'));
+}
+
+function setChips(data){
   clearChips();
-  const groupMap = {
-    preEmo: 'preEmoChips', bias: 'biasChips',
-    postEmo: 'postEmoChips', mistake: 'mistakeChips'
-  };
-  Object.keys(data).forEach(group => {
-    if (!data[group]) return;
-    const container = document.getElementById(groupMap[group]);
-    if (!container) return;
-    const chips = container.querySelectorAll('.chip');
-    chips.forEach(chip => {
-      if (data[group].includes(chip.textContent)) {
-        const colorMap = {
-          'active-g': ['Calm','Confident','Disciplined','Focused','Satisfied','Proud'],
-          'active-r': ['FOMO','Revenge','Greedy','Overconfident','Angry','Devastated','Revenge Mode','Moved Stop Loss','Revenge Trade','FOMO Entry','Early Exit','Overtraded','Sized Too Large','Broke Daily Loss Rule'],
-          'active-a': ['Neutral','None — Clean Session'],
-          'active-o': ['Anxious','Fearful','Frustrated','Regretful','No Bias — Wait','Volatile — Sit Out','Missed Setup']
-        };
-        let cls = 'active-g';
-        Object.keys(colorMap).forEach(c => { if (colorMap[c].includes(chip.textContent)) cls = c; });
+  const maps={preEmo:'preEmoChips',bias:'biasChips',postEmo:'postEmoChips',mistake:'mistakeChips'};
+  const colorMap={'active-g':['Calm','Confident','Disciplined','Focused','Satisfied','Proud'],'active-r':['FOMO','Revenge','Greedy','Overconfident','Angry','Revenge Mode','Moved Stop Loss','Revenge Trade','FOMO Entry','Early Exit','Overtraded','Sized Too Large','Broke Daily Loss Rule'],'active-a':['Neutral','None — Clean Session'],'active-o':['Anxious','Fearful','Frustrated','Regretful','No Bias — Wait','Volatile — Sit Out','Missed Setup']};
+  Object.keys(maps).forEach(group=>{
+    if(!data[group])return;
+    const container=document.getElementById(maps[group]);
+    if(!container)return;
+    container.querySelectorAll('.chip').forEach(chip=>{
+      if(data[group].includes(chip.textContent)){
+        let cls='active-g';
+        Object.keys(colorMap).forEach(c=>{if(colorMap[c].includes(chip.textContent))cls=c});
         chip.classList.add(cls);
-        if (!activeChips[group]) activeChips[group] = [];
-        activeChips[group].push(chip.textContent);
+        if(!activeChips[group])activeChips[group]=[];
+        if(!activeChips[group].includes(chip.textContent))activeChips[group].push(chip.textContent);
       }
     });
   });
 }
 
 // ── SAVE / LOAD ───────────────────────────────────────────────────
-function getFormData() {
+function getFormData(){
   return {
-    date: currentDate,
-    sleep: document.getElementById('sleep').value,
-    clarity: document.getElementById('clarity').value,
-    confidence: document.getElementById('confidence').value,
-    preEmo: [...activeChips.preEmo],
-    bias: [...(activeChips.bias||[])],
-    preIntention: document.getElementById('preIntention').value,
-    discipline: document.getElementById('discipline').value,
-    ruleFollow: document.getElementById('ruleFollow').value,
-    patience: document.getElementById('patience').value,
-    postEmo: [...(activeChips.postEmo||[])],
-    mistake: [...(activeChips.mistake||[])],
-    lesson: document.getElementById('lesson').value,
-    tmrIntention: document.getElementById('tmrIntention').value,
-    savedAt: new Date().toISOString()
+    date:currentDate,
+    sleep:document.getElementById('sleep').value,
+    clarity:document.getElementById('clarity').value,
+    confidence:document.getElementById('confidence').value,
+    preEmo:[...activeChips.preEmo],
+    bias:[...(activeChips.bias||[])],
+    preIntention:document.getElementById('preIntention').value,
+    discipline:document.getElementById('discipline').value,
+    ruleFollow:document.getElementById('ruleFollow').value,
+    patience:document.getElementById('patience').value,
+    postEmo:[...(activeChips.postEmo||[])],
+    mistake:[...(activeChips.mistake||[])],
+    lesson:document.getElementById('lesson').value,
+    tmrIntention:document.getElementById('tmrIntention').value,
   };
 }
 
-function saveEntry() {
-  const data = getFormData();
-  const entries = getAll();
-  entries[currentDate] = data;
-  localStorage.setItem('ttm_mind_journal', JSON.stringify(entries));
-  
-  const btn = document.getElementById('saveBtn');
-  btn.textContent = 'SAVED ✓';
-  btn.classList.add('saved');
-  setTimeout(() => { btn.textContent = 'SAVE TODAY\'S ENTRY'; btn.classList.remove('saved'); }, 2000);
-  
-  showToast('ENTRY SAVED ✓');
-  updateStreak();
-  checkUpgradeNudge();
-  renderHistory();
-  renderOverview();
-}
-
-function loadEntry(dateStr) {
-  const entries = getAll();
-  const data = entries[dateStr];
-  activeChips = { preEmo:[], bias:[], postEmo:[], mistake:[] };
-  
-  if (data) {
-    document.getElementById('sleep').value = data.sleep || 7;
-    document.getElementById('sleepVal').textContent = data.sleep || 7;
-    document.getElementById('clarity').value = data.clarity || 7;
-    document.getElementById('clarityVal').textContent = data.clarity || 7;
-    document.getElementById('confidence').value = data.confidence || 7;
-    document.getElementById('confidenceVal').textContent = data.confidence || 7;
-    document.getElementById('discipline').value = data.discipline || 7;
-    document.getElementById('disciplineVal').textContent = data.discipline || 7;
-    document.getElementById('ruleFollow').value = data.ruleFollow || 7;
-    document.getElementById('ruleFollowVal').textContent = data.ruleFollow || 7;
-    document.getElementById('patience').value = data.patience || 7;
-    document.getElementById('patienceVal').textContent = data.patience || 7;
-    document.getElementById('preIntention').value = data.preIntention || '';
-    document.getElementById('lesson').value = data.lesson || '';
-    document.getElementById('tmrIntention').value = data.tmrIntention || '';
-    setChips({ preEmo: data.preEmo||[], bias: data.bias||[], postEmo: data.postEmo||[], mistake: data.mistake||[] });
+async function saveEntry(){
+  if(isSaving)return;
+  isSaving=true;
+  const btn=document.getElementById('saveBtn');
+  btn.disabled=true;
+  btn.textContent='SAVING...';
+  const data=getFormData();
+  const ok=await saveToFirestore(currentDate,data);
+  btn.disabled=false;
+  btn.textContent='SAVE & SYNC ↑';
+  isSaving=false;
+  if(ok){
+    showToast('SAVED & SYNCED ✓');
+    checkUpgradeNudge();
+    if(document.getElementById('tab-overview').classList.contains('active')) renderOverview();
+    if(document.getElementById('tab-history').classList.contains('active')) renderHistory();
   } else {
-    // reset
-    ['sleep','clarity','confidence','discipline','ruleFollow','patience'].forEach(id => {
-      document.getElementById(id).value = 7;
-      document.getElementById(id+'Val') && (document.getElementById(id+'Val').textContent = 7);
-    });
-    document.getElementById('sleepVal').textContent = 7;
-    document.getElementById('clarityVal').textContent = 7;
-    document.getElementById('confidenceVal').textContent = 7;
-    document.getElementById('disciplineVal').textContent = 7;
-    document.getElementById('ruleFollowVal').textContent = 7;
-    document.getElementById('patienceVal').textContent = 7;
-    document.getElementById('preIntention').value = '';
-    document.getElementById('lesson').value = '';
-    document.getElementById('tmrIntention').value = '';
-    clearChips();
+    showToast('SAVE FAILED — CHECK CONNECTION',3000);
   }
 }
 
-function getAll() {
-  try { return JSON.parse(localStorage.getItem('ttm_mind_journal') || '{}'); } 
-  catch(e) { return {}; }
+function loadEntry(dateStr){
+  const data=localCache[dateStr];
+  activeChips={preEmo:[],bias:[],postEmo:[],mistake:[]};
+  const ids=['sleep','clarity','confidence','discipline','ruleFollow','patience'];
+  ids.forEach(id=>{
+    const el=document.getElementById(id);
+    const valEl=document.getElementById(id+'Val');
+    const v=data?.[id]||7;
+    if(el)el.value=v;
+    if(valEl)valEl.textContent=v;
+  });
+  ['preIntention','lesson','tmrIntention'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el)el.value=data?.[id]||'';
+  });
+  if(data) setChips({preEmo:data.preEmo||[],bias:data.bias||[],postEmo:data.postEmo||[],mistake:data.mistake||[]});
+  else clearChips();
 }
 
-// ── STREAK ────────────────────────────────────────────────────────
-function updateStreak() {
-  const entries = getAll();
-  const dates = Object.keys(entries).sort().reverse();
-  let streak = 0;
-  let check = dateToStr(new Date());
-  for (let i = 0; i < 365; i++) {
-    if (entries[check]) { streak++; }
-    else if (i === 0) { /* today not yet saved */ }
-    else break;
-    const [y,m,d] = check.split('-').map(Number);
-    const prev = new Date(y,m-1,d-1);
-    check = dateToStr(prev);
-  }
-  document.getElementById('hdrStreak').textContent = streak > 1 ? `${streak} DAY STREAK 🔥` : '';
-  return streak;
+// ── NAVIGATION ────────────────────────────────────────────────────
+function changeDate(delta){
+  const[y,m,d]=currentDate.split('-').map(Number);
+  const nd=new Date(y,m-1,d+delta);
+  currentDate=dateToStr(nd);
+  loadEntry(currentDate);
+  updateDateDisplay();
 }
-
-// ── UPGRADE NUDGE ─────────────────────────────────────────────────
-function checkUpgradeNudge() {
-  const entries = getAll();
-  const count = Object.keys(entries).length;
-  const box = document.getElementById('upgradeBox');
-  const tag = document.getElementById('milestoneTag');
-  const title = document.getElementById('upgradeTitle');
-  const msg = document.getElementById('upgradeMsg');
-  
-  if (count >= 30) {
-    box.classList.add('show');
-    tag.textContent = '30 DAYS LOGGED — SERIOUS TRADER';
-    title.textContent = 'TIME TO UNLOCK THE FULL SYSTEM.';
-    msg.textContent = `30 days of self-awareness data. You're serious about this. Now combine it with AI trade analysis that tells you your Killer Mistake, Best Setup EV, and Action Plan — automatically from your trade log.`;
-  } else if (count >= 14) {
-    box.classList.add('show');
-    tag.textContent = '14 DAYS LOGGED';
-    title.textContent = 'TWO WEEKS. THE PATTERN IS CLEAR.';
-    msg.textContent = 'Your emotional patterns are showing. Now imagine combining this with AI that reads your actual trade data and tells you exactly which habit is costing you money.';
-  } else if (count >= 7) {
-    box.classList.add('show');
-    tag.textContent = '7 DAYS LOGGED';
-    title.textContent = 'YOU\'RE BUILDING YOUR EDGE.';
-    msg.textContent = `7 days of self-awareness. You're already ahead of most traders. Now take it further — combine this tracker with an AI that reads your trade data and builds your full coaching report.`;
-  }
+function goToday(){currentDate=todayStr();loadEntry(currentDate);updateDateDisplay()}
+function updateDateDisplay(){
+  const el=document.getElementById('dateDisplay');
+  if(el)el.textContent=formatDisplay(currentDate);
 }
 
 // ── OVERVIEW ──────────────────────────────────────────────────────
-function renderOverview() {
-  const entries = getAll();
-  const dates = Object.keys(entries).sort();
-  const count = dates.length;
-  document.getElementById('ovTotalDays').textContent = count;
-  document.getElementById('ovStreak').textContent = updateStreak();
-
-  if (count === 0) {
-    document.getElementById('ovAvgDiscipline').textContent = '—';
-    document.getElementById('ovAvgClarity').textContent = '—';
-    return;
-  }
-
-  const avgDisc = Math.round(dates.reduce((s,d) => s + (+entries[d].discipline||7), 0) / count * 10) / 10;
-  const avgClar = Math.round(dates.reduce((s,d) => s + (+entries[d].clarity||7), 0) / count * 10) / 10;
-  document.getElementById('ovAvgDiscipline').textContent = avgDisc;
-  document.getElementById('ovAvgClarity').textContent = avgClar;
-
-  // Charts — last 14 days
-  const last14 = dates.slice(-14);
-  renderBarChart('disciplineChart', last14, entries, 'discipline', 'g');
-  renderBarChart('sleepChart', last14, entries, 'sleep', 'amber');
-
-  // Top emotions this week
-  const weekDates = dates.filter(d => {
-    const [y,m,dd] = d.split('-').map(Number);
-    const date = new Date(y,m-1,dd);
-    const now = new Date();
-    return (now - date) / 86400000 <= 7;
-  });
-
-  const emoCount = {};
-  weekDates.forEach(d => {
-    (entries[d].preEmo||[]).forEach(e => { emoCount[e] = (emoCount[e]||0)+1; });
-  });
-  const topEmo = Object.entries(emoCount).sort((a,b)=>b[1]-a[1]).slice(0,5);
-  document.getElementById('topEmotions').innerHTML = topEmo.length
-    ? topEmo.map(([e,c]) => `<span style="color:var(--g)">→</span> ${e}: ${c}x<br>`).join('')
-    : 'Log more entries this week to see patterns.';
-
-  const misCount = {};
-  weekDates.forEach(d => {
-    (entries[d].mistake||[]).forEach(m => { if (m !== 'None — Clean Session') misCount[m] = (misCount[m]||0)+1; });
-  });
-  const topMis = Object.entries(misCount).sort((a,b)=>b[1]-a[1]).slice(0,5);
-  document.getElementById('topMistakes').innerHTML = topMis.length
-    ? topMis.map(([m,c]) => `<span style="color:var(--r)">→</span> ${m}: ${c}x<br>`).join('')
-    : 'No mistakes logged this week. Good discipline.';
+function renderOverview(){
+  const dates=Object.keys(localCache).sort();
+  const count=dates.length;
+  const set=id=>{ const el=document.getElementById(id); return v=>{ if(el)el.textContent=v; }};
+  set('ovTotal')(count);
+  set('ovStreak')(calcStreak());
+  if(!count){set('ovDisc')('—');set('ovClar')('—');return}
+  const avg=(field)=>Math.round(dates.reduce((s,d)=>s+(+(localCache[d][field]||7)),0)/count*10)/10;
+  set('ovDisc')(avg('discipline'));
+  set('ovClar')(avg('clarity'));
+  const last14=dates.slice(-14);
+  renderBar('discChart',last14,'discipline','');
+  renderBar('sleepChart',last14,'sleep','amber');
+  // Emotions this week
+  const week=dates.filter(d=>{const[y,m,dd]=d.split('-').map(Number);return(new Date()-new Date(y,m-1,dd))/864e5<=7});
+  const ec={};week.forEach(d=>(localCache[d].preEmo||[]).forEach(e=>{ec[e]=(ec[e]||0)+1}));
+  const topE=Object.entries(ec).sort((a,b)=>b[1]-a[1]).slice(0,5);
+  const emo=document.getElementById('topEmotions');
+  if(emo)emo.innerHTML=topE.length?topE.map(([e,c])=>`<span class="g">→</span> ${e}: ${c}x<br>`).join(''):'Log more entries this week.';
+  const mc={};week.forEach(d=>(localCache[d].mistake||[]).filter(m=>m!=='None — Clean Session').forEach(m=>{mc[m]=(mc[m]||0)+1}));
+  const topM=Object.entries(mc).sort((a,b)=>b[1]-a[1]).slice(0,5);
+  const mis=document.getElementById('topMistakes');
+  if(mis)mis.innerHTML=topM.length?topM.map(([m,c])=>`<span class="r">→</span> ${m}: ${c}x<br>`).join(''):'No mistakes logged this week.';
 }
 
-function renderBarChart(id, dates, entries, field, colorClass) {
-  const container = document.getElementById(id);
-  container.innerHTML = '';
-  const max = 10;
-  dates.forEach(d => {
-    const val = +(entries[d][field]||7);
-    const pct = (val/max)*100;
-    const col = document.createElement('div');
-    col.className = 'bar-col';
-    const shortDate = d.split('-')[2];
-    col.innerHTML = `<div class="bar-fill ${colorClass}" style="height:${pct}%"></div><div class="bar-date">${shortDate}</div>`;
+function renderBar(id,dates,field,colorClass){
+  const container=document.getElementById(id);
+  if(!container)return;
+  container.innerHTML='';
+  dates.forEach(d=>{
+    const val=+(localCache[d]?.[field]||7);
+    const pct=(val/10)*100;
+    const col=document.createElement('div');
+    col.className='bar-col';
+    col.innerHTML=`<div class="bar-fill ${colorClass}" style="height:${pct}%"></div><div class="bar-date">${d.split('-')[2]}</div>`;
     container.appendChild(col);
   });
 }
 
-// ── HISTORY ───────────────────────────────────────────────────────
-function renderHistory() {
-  const entries = getAll();
-  const dates = Object.keys(entries).sort().reverse();
-  const list = document.getElementById('historyList');
-  if (!dates.length) {
-    list.innerHTML = '<p style="font-size:12px;color:var(--mu);text-align:center;padding:32px">No entries yet.</p>';
-    return;
+function calcStreak(){
+  let streak=0,check=dateToStr(new Date());
+  for(let i=0;i<365;i++){
+    if(localCache[check])streak++;
+    else if(i>0)break;
+    const[y,m,d]=check.split('-').map(Number);
+    check=dateToStr(new Date(y,m-1,d-1));
   }
-  list.innerHTML = dates.map(d => {
-    const e = entries[d];
-    const preview = e.lesson || e.preIntention || '(no notes)';
-    return `<div class="hist-item" onclick="jumpTo('${d}')">
-      <div class="hist-date">${formatDisplay(d)}</div>
-      <div class="hist-preview">${preview.slice(0,80)}${preview.length>80?'...':''}</div>
-      <div class="hist-scores">
-        <div class="hist-score">DISCIPLINE <span>${e.discipline}/10</span></div>
-        <div class="hist-score">SLEEP <span>${e.sleep}/10</span></div>
-        <div class="hist-score">CLARITY <span>${e.clarity}/10</span></div>
-      </div>
-    </div>`;
+  return streak;
+}
+
+// ── HISTORY ───────────────────────────────────────────────────────
+function renderHistory(){
+  const dates=Object.keys(localCache).sort().reverse();
+  const list=document.getElementById('historyList');
+  if(!list)return;
+  if(!dates.length){list.innerHTML='<p style="font-size:12px;color:var(--mu);text-align:center;padding:28px">No entries yet.</p>';return}
+  list.innerHTML=dates.map(d=>{
+    const e=localCache[d];
+    const preview=e.lesson||e.preIntention||'(no notes)';
+    return`<div class="hist-item" onclick="jumpTo('${d}')"><div class="hist-date">${formatDisplay(d)}</div><div class="hist-preview">${preview.slice(0,80)}${preview.length>80?'...':''}</div><div class="hist-scores"><div class="hs_">DISC <span>${e.discipline}/10</span></div><div class="hs_">SLEEP <span>${e.sleep}/10</span></div><div class="hs_">CLARITY <span>${e.clarity}/10</span></div></div></div>`;
   }).join('');
 }
 
-function jumpTo(dateStr) {
-  currentDate = dateStr;
-  loadEntry(dateStr);
-  updateDateDisplay();
-  switchTab('journal');
-}
+function jumpTo(d){currentDate=d;loadEntry(d);updateDateDisplay();switchTab('journal')}
 
 // ── TABS ──────────────────────────────────────────────────────────
-function switchTab(name) {
-  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
-  document.querySelector(`.tab[onclick="switchTab('${name}')"]`).classList.add('active');
-  document.getElementById('tab-'+name).classList.add('active');
-  if (name === 'overview') renderOverview();
-  if (name === 'history') renderHistory();
+function switchTab(name){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));
+  const btn=document.querySelector(`.tab[onclick="switchTab('${name}')"]`);
+  if(btn)btn.classList.add('active');
+  const content=document.getElementById('tab-'+name);
+  if(content)content.classList.add('active');
+  if(name==='overview'){loadAllEntries().then(renderOverview)}
+  if(name==='history'){loadAllEntries().then(renderHistory)}
 }
 
-// ── TOAST ─────────────────────────────────────────────────────────
-function showToast(msg) {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 2200);
+// ── UPGRADE NUDGE ─────────────────────────────────────────────────
+function checkUpgradeNudge(){
+  const count=Object.keys(localCache).length;
+  const box=document.getElementById('upgradeBox');
+  const title=document.getElementById('upgradeTitle');
+  const msg=document.getElementById('upgradeMsg');
+  if(!box)return;
+  if(count>=30){box.classList.add('show');if(title)title.textContent='30 DAYS. TIME FOR THE FULL SYSTEM.';if(msg)msg.textContent='30 days of self-awareness data. Now add AI trade coaching that tells you your Killer Mistake, Best Setup EV, and Action Plan — from your actual trade log.'}
+  else if(count>=14){box.classList.add('show');if(title)title.textContent='TWO WEEKS. THE PATTERN IS FORMING.';if(msg)msg.textContent='14 days logged. Your emotional patterns are showing. Now combine this with AI that reads your trade data.'}
+  else if(count>=7){box.classList.add('show')}
 }
 
 // ── INIT ──────────────────────────────────────────────────────────
-function init() {
-  currentDate = todayStr();
-  updateDateDisplay();
-  loadEntry(currentDate);
-  updateStreak();
-  checkUpgradeNudge();
-}
-
-init();
+// Show loading until Firebase resolves
+document.getElementById('loadingOverlay').classList.remove('hidden');
+setTimeout(()=>{
+  // If still loading after 4s, show login screen
+  if(!window._currentUser){
+    document.getElementById('loadingOverlay').classList.add('hidden');
+    document.getElementById('loginScreen').classList.remove('hidden');
+  }
+},4000);
 </script>
 </body>
 </html>
