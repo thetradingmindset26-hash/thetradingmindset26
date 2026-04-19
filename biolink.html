@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>thetradingmindset26 — AI Trading Tools</title>
+<meta name="description" content="Free trading tools + AI Pro Journal ₹1,499. Bank Nifty, Nifty 50, Crypto.">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Mono:wght@400;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--g:#00FF41;--a:#FFB300;--o:#FF5000;--r:#FF3B3B;--bg:#030712;--bg2:#080F1A;--bg3:#0D1520;--br:rgba(0,255,65,0.12);--tx:#E8F4FF;--mu:#6B7280}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--tx);font-family:'Inter',sans-serif;min-height:100vh;overflow-x:hidden}
+body::after{content:'';position:fixed;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.025) 2px,rgba(0,0,0,0.025) 4px);pointer-events:none;z-index:999}
+.gbg{position:fixed;inset:0;background-image:linear-gradient(rgba(0,255,65,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(0,255,65,.03) 1px,transparent 1px);background-size:50px 50px;mask-image:radial-gradient(ellipse 70% 100% at 50% 0%,black 30%,transparent 100%);pointer-events:none}
+.gglow{position:fixed;top:-200px;left:50%;transform:translateX(-50%);width:600px;height:600px;background:radial-gradient(circle,rgba(0,255,65,.06) 0%,transparent 65%);pointer-events:none}
+.wrap{max-width:500px;margin:0 auto;padding:44px 20px 80px;position:relative;z-index:1}
+.profile{text-align:center;margin-bottom:28px}
+.aring{width:80px;height:80px;border-radius:50%;border:2px solid var(--g);padding:3px;margin:0 auto 12px;box-shadow:0 0 20px rgba(0,255,65,.2);display:flex;align-items:center;justify-content:center;background:var(--bg2);font-size:30px}
+.pname{font-family:'Bebas Neue',sans-serif;font-size:24px;color:#fff;letter-spacing:2px;margin-bottom:2px}
+.phand{font-family:'Space Mono',monospace;font-size:11px;color:var(--g);letter-spacing:1px;margin-bottom:8px}
+.pbio{font-size:13px;color:var(--mu);line-height:1.6;max-width:310px;margin:0 auto}
+.mtick{overflow:hidden;background:var(--bg3);border:1px solid var(--br);padding:8px 0;margin:20px 0}
+.mtr{display:flex;gap:40px;animation:mtk 22s linear infinite;white-space:nowrap}
+@keyframes mtk{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.mti{font-family:'Space Mono',monospace;font-size:9px;color:var(--mu);letter-spacing:1.5px;flex-shrink:0}
+.mti span{color:var(--g);margin-left:6px}
+.slabel{font-family:'Space Mono',monospace;font-size:9px;color:var(--mu);letter-spacing:3px;text-align:center;margin:16px 0 10px;padding:0 8px;display:flex;align-items:center;gap:10px}
+.slabel::before,.slabel::after{content:'';flex:1;height:1px;background:var(--br)}
+.lcard{display:flex;align-items:center;gap:14px;background:var(--bg2);border:1px solid var(--br);padding:16px 18px;text-decoration:none;margin-bottom:8px;transition:all .25s;position:relative;overflow:hidden;cursor:pointer}
+.lcard::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--g);transform:scaleY(0);transition:transform .2s}
+.lcard:hover{border-color:rgba(0,255,65,.3);transform:translateX(3px);box-shadow:-3px 0 0 var(--g)}
+.lcard:hover::before{transform:scaleY(1)}
+.lcard.pro{background:linear-gradient(135deg,#080F1A 0%,#0A1A0A 100%);border-color:rgba(0,255,65,.28);box-shadow:0 0 16px rgba(0,255,65,.05)}
+.lcard.pro::before{background:var(--g);transform:scaleY(1)}
+.lcard.free::before,.lcard.free2::before{background:var(--a)}
+.lcard.free:hover,.lcard.free2:hover{box-shadow:-3px 0 0 var(--a);border-color:rgba(255,179,0,.35)}
+.lcard.con::before{background:var(--o)}
+.lcard.con:hover{box-shadow:-3px 0 0 var(--o);border-color:rgba(255,80,0,.3)}
+.cicon{width:42px;height:42px;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.ip{background:rgba(0,255,65,.08);border:1px solid rgba(0,255,65,.18)}
+.if{background:rgba(255,179,0,.08);border:1px solid rgba(255,179,0,.18)}
+.ic{background:rgba(255,80,0,.08);border:1px solid rgba(255,80,0,.18)}
+.ig{background:rgba(200,100,255,.08);border:1px solid rgba(200,100,255,.18)}
+.iy{background:rgba(255,50,50,.08);border:1px solid rgba(255,50,50,.18)}
+.iw{background:rgba(100,200,100,.08);border:1px solid rgba(100,200,100,.18)}
+.ci{flex:1;min-width:0}
+.ct{font-weight:600;font-size:14px;color:#fff;margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cd{font-size:12px;color:var(--mu);line-height:1.4}
+.cbadge{font-family:'Space Mono',monospace;font-size:10px;font-weight:700;padding:4px 10px;flex-shrink:0;letter-spacing:1px}
+.bpro{background:var(--g);color:#000}
+.bfree{background:var(--a);color:#000}
+.bwatch{background:rgba(255,80,0,.12);color:var(--o);border:1px solid rgba(255,80,0,.25)}
+.bfollow{background:rgba(200,100,255,.12);color:#C864FF;border:1px solid rgba(200,100,255,.25)}
+.byt{background:rgba(255,50,50,.12);color:#FF3232;border:1px solid rgba(255,50,50,.25)}
+.sbar{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin:16px 0}
+.sit{background:var(--bg2);border:1px solid var(--br);padding:14px;text-align:center}
+.snum{font-family:'Bebas Neue',sans-serif;font-size:28px;color:var(--g);line-height:1;text-shadow:0 0 10px rgba(0,255,65,.3)}
+.slb{font-family:'Space Mono',monospace;font-size:8px;color:var(--mu);letter-spacing:1.5px;margin-top:4px;line-height:1.4}
+.trust{background:var(--bg2);border:1px solid var(--br);border-left:3px solid var(--g);padding:12px 14px;margin:16px 0}
+.trust p{font-family:'Space Mono',monospace;font-size:9px;color:var(--mu);line-height:1.8;letter-spacing:.3px}
+.trust .h{color:var(--g)}
+.bfoot{text-align:center;margin-top:24px;padding-top:20px;border-top:1px solid var(--br)}
+.bfoot p{font-family:'Space Mono',monospace;font-size:9px;color:rgba(107,114,128,.45);line-height:1.8;letter-spacing:.3px}
+.lcard{animation:slin .4s both}
+.lcard:nth-child(1){animation-delay:.04s}.lcard:nth-child(2){animation-delay:.08s}
+.lcard:nth-child(3){animation-delay:.12s}.lcard:nth-child(4){animation-delay:.16s}
+.lcard:nth-child(5){animation-delay:.20s}.lcard:nth-child(6){animation-delay:.24s}
+@keyframes slin{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+</style>
+</head>
+<body>
+<div class="gbg"></div>
+<div class="gglow"></div>
+<div class="wrap">
+
+  <div class="profile">
+    <div class="aring">🧠</div>
+    <div class="pname">THETRADINGMINDSET26</div>
+    <div class="phand">@thetradingmindset26</div>
+    <p class="pbio">Follow to know the trader inside.<br>Bank Nifty · Nifty 50 · Crypto · F&O</p>
+  </div>
+
+  <div class="mtick" aria-hidden="true"><div class="mtr">
+    <span class="mti">AI COACH<span>8 SECTIONS</span></span>
+    <span class="mti">RISK TOOL<span>BUILT IN</span></span>
+    <span class="mti">FREE TOOLS<span>NO CARD</span></span>
+    <span class="mti">MIND TRACKER<span>FREE</span></span>
+    <span class="mti">PROFIT FACTOR<span>AUTO</span></span>
+    <span class="mti">AI COACH<span>8 SECTIONS</span></span>
+    <span class="mti">RISK TOOL<span>BUILT IN</span></span>
+    <span class="mti">FREE TOOLS<span>NO CARD</span></span>
+    <span class="mti">MIND TRACKER<span>FREE</span></span>
+    <span class="mti">PROFIT FACTOR<span>AUTO</span></span>
+  </div></div>
+
+  <div class="slabel">PAID PRODUCT</div>
+
+  <a href="https://tradingmindset2.gumroad.com/l/ttm-pro" class="lcard pro" target="_blank">
+    <div class="cicon ip">🤖</div>
+    <div class="ci">
+      <div class="ct">AI Trading Journal Coach — Pro</div>
+      <div class="cd">AI report · Risk tool · 7 sheets · Bank Nifty + Nifty 50</div>
+    </div>
+    <div class="cbadge bpro">₹1,499</div>
+  </a>
+
+  <div class="slabel">FREE TOOLS</div>
+
+  <a href="free.html" class="lcard free" target="_blank">
+    <div class="cicon if">📦</div>
+    <div class="ci">
+      <div class="ct">Free Bundle — All 4 Files</div>
+      <div class="cd">Basic Journal · Trader Mind Tracker · User Guide · Max Benefit Guide</div>
+    </div>
+    <div class="cbadge bfree">FREE</div>
+  </a>
+
+  <div class="slabel">EXPLORE</div>
+
+  <a href="https://thetradingmindset26-hash.github.io/thetradingmindset26/" class="lcard con" target="_blank">
+    <div class="cicon ic" style="font-size:15px;">🌐</div>
+    <div class="ci">
+      <div class="ct">Full Product Page</div>
+      <div class="cd">AI report preview · Full features · Free vs Pro comparison</div>
+    </div>
+    <div class="cbadge bwatch">EXPLORE</div>
+  </a>
+
+  <div class="sbar">
+    <div class="sit"><div class="snum">8</div><div class="slb">AI COACH<br>SECTIONS</div></div>
+    <div class="sit"><div class="snum">12</div><div class="slb">LIVE<br>KPIs</div></div>
+    <div class="sit"><div class="snum">₹0</div><div class="slb">BASIC<br>BUNDLE</div></div>
+  </div>
+
+  <div class="slabel">CONTENT</div>
+
+  <a href="https://youtube.com/@thetradingmindset26" class="lcard con" target="_blank">
+    <div class="cicon iy">▶</div>
+    <div class="ci">
+      <div class="ct">YouTube — Trading Psychology</div>
+      <div class="cd">Follow to know the trader inside · Mindset · Mental edge</div>
+    </div>
+    <div class="cbadge byt">FOLLOW</div>
+  </a>
+
+  <a href="https://instagram.com/thetradingmindset26" class="lcard con" target="_blank">
+    <div class="cicon ig">📸</div>
+    <div class="ci">
+      <div class="ct">Instagram — Daily Reels</div>
+      <div class="cd">Trading psychology · Mindset · Market insights</div>
+    </div>
+    <div class="cbadge bfollow">FOLLOW</div>
+  </a>
+
+  <div class="trust">
+    <p><span class="h">⚠ SEBI:</span> Educational journaling tool only. Not SEBI-registered investment advice. Not a signal service. Trading involves risk of financial loss. Consult a SEBI-registered adviser. sebi.gov.in · © thetradingmindset26 2026 · All rights reserved. Unauthorised redistribution prohibited.</p>
+  </div>
+
+  <div class="bfoot">
+    <p>THETRADINGMINDSET26 · 2026<br>BANK NIFTY · NIFTY 50 · CRYPTO · F&O<br>DM ON INSTAGRAM FOR SUPPORT</p>
+  </div>
+
+</div>
+</body>
+</html>

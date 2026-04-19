@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Free Trading Tools — thetradingmindset26</title>
+<meta name="description" content="Free trading tools from thetradingmindset26. Basic Journal, Trader Mind Tracker, User Guide, Max Benefit Guide.">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Mono:wght@400;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--g:#00FF41;--a:#FFB300;--o:#FF5000;--r:#FF3B3B;--bg:#030712;--bg2:#080F1A;--bg3:#0D1520;--br:rgba(0,255,65,0.12);--tx:#E8F4FF;--mu:#6B7280}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--tx);font-family:'Inter',sans-serif;min-height:100vh;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.025) 2px,rgba(0,0,0,0.025) 4px);pointer-events:none;z-index:999}
+.gbg{position:fixed;inset:0;background-image:linear-gradient(rgba(0,255,65,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(0,255,65,.03) 1px,transparent 1px);background-size:50px 50px;mask-image:radial-gradient(ellipse 80% 100% at 50% 0%,black 30%,transparent 100%);pointer-events:none}
+.glow{position:fixed;top:-150px;left:50%;transform:translateX(-50%);width:600px;height:600px;background:radial-gradient(circle,rgba(0,255,65,.06) 0%,transparent 65%);pointer-events:none}
+
+/* NAV */
+nav{background:rgba(3,7,18,.9);border-bottom:1px solid var(--br);padding:14px 24px;display:flex;justify-content:space-between;align-items:center}
+.nb{font-family:'Bebas Neue',sans-serif;font-size:20px;color:var(--g);letter-spacing:2px;text-decoration:none}
+.nav-links{display:flex;gap:20px;align-items:center}
+.nav-links a{font-family:'Space Mono',monospace;font-size:10px;color:var(--mu);text-decoration:none;letter-spacing:1.5px;transition:color .2s}
+.nav-links a:hover{color:var(--g)}
+.nav-pro{background:var(--g);color:#000;padding:7px 16px;font-weight:700;font-size:10px !important;}
+
+/* HERO */
+.hero{text-align:center;padding:72px 24px 48px;position:relative}
+.hero::after{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:500px;height:300px;background:radial-gradient(ellipse,rgba(255,179,0,.05) 0%,transparent 70%);pointer-events:none}
+.hero-tag{display:inline-flex;align-items:center;gap:8px;background:rgba(255,179,0,.08);border:1px solid rgba(255,179,0,.25);color:var(--a);font-family:'Space Mono',monospace;font-size:10px;padding:6px 16px;letter-spacing:2px;margin-bottom:24px;position:relative;z-index:1}
+.hero-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(44px,8vw,82px);line-height:.9;color:#fff;margin-bottom:10px;position:relative;z-index:1}
+.hero-title .acc{color:var(--a)}
+.hero-sub{font-size:14px;color:var(--mu);max-width:440px;margin:0 auto 12px;line-height:1.7;position:relative;z-index:1}
+.hero-note{font-family:'Space Mono',monospace;font-size:11px;color:rgba(107,114,128,.6);letter-spacing:1px;position:relative;z-index:1}
+
+/* DOWNLOAD GRID */
+.wrap{max-width:900px;margin:0 auto;padding:0 24px 80px}
+
+.dl-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:2px;margin:40px 0 32px}
+
+.dl-card{background:var(--bg2);border:1px solid var(--br);padding:32px 28px;position:relative;transition:all .3s;display:flex;flex-direction:column}
+.dl-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--a);transform:scaleX(0);transform-origin:left;transition:transform .35s}
+.dl-card:hover{border-color:rgba(255,179,0,.28);transform:translateY(-2px)}
+.dl-card:hover::before{transform:scaleX(1)}
+.dl-card.mind::before{background:var(--g)}
+.dl-card.mind:hover{border-color:rgba(0,255,65,.25)}
+
+.dl-icon{font-size:32px;margin-bottom:14px;display:block}
+.dl-name{font-family:'Bebas Neue',sans-serif;font-size:22px;color:#fff;letter-spacing:1px;margin-bottom:8px}
+.dl-desc{font-size:13px;color:var(--mu);line-height:1.7;margin-bottom:16px;flex:1}
+.dl-meta{font-family:'Space Mono',monospace;font-size:9px;color:var(--mu);letter-spacing:1.5px;margin-bottom:18px}
+.dl-meta span{color:var(--a)}
+.dl-meta span.g{color:var(--g)}
+
+.dl-btn{display:flex;align-items:center;justify-content:center;gap:10px;background:var(--a);color:#000;font-family:'Space Mono',monospace;font-size:11px;font-weight:700;padding:13px 20px;text-decoration:none;letter-spacing:1.5px;transition:all .2s;border:none;cursor:pointer;width:100%}
+.dl-btn:hover{box-shadow:0 0 20px rgba(255,179,0,.4);transform:translateY(-1px)}
+.dl-btn.green{background:var(--g)}
+.dl-btn.green:hover{box-shadow:0 0 20px rgba(0,255,65,.4)}
+.dl-btn.outline{background:transparent;color:var(--a);border:1px solid rgba(255,179,0,.4)}
+.dl-btn.outline:hover{background:rgba(255,179,0,.08)}
+
+/* BUNDLE CTA */
+.bundle-box{background:linear-gradient(135deg,#0A1500,#080F1A);border:1px solid rgba(255,179,0,.3);padding:36px 40px;text-align:center;margin-bottom:40px}
+.bundle-box h2{font-family:'Bebas Neue',sans-serif;font-size:28px;color:#fff;letter-spacing:2px;margin-bottom:8px}
+.bundle-box p{font-size:13px;color:var(--mu);margin-bottom:20px;line-height:1.6}
+.bundle-box p strong{color:var(--a)}
+.bundle-items{display:flex;justify-content:center;gap:16px;flex-wrap:wrap;margin-bottom:24px}
+.bundle-item{font-family:'Space Mono',monospace;font-size:10px;color:var(--a);border:1px solid rgba(255,179,0,.2);padding:5px 12px;letter-spacing:1px}
+
+/* WHAT'S INSIDE */
+.inside-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:2px;margin-bottom:40px}
+.inside-card{background:var(--bg2);border:1px solid var(--br);padding:22px 20px}
+.inside-title{font-family:'Space Mono',monospace;font-size:10px;color:var(--g);letter-spacing:2px;margin-bottom:10px}
+.inside-list{list-style:none}
+.inside-list li{font-size:12px;color:var(--mu);line-height:1.8}
+.inside-list li::before{content:'→ ';color:var(--g)}
+
+/* UPGRADE BOX */
+.upgrade-section{background:linear-gradient(135deg,#0A2E1A,#080F1A);border:1px solid rgba(0,255,65,.3);padding:40px;text-align:center;margin-bottom:2px}
+.upgrade-section h2{font-family:'Bebas Neue',sans-serif;font-size:32px;color:var(--g);letter-spacing:2px;margin-bottom:10px}
+.upgrade-section p{font-size:14px;color:var(--mu);max-width:480px;margin:0 auto 24px;line-height:1.7}
+.pro-items{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-bottom:28px}
+.pro-item{background:rgba(0,255,65,.04);border:1px solid rgba(0,255,65,.1);padding:14px;text-align:left}
+.pro-item .pi-icon{font-size:16px;margin-bottom:6px;display:block}
+.pro-item .pi-name{font-size:11px;color:#fff;font-weight:600;margin-bottom:3px}
+.pro-item .pi-desc{font-size:10px;color:var(--mu);line-height:1.5}
+.pro-price-tag{font-family:'Bebas Neue',sans-serif;font-size:48px;color:#fff;line-height:1;margin-bottom:4px}
+.pro-price-tag .cur{color:var(--g);font-size:20px;vertical-align:super}
+.pro-note{font-family:'Space Mono',monospace;font-size:10px;color:var(--mu);letter-spacing:2px;margin-bottom:20px}
+.pro-cta{display:inline-flex;align-items:center;gap:10px;background:var(--g);color:#000;font-family:'Space Mono',monospace;font-size:13px;font-weight:700;padding:16px 40px;text-decoration:none;letter-spacing:1.5px;transition:all .2s}
+.pro-cta:hover{box-shadow:0 0 30px rgba(0,255,65,.5);transform:translateY(-1px)}
+.alt-pay{font-family:'Space Mono',monospace;font-size:10px;color:var(--mu);margin-top:12px;letter-spacing:1px}
+.alt-pay a{color:var(--mu);text-decoration:underline}
+
+/* SEBI */
+.sebi{background:var(--bg3);border-top:1px solid var(--br);padding:18px 24px;margin-bottom:0}
+.sebi-in{max-width:900px;margin:0 auto;display:flex;gap:12px;align-items:flex-start}
+.sebi-lab{font-family:'Space Mono',monospace;font-size:9px;color:var(--o);letter-spacing:2px;flex-shrink:0;padding-top:1px;font-weight:700}
+.sebi-tx{font-family:'Space Mono',monospace;font-size:9px;color:rgba(107,114,128,.6);line-height:1.8;letter-spacing:.3px}
+
+footer{border-top:1px solid var(--br);padding:20px 24px;text-align:center}
+footer p{font-family:'Space Mono',monospace;font-size:9px;color:rgba(107,114,128,.4);line-height:1.8}
+
+/* ANIM */
+.dl-card{animation:fadeUp .4s both}
+.dl-card:nth-child(1){animation-delay:.05s}
+.dl-card:nth-child(2){animation-delay:.1s}
+.dl-card:nth-child(3){animation-delay:.15s}
+.dl-card:nth-child(4){animation-delay:.2s}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+
+@media(max-width:640px){
+  .dl-grid,.inside-grid,.pro-items{grid-template-columns:1fr}
+  .bundle-box{padding:24px 20px}
+  .upgrade-section{padding:28px 20px}
+}
+</style>
+</head>
+<body>
+<div class="gbg"></div>
+<div class="glow"></div>
+
+<nav>
+  <a class="nb" href="index.html">TTM ⬡</a>
+  <div class="nav-links">
+    <a href="index.html">HOME</a>
+    <a href="traders-mind.html">MIND TRACKER</a>
+    <a href="https://tradingmindset2.gumroad.com/l/ttm-pro" class="nav-pro" target="_blank">AI PRO →</a>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="hero-tag">⬡ FREE TOOLS — NO PAYMENT · NO SIGNUP · NO CARD</div>
+  <div class="hero-title">EVERYTHING<br>YOU NEED TO <span class="acc">START.</span></div>
+  <p class="hero-sub">Four free tools and guides. Download directly. No account needed. Start understanding your trading data today.</p>
+  <div class="hero-note">BASIC JOURNAL · TRADER MIND TRACKER · USER GUIDE · MAX BENEFIT GUIDE</div>
+</div>
+
+<div class="wrap">
+
+  <!-- DOWNLOAD CARDS -->
+  <div class="dl-grid">
+
+    <!-- BASIC JOURNAL -->
+    <div class="dl-card">
+      <span class="dl-icon">📋</span>
+      <div class="dl-name">Basic Trading Journal</div>
+      <p class="dl-desc">Google Sheets journal with live Dashboard. Win Rate, Profit Factor, Discipline %, Avg R:R, Expectancy and Equity Curve — all calculate automatically from your trades. 2 minutes per trade to log.</p>
+      <div class="dl-meta">FORMAT: <span>Google Sheets (.xlsx)</span> · SIZE: ~200KB</div>
+      <a href="YOUR_BASIC_JOURNAL_GDRIVE_LINK" class="dl-btn" target="_blank">
+        ↓ DOWNLOAD BASIC JOURNAL
+      </a>
+    </div>
+
+    <!-- TRADER MIND TRACKER -->
+    <div class="dl-card mind">
+      <span class="dl-icon">🧠</span>
+      <div class="dl-name">Trader Mind Tracker</div>
+      <p class="dl-desc">Daily trading psychology journal. Pre-market mental state, emotion chips, market bias, discipline score, post-session reflection and lesson. Tracks your mental edge session by session. Works offline in any browser.</p>
+      <div class="dl-meta">FORMAT: <span class="g">HTML file (opens in browser)</span> · NO INTERNET NEEDED</div>
+      <a href="traders-mind.html" class="dl-btn green" target="_blank">
+        → OPEN MIND TRACKER
+      </a>
+    </div>
+
+    <!-- USER GUIDE -->
+    <div class="dl-card">
+      <span class="dl-icon">📖</span>
+      <div class="dl-name">User Guide</div>
+      <p class="dl-desc">7-page PDF. Every column in the journal explained. Setup in 5 minutes. How to run the AI Coach Report. Reading your Dashboard KPIs. Using Weekly Review. Chart Analysis explained. Common questions answered.</p>
+      <div class="dl-meta">FORMAT: <span>PDF</span> · 7 PAGES · DARK TTM DESIGN</div>
+      <a href="TTM_UserGuide.pdf" class="dl-btn" download>
+        ↓ DOWNLOAD USER GUIDE
+      </a>
+    </div>
+
+    <!-- MAX BENEFIT GUIDE -->
+    <div class="dl-card">
+      <span class="dl-icon">🚀</span>
+      <div class="dl-name">Max Benefit Guide</div>
+      <p class="dl-desc">5-page PDF. The daily routine (before/during/after session). The 30-day consistency system. The 3 numbers to check every morning before you trade. When to upgrade to Pro — the exact signal to look for.</p>
+      <div class="dl-meta">FORMAT: <span>PDF</span> · 5 PAGES · DARK TTM DESIGN</div>
+      <a href="TTM_MaxBenefit.pdf" class="dl-btn" download>
+        ↓ DOWNLOAD MAX BENEFIT GUIDE
+      </a>
+    </div>
+
+  </div>
+
+  <!-- BUNDLE NOTE -->
+  <div class="bundle-box">
+    <h2>WANT ALL 4 IN ONE CLICK?</h2>
+    <p>Download the complete free bundle from Google Drive.<br>
+    <strong>Basic Journal + Trader Mind Tracker + User Guide + Max Benefit Guide</strong></p>
+    <div class="bundle-items">
+      <div class="bundle-item">📋 Basic Journal</div>
+      <div class="bundle-item">🧠 Mind Tracker</div>
+      <div class="bundle-item">📖 User Guide</div>
+      <div class="bundle-item">🚀 Max Benefit</div>
+    </div>
+    <a href="YOUR_GOOGLE_DRIVE_FOLDER_LINK" class="dl-btn" style="max-width:320px;margin:0 auto;display:flex;" target="_blank">
+      ↓ DOWNLOAD ALL 4 FILES →
+    </a>
+  </div>
+
+  <!-- WHAT'S INSIDE -->
+  <div class="inside-grid">
+    <div class="inside-card">
+      <div class="inside-title">BASIC JOURNAL INCLUDES</div>
+      <ul class="inside-list">
+        <li>Trade Log — 12 columns with dropdowns</li>
+        <li>Win Rate — auto-calculated</li>
+        <li>Profit Factor — auto-calculated</li>
+        <li>Discipline % — tracks rule following</li>
+        <li>Avg R:R and Expectancy</li>
+        <li>Equity Curve chart</li>
+        <li>Win/Loss chart</li>
+        <li>Works on phone + desktop</li>
+      </ul>
+    </div>
+    <div class="inside-card">
+      <div class="inside-title">MIND TRACKER INCLUDES</div>
+      <ul class="inside-list">
+        <li>Daily pre-market mental state</li>
+        <li>Sleep, clarity, confidence sliders</li>
+        <li>Emotion chip selector (11 options)</li>
+        <li>Market bias selector</li>
+        <li>Post-session discipline score</li>
+        <li>Mistake chip selector</li>
+        <li>Lesson + tomorrow intention fields</li>
+        <li>14-day discipline + sleep charts</li>
+        <li>Full entry history with search</li>
+        <li>Data saved locally — private</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- UPGRADE TO PRO -->
+  <div class="upgrade-section">
+    <h2>READY FOR THE AI LAYER?</h2>
+    <p>The free tools track your psychology and basic metrics. The AI Pro Journal adds a full coaching engine that reads your actual TRADE DATA and tells you exactly what to fix — every session.</p>
+
+    <div class="pro-items">
+      <div class="pro-item">
+        <span class="pi-icon">🤖</span>
+        <div class="pi-name">AI Coach Report</div>
+        <div class="pi-desc">8 sections from your trade data. One button. Killer Mistake, Action Plan, Grade.</div>
+      </div>
+      <div class="pro-item">
+        <span class="pi-icon">⚡</span>
+        <div class="pi-name">Risk Management Tool</div>
+        <div class="pi-desc">Position sizing, SL, target, daily loss limit — auto-calculated from your capital and risk %.</div>
+      </div>
+      <div class="pro-item">
+        <span class="pi-icon">📅</span>
+        <div class="pi-name">Weekly Review</div>
+        <div class="pi-desc">AI fills 7 sections every week. What worked, what failed, next week rules.</div>
+      </div>
+      <div class="pro-item">
+        <span class="pi-icon">📈</span>
+        <div class="pi-name">Setup Analysis</div>
+        <div class="pi-desc">Every setup ranked by Expected Value. Know which one makes you money.</div>
+      </div>
+      <div class="pro-item">
+        <span class="pi-icon">🧠</span>
+        <div class="pi-name">Psychology Log</div>
+        <div class="pi-desc">3 charts. Emotion + mistake patterns. Market condition win rates.</div>
+      </div>
+      <div class="pro-item">
+        <span class="pi-icon">🖼</span>
+        <div class="pi-name">Chart Analysis</div>
+        <div class="pi-desc">PA notes stored alongside every chart. Free AI prompt system included.</div>
+      </div>
+    </div>
+
+    <div class="pro-price-tag"><span class="cur">₹</span>1,499</div>
+    <div class="pro-note">ONE-TIME · NO SUBSCRIPTION · YOURS FOREVER</div>
+
+    <a href="https://tradingmindset2.gumroad.com/l/ttm-pro" class="pro-cta" target="_blank">
+      GET AI PRO — ₹1,499 →
+    </a>
+    <div class="alt-pay">Also on Instamojo → <a href="https://imjo.in/tY8rTC" target="_blank">imjo.in/tY8rTC</a></div>
+  </div>
+
+</div>
+
+<!-- SEBI -->
+<div class="sebi"><div class="sebi-in">
+  <div class="sebi-lab">⚠ SEBI</div>
+  <div class="sebi-tx">SEBI DISCLAIMER: All tools on this page are for personal self-improvement and educational purposes only. Not investment advice. Not a trading signal service. Not SEBI-registered advisory. Trading involves substantial risk of financial loss. Consult a SEBI-registered adviser before making financial decisions. sebi.gov.in | © thetradingmindset26 2026. All rights reserved. Unauthorised redistribution prohibited.</div>
+</div></div>
+
+<footer>
+  <p>© thetradingmindset26 2026 · AI Trading Journal Coach · All Rights Reserved</p>
+  <p>Educational only · Not investment advice · Unauthorised redistribution prohibited</p>
+</footer>
+
+</body>
+</html>

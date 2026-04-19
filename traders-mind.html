@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Inside a Trader's Mind — thetradingmindset26</title>
+<style>
+:root{
+  --g:#00FF41;--gd:#00C853;--a:#FFB300;--o:#FF5000;--r:#FF3B3B;
+  --bg:#030712;--bg2:#080F1A;--bg3:#0D1520;--card:#0A1020;
+  --br:rgba(0,255,65,0.12);--br2:rgba(0,255,65,0.06);
+  --tx:#E8F4FF;--mu:#6B7280;--white:#FFFFFF;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--tx);font-family:'Courier New',monospace;min-height:100vh;overflow-x:hidden;padding-bottom:60px}
+body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.025) 2px,rgba(0,0,0,0.025) 4px);pointer-events:none;z-index:900}
+
+/* HEADER */
+.hdr{background:var(--bg2);border-bottom:1px solid var(--br);padding:16px 20px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+.hdr-brand{font-size:18px;font-weight:700;color:var(--g);letter-spacing:3px}
+.hdr-sub{font-size:9px;color:var(--mu);letter-spacing:2px;margin-top:2px}
+.hdr-right{text-align:right}
+.hdr-date{font-size:11px;color:var(--g);letter-spacing:1px}
+.hdr-streak{font-size:9px;color:var(--a);margin-top:2px}
+
+/* DATE NAV */
+.date-nav{display:flex;align-items:center;justify-content:center;gap:0;background:var(--bg3);border-bottom:1px solid var(--br);padding:12px 20px}
+.nav-btn{background:none;border:1px solid var(--br);color:var(--mu);font-family:'Courier New',monospace;font-size:14px;padding:6px 16px;cursor:pointer;transition:all .2s}
+.nav-btn:hover{border-color:var(--g);color:var(--g)}
+.date-display{background:var(--bg2);border:1px solid var(--br);color:var(--tx);font-family:'Courier New',monospace;font-size:13px;padding:7px 24px;letter-spacing:1px;text-align:center;min-width:160px}
+.today-btn{background:none;border:1px solid var(--br);color:var(--mu);font-family:'Courier New',monospace;font-size:10px;padding:6px 12px;cursor:pointer;transition:all .2s;margin-left:8px;letter-spacing:1px}
+.today-btn:hover{border-color:var(--a);color:var(--a)}
+
+/* MAIN */
+.main{max-width:680px;margin:0 auto;padding:24px 16px}
+
+/* SECTION HEADERS */
+.sec-hdr{display:flex;align-items:center;gap:10px;margin:28px 0 14px}
+.sec-hdr-line{flex:1;height:1px;background:var(--br)}
+.sec-hdr-label{font-size:10px;color:var(--g);letter-spacing:3px;white-space:nowrap;font-weight:700}
+.sec-hdr-label.pre{color:var(--a)}
+.sec-hdr-label.post{color:var(--gd)}
+
+/* CARDS */
+.card{background:var(--bg2);border:1px solid var(--br);padding:20px;margin-bottom:12px}
+.card-title{font-size:10px;color:var(--mu);letter-spacing:2px;margin-bottom:14px;font-weight:700}
+
+/* SLIDERS */
+.slider-row{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+.slider-label{font-size:10px;color:var(--mu);width:90px;flex-shrink:0;letter-spacing:1px}
+.slider{flex:1;-webkit-appearance:none;appearance:none;height:3px;background:var(--bg3);outline:none;border-radius:0}
+.slider::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:14px;height:14px;background:var(--g);cursor:pointer;border-radius:0}
+.slider-val{font-size:11px;color:var(--g);width:24px;text-align:right;font-weight:700}
+.slider.amber::-webkit-slider-thumb{background:var(--a)}
+.slider.amber{accent-color:var(--a)}
+.slider-val.amber{color:var(--a)}
+
+/* CHIPS */
+.chip-group{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:4px}
+.chip{background:var(--bg3);border:1px solid rgba(107,114,128,.25);color:var(--mu);font-size:10px;padding:5px 10px;cursor:pointer;transition:all .2s;letter-spacing:.5px;user-select:none;font-family:'Courier New',monospace}
+.chip:hover{border-color:var(--g);color:var(--tx)}
+.chip.active-g{background:rgba(0,255,65,.1);border-color:var(--g);color:var(--g)}
+.chip.active-r{background:rgba(255,59,59,.1);border-color:var(--r);color:var(--r)}
+.chip.active-a{background:rgba(255,179,0,.1);border-color:var(--a);color:var(--a)}
+.chip.active-o{background:rgba(255,80,0,.1);border-color:var(--o);color:var(--o)}
+
+/* TEXTAREA */
+.ta{width:100%;background:var(--bg3);border:1px solid var(--br2);color:var(--tx);font-family:'Courier New',monospace;font-size:12px;padding:12px;resize:vertical;min-height:70px;outline:none;line-height:1.6;transition:border-color .2s}
+.ta:focus{border-color:rgba(0,255,65,.3)}
+.ta::placeholder{color:var(--mu);font-style:italic}
+.ta.amber:focus{border-color:rgba(255,179,0,.3)}
+
+/* SAVE BUTTON */
+.save-row{display:flex;justify-content:center;margin-top:20px}
+.save-btn{background:var(--g);color:#000;border:none;font-family:'Courier New',monospace;font-size:13px;font-weight:700;padding:14px 48px;cursor:pointer;letter-spacing:2px;transition:all .2s}
+.save-btn:hover{box-shadow:0 0 24px rgba(0,255,65,.4);transform:translateY(-1px)}
+.save-btn.saved{background:var(--gd)}
+
+/* PERFORMANCE OVERVIEW */
+.perf-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;margin-bottom:16px}
+.perf-cell{background:var(--bg3);border:1px solid var(--br2);padding:14px 10px;text-align:center}
+.perf-num{font-size:24px;font-weight:700;color:var(--g);line-height:1}
+.perf-num.amber{color:var(--a)}
+.perf-num.red{color:var(--r)}
+.perf-label{font-size:8px;color:var(--mu);letter-spacing:1.5px;margin-top:4px}
+
+/* BAR CHART */
+.chart-wrap{background:var(--bg3);border:1px solid var(--br2);padding:16px;margin-bottom:12px}
+.chart-title{font-size:9px;color:var(--mu);letter-spacing:2px;margin-bottom:12px}
+.bars{display:flex;align-items:flex-end;gap:4px;height:60px}
+.bar-col{display:flex;flex-direction:column;align-items:center;flex:1;height:100%;justify-content:flex-end}
+.bar-fill{width:100%;background:var(--g);min-height:2px;transition:height .5s;opacity:.8}
+.bar-fill.amber{background:var(--a)}
+.bar-fill.red{background:var(--r)}
+.bar-date{font-size:7px;color:var(--mu);margin-top:4px;letter-spacing:.5px}
+
+/* HISTORY */
+.hist-item{background:var(--bg3);border:1px solid var(--br2);border-left:3px solid var(--g);padding:14px 16px;margin-bottom:8px;cursor:pointer;transition:all .2s}
+.hist-item:hover{border-left-color:var(--a)}
+.hist-date{font-size:10px;color:var(--g);letter-spacing:1px;margin-bottom:4px}
+.hist-preview{font-size:11px;color:var(--mu);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hist-scores{display:flex;gap:12px;margin-top:6px}
+.hist-score{font-size:9px;color:var(--mu);letter-spacing:1px}
+.hist-score span{color:var(--g)}
+
+/* UPGRADE NUDGE */
+.upgrade-box{background:linear-gradient(135deg,#0A2E1A,#080F1A);border:1px solid rgba(0,255,65,.3);padding:24px;margin-top:20px;text-align:center;display:none}
+.upgrade-box.show{display:block}
+.upgrade-box h3{font-size:16px;color:var(--g);letter-spacing:2px;margin-bottom:8px}
+.upgrade-box p{font-size:12px;color:var(--mu);line-height:1.7;margin-bottom:16px}
+.upgrade-features{display:flex;flex-direction:column;gap:4px;margin-bottom:18px;text-align:left}
+.upgrade-feat{font-size:11px;color:var(--tx)}
+.upgrade-feat span{color:var(--g)}
+.upgrade-btn{display:inline-block;background:var(--g);color:#000;font-family:'Courier New',monospace;font-size:12px;font-weight:700;padding:12px 32px;text-decoration:none;letter-spacing:2px;transition:all .2s}
+.upgrade-btn:hover{box-shadow:0 0 20px rgba(0,255,65,.4)}
+.milestone-tag{font-size:10px;color:var(--a);letter-spacing:2px;margin-bottom:8px}
+
+/* TOAST */
+.toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--g);color:#000;font-family:'Courier New',monospace;font-size:12px;font-weight:700;padding:12px 28px;letter-spacing:2px;opacity:0;transition:all .3s;z-index:1000;pointer-events:none}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* FOOTER */
+.site-footer{text-align:center;padding:32px 20px 16px;border-top:1px solid var(--br2);margin-top:32px}
+.site-footer p{font-size:9px;color:var(--mu);letter-spacing:.5px;line-height:1.8}
+.site-footer .copy{color:rgba(107,114,128,.5);margin-top:4px}
+
+/* TABS */
+.tabs{display:flex;gap:0;background:var(--bg3);border-bottom:1px solid var(--br);position:sticky;top:57px;z-index:99}
+.tab{flex:1;background:none;border:none;border-bottom:2px solid transparent;color:var(--mu);font-family:'Courier New',monospace;font-size:10px;padding:11px 8px;cursor:pointer;letter-spacing:1.5px;transition:all .2s}
+.tab:hover{color:var(--tx)}
+.tab.active{border-bottom-color:var(--g);color:var(--g)}
+.tab-content{display:none}
+.tab-content.active{display:block}
+
+@media(max-width:500px){
+  .perf-grid{grid-template-columns:repeat(2,1fr)}
+  .hdr{flex-direction:column;gap:6px;text-align:center}
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="hdr">
+  <div>
+    <div class="hdr-brand">⬡ TTM</div>
+    <div class="hdr-sub">INSIDE A TRADER'S MIND</div>
+  </div>
+  <div class="hdr-right">
+    <div class="hdr-date" id="hdrDate"></div>
+    <div class="hdr-streak" id="hdrStreak"></div>
+  </div>
+</div>
+
+<!-- TABS -->
+<div class="tabs">
+  <button class="tab active" onclick="switchTab('journal')">JOURNAL</button>
+  <button class="tab" onclick="switchTab('overview')">OVERVIEW</button>
+  <button class="tab" onclick="switchTab('history')">HISTORY</button>
+</div>
+
+<!-- DATE NAV -->
+<div class="date-nav">
+  <button class="nav-btn" onclick="changeDate(-1)">←</button>
+  <div class="date-display" id="dateDisplay"></div>
+  <button class="nav-btn" onclick="changeDate(1)">→</button>
+  <button class="today-btn" onclick="goToday()">TODAY</button>
+</div>
+
+<!-- JOURNAL TAB -->
+<div class="tab-content active" id="tab-journal">
+<div class="main">
+
+  <!-- PRE-MARKET -->
+  <div class="sec-hdr">
+    <div class="sec-hdr-line"></div>
+    <div class="sec-hdr-label pre">PRE-MARKET · BEFORE YOU TRADE</div>
+    <div class="sec-hdr-line"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">MENTAL STATE CHECK</div>
+    <div class="slider-row">
+      <div class="slider-label">SLEEP</div>
+      <input type="range" class="slider amber" min="1" max="10" value="7" id="sleep" oninput="document.getElementById('sleepVal').textContent=this.value">
+      <div class="slider-val amber" id="sleepVal">7</div>
+    </div>
+    <div class="slider-row">
+      <div class="slider-label">CLARITY</div>
+      <input type="range" class="slider" min="1" max="10" value="7" id="clarity" oninput="document.getElementById('clarityVal').textContent=this.value">
+      <div class="slider-val" id="clarityVal">7</div>
+    </div>
+    <div class="slider-row">
+      <div class="slider-label">CONFIDENCE</div>
+      <input type="range" class="slider" min="1" max="10" value="7" id="confidence" oninput="document.getElementById('confidenceVal').textContent=this.value">
+      <div class="slider-val" id="confidenceVal">7</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">DOMINANT EMOTION · HOW AM I FEELING?</div>
+    <div class="chip-group" id="preEmoChips">
+      <div class="chip" onclick="toggleChip(this,'preEmo','active-g')">Calm</div>
+      <div class="chip" onclick="toggleChip(this,'preEmo','active-g')">Confident</div>
+      <div class="chip" onclick="toggleChip(this,'preEmo','active-g')">Disciplined</div>
+      <div class="chip" onclick="toggleChip(this,'preEmo','active-g')">Focused</div>
+      <div class="chip" onclick="toggleChip(this,'preEmo','active-a')">Neutral</div>
+      <div class="chip" onclick="toggleChip(this,'preEmo','active-o')">Anxious</div>
+      <div class="chip" onclick="toggleChip(this,'preEmo','active-o')">Fearful</div>
+      <div class="chip" onclick="toggleChip(this,'preEmo','active-r')">FOMO</div>
+      <div class="chip" onclick="toggleChip(this,'preEmo','active-r')">Revenge</div>
+      <div class="chip" onclick="toggleChip(this,'preEmo','active-r')">Greedy</div>
+      <div class="chip" onclick="toggleChip(this,'preEmo','active-r')">Overconfident</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">MARKET BIAS TODAY</div>
+    <div class="chip-group" id="biasChips">
+      <div class="chip" onclick="toggleChip(this,'bias','active-g')">Bullish</div>
+      <div class="chip" onclick="toggleChip(this,'bias','active-r')">Bearish</div>
+      <div class="chip" onclick="toggleChip(this,'bias','active-a')">Sideways</div>
+      <div class="chip" onclick="toggleChip(this,'bias','active-o')">No Bias — Wait</div>
+      <div class="chip" onclick="toggleChip(this,'bias','active-o')">Volatile — Sit Out</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">PRE-MARKET INTENTION</div>
+    <textarea class="ta amber" id="preIntention" placeholder="What is your plan for today? Setup to watch. Max trades. Daily loss limit. What will make today a good day regardless of P&L?"></textarea>
+  </div>
+
+  <!-- POST-MARKET -->
+  <div class="sec-hdr" style="margin-top:32px">
+    <div class="sec-hdr-line"></div>
+    <div class="sec-hdr-label post">POST-MARKET · AFTER THE SESSION</div>
+    <div class="sec-hdr-line"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">SESSION PERFORMANCE</div>
+    <div class="slider-row">
+      <div class="slider-label">DISCIPLINE</div>
+      <input type="range" class="slider" min="1" max="10" value="7" id="discipline" oninput="document.getElementById('disciplineVal').textContent=this.value">
+      <div class="slider-val" id="disciplineVal">7</div>
+    </div>
+    <div class="slider-row">
+      <div class="slider-label">RULE FOLLOW</div>
+      <input type="range" class="slider" min="1" max="10" value="7" id="ruleFollow" oninput="document.getElementById('ruleFollowVal').textContent=this.value">
+      <div class="slider-val" id="ruleFollowVal">7</div>
+    </div>
+    <div class="slider-row">
+      <div class="slider-label">PATIENCE</div>
+      <input type="range" class="slider" min="1" max="10" value="7" id="patience" oninput="document.getElementById('patienceVal').textContent=this.value">
+      <div class="slider-val" id="patienceVal">7</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">POST-TRADE EMOTION</div>
+    <div class="chip-group" id="postEmoChips">
+      <div class="chip" onclick="toggleChip(this,'postEmo','active-g')">Satisfied</div>
+      <div class="chip" onclick="toggleChip(this,'postEmo','active-g')">Calm</div>
+      <div class="chip" onclick="toggleChip(this,'postEmo','active-g')">Proud</div>
+      <div class="chip" onclick="toggleChip(this,'postEmo','active-a')">Neutral</div>
+      <div class="chip" onclick="toggleChip(this,'postEmo','active-o')">Frustrated</div>
+      <div class="chip" onclick="toggleChip(this,'postEmo','active-o')">Regretful</div>
+      <div class="chip" onclick="toggleChip(this,'postEmo','active-r')">Angry</div>
+      <div class="chip" onclick="toggleChip(this,'postEmo','active-r')">Devastated</div>
+      <div class="chip" onclick="toggleChip(this,'postEmo','active-r')">Revenge Mode</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">TODAY'S MISTAKE (if any)</div>
+    <div class="chip-group" id="mistakeChips">
+      <div class="chip" onclick="toggleChip(this,'mistake','active-a')">None — Clean Session</div>
+      <div class="chip" onclick="toggleChip(this,'mistake','active-r')">Moved Stop Loss</div>
+      <div class="chip" onclick="toggleChip(this,'mistake','active-r')">Revenge Trade</div>
+      <div class="chip" onclick="toggleChip(this,'mistake','active-r')">FOMO Entry</div>
+      <div class="chip" onclick="toggleChip(this,'mistake','active-r')">Early Exit</div>
+      <div class="chip" onclick="toggleChip(this,'mistake','active-r')">Overtraded</div>
+      <div class="chip" onclick="toggleChip(this,'mistake','active-r')">Sized Too Large</div>
+      <div class="chip" onclick="toggleChip(this,'mistake','active-r')">Broke Daily Loss Rule</div>
+      <div class="chip" onclick="toggleChip(this,'mistake','active-o')">Missed Setup</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">WHAT DID TODAY TEACH ME?</div>
+    <textarea class="ta" id="lesson" placeholder="What is the one insight from today's session? Even a break-even day has a lesson. Write it down — this is your real edge building."></textarea>
+  </div>
+
+  <div class="card">
+    <div class="card-title">TOMORROW'S INTENTION</div>
+    <textarea class="ta" id="tmrIntention" placeholder="Based on today — what will you do differently tomorrow? Be specific. One thing. Not five."></textarea>
+  </div>
+
+  <!-- SAVE -->
+  <div class="save-row">
+    <button class="save-btn" id="saveBtn" onclick="saveEntry()">SAVE TODAY'S ENTRY</button>
+  </div>
+
+  <!-- UPGRADE NUDGE -->
+  <div class="upgrade-box" id="upgradeBox">
+    <div class="milestone-tag" id="milestoneTag">7 DAYS LOGGED</div>
+    <h3 id="upgradeTitle">YOU'RE BUILDING YOUR EDGE.</h3>
+    <p id="upgradeMsg">You've logged 7 days of self-awareness data. The pattern is forming. Now imagine an AI that reads your TRADE DATA and tells you your Killer Mistake, Best Setup, and Action Plan — automatically.</p>
+    <div class="upgrade-features">
+      <div class="upgrade-feat"><span>→</span> AI Coach Report — 8 sections from YOUR trade data</div>
+      <div class="upgrade-feat"><span>→</span> Risk Management Tool — position sizing, SL, target, daily limit</div>
+      <div class="upgrade-feat"><span>→</span> Weekly Review — AI-generated every Friday</div>
+      <div class="upgrade-feat"><span>→</span> Setup Analysis — every setup ranked by Expected Value</div>
+      <div class="upgrade-feat"><span>→</span> Psychology Log — charts of your emotion + mistake patterns</div>
+    </div>
+    <a href="https://tradingmindset2.gumroad.com/l/ttm-pro" class="upgrade-btn" target="_blank">UPGRADE TO AI PRO — ₹1,499 →</a>
+  </div>
+
+</div>
+</div>
+
+<!-- OVERVIEW TAB -->
+<div class="tab-content" id="tab-overview">
+<div class="main">
+  <div class="sec-hdr"><div class="sec-hdr-line"></div><div class="sec-hdr-label">PERFORMANCE OVERVIEW</div><div class="sec-hdr-line"></div></div>
+  <div class="perf-grid">
+    <div class="perf-cell"><div class="perf-num" id="ovTotalDays">0</div><div class="perf-label">DAYS LOGGED</div></div>
+    <div class="perf-cell"><div class="perf-num amber" id="ovAvgDiscipline">—</div><div class="perf-label">AVG DISCIPLINE</div></div>
+    <div class="perf-cell"><div class="perf-cell"><div class="perf-num" id="ovAvgClarity">—</div><div class="perf-label">AVG CLARITY</div></div></div>
+    <div class="perf-cell"><div class="perf-num" id="ovStreak">0</div><div class="perf-label">CURRENT STREAK</div></div>
+  </div>
+
+  <div class="chart-wrap">
+    <div class="chart-title">// DISCIPLINE SCORE — LAST 14 DAYS</div>
+    <div class="bars" id="disciplineChart"></div>
+  </div>
+
+  <div class="chart-wrap">
+    <div class="chart-title">// SLEEP SCORE — LAST 14 DAYS</div>
+    <div class="bars" id="sleepChart"></div>
+  </div>
+
+  <div class="card" style="margin-top:16px">
+    <div class="card-title">TOP EMOTIONS THIS WEEK (PRE-MARKET)</div>
+    <div id="topEmotions" style="font-size:12px;color:var(--mu);line-height:1.9">Log more entries to see patterns.</div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">TOP MISTAKES THIS WEEK</div>
+    <div id="topMistakes" style="font-size:12px;color:var(--mu);line-height:1.9">Log more entries to see patterns.</div>
+  </div>
+</div>
+</div>
+
+<!-- HISTORY TAB -->
+<div class="tab-content" id="tab-history">
+<div class="main">
+  <div class="sec-hdr"><div class="sec-hdr-line"></div><div class="sec-hdr-label">ENTRY HISTORY</div><div class="sec-hdr-line"></div></div>
+  <div id="historyList"><p style="font-size:12px;color:var(--mu);text-align:center;padding:32px">No entries yet. Start journaling to see your history here.</p></div>
+</div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast">ENTRY SAVED ✓</div>
+
+<!-- FOOTER -->
+<footer class="site-footer">
+  <p>INSIDE A TRADER'S MIND · Personal Psychology Journal</p>
+  <p class="copy">© thetradingmindset26 2026 · All rights reserved · Unauthorised redistribution prohibited</p>
+  <p style="color:rgba(107,114,128,.4);font-size:8px;margin-top:4px">For educational purposes only. Not financial advice. Not SEBI-registered investment advice.</p>
+</footer>
+
+<script>
+// ── STATE ──────────────────────────────────────────────────────────
+let currentDate = dateToStr(new Date());
+let activeChips = { preEmo:[], bias:[], postEmo:[], mistake:[] };
+
+function dateToStr(d) {
+  const y = d.getFullYear();
+  const m = String(d.getMonth()+1).padStart(2,'0');
+  const dd = String(d.getDate()).padStart(2,'0');
+  return `${y}-${m}-${dd}`;
+}
+
+function todayStr() { return dateToStr(new Date()); }
+
+function formatDisplay(str) {
+  const [y,m,d] = str.split('-');
+  const months = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
+  return `${d} ${months[parseInt(m)-1]} ${y}`;
+}
+
+// ── NAVIGATION ────────────────────────────────────────────────────
+function changeDate(delta) {
+  const [y,m,d] = currentDate.split('-').map(Number);
+  const nd = new Date(y, m-1, d+delta);
+  currentDate = dateToStr(nd);
+  loadEntry(currentDate);
+  updateDateDisplay();
+}
+
+function goToday() {
+  currentDate = todayStr();
+  loadEntry(currentDate);
+  updateDateDisplay();
+}
+
+function updateDateDisplay() {
+  document.getElementById('dateDisplay').textContent = formatDisplay(currentDate);
+  const t = todayStr();
+  document.getElementById('hdrDate').textContent = formatDisplay(t);
+}
+
+// ── CHIPS ─────────────────────────────────────────────────────────
+function toggleChip(el, group, activeClass) {
+  const isActive = el.classList.contains(activeClass) || 
+    el.classList.contains('active-g') || el.classList.contains('active-r') ||
+    el.classList.contains('active-a') || el.classList.contains('active-o');
+  
+  if (isActive) {
+    el.classList.remove('active-g','active-r','active-a','active-o');
+    activeChips[group] = activeChips[group].filter(t => t !== el.textContent);
+  } else {
+    el.classList.add(activeClass);
+    if (!activeChips[group]) activeChips[group] = [];
+    if (!activeChips[group].includes(el.textContent)) {
+      activeChips[group].push(el.textContent);
+    }
+  }
+}
+
+function clearChips() {
+  ['preEmo','bias','postEmo','mistake'].forEach(g => {
+    activeChips[g] = [];
+    const container = document.getElementById(g+'Chips') || 
+      (g === 'preEmo' ? document.getElementById('preEmoChips') : null);
+  });
+  document.querySelectorAll('.chip').forEach(c => {
+    c.classList.remove('active-g','active-r','active-a','active-o');
+  });
+}
+
+function setChips(data) {
+  clearChips();
+  const groupMap = {
+    preEmo: 'preEmoChips', bias: 'biasChips',
+    postEmo: 'postEmoChips', mistake: 'mistakeChips'
+  };
+  Object.keys(data).forEach(group => {
+    if (!data[group]) return;
+    const container = document.getElementById(groupMap[group]);
+    if (!container) return;
+    const chips = container.querySelectorAll('.chip');
+    chips.forEach(chip => {
+      if (data[group].includes(chip.textContent)) {
+        const colorMap = {
+          'active-g': ['Calm','Confident','Disciplined','Focused','Satisfied','Proud'],
+          'active-r': ['FOMO','Revenge','Greedy','Overconfident','Angry','Devastated','Revenge Mode','Moved Stop Loss','Revenge Trade','FOMO Entry','Early Exit','Overtraded','Sized Too Large','Broke Daily Loss Rule'],
+          'active-a': ['Neutral','None — Clean Session'],
+          'active-o': ['Anxious','Fearful','Frustrated','Regretful','No Bias — Wait','Volatile — Sit Out','Missed Setup']
+        };
+        let cls = 'active-g';
+        Object.keys(colorMap).forEach(c => { if (colorMap[c].includes(chip.textContent)) cls = c; });
+        chip.classList.add(cls);
+        if (!activeChips[group]) activeChips[group] = [];
+        activeChips[group].push(chip.textContent);
+      }
+    });
+  });
+}
+
+// ── SAVE / LOAD ───────────────────────────────────────────────────
+function getFormData() {
+  return {
+    date: currentDate,
+    sleep: document.getElementById('sleep').value,
+    clarity: document.getElementById('clarity').value,
+    confidence: document.getElementById('confidence').value,
+    preEmo: [...activeChips.preEmo],
+    bias: [...(activeChips.bias||[])],
+    preIntention: document.getElementById('preIntention').value,
+    discipline: document.getElementById('discipline').value,
+    ruleFollow: document.getElementById('ruleFollow').value,
+    patience: document.getElementById('patience').value,
+    postEmo: [...(activeChips.postEmo||[])],
+    mistake: [...(activeChips.mistake||[])],
+    lesson: document.getElementById('lesson').value,
+    tmrIntention: document.getElementById('tmrIntention').value,
+    savedAt: new Date().toISOString()
+  };
+}
+
+function saveEntry() {
+  const data = getFormData();
+  const entries = getAll();
+  entries[currentDate] = data;
+  localStorage.setItem('ttm_mind_journal', JSON.stringify(entries));
+  
+  const btn = document.getElementById('saveBtn');
+  btn.textContent = 'SAVED ✓';
+  btn.classList.add('saved');
+  setTimeout(() => { btn.textContent = 'SAVE TODAY\'S ENTRY'; btn.classList.remove('saved'); }, 2000);
+  
+  showToast('ENTRY SAVED ✓');
+  updateStreak();
+  checkUpgradeNudge();
+  renderHistory();
+  renderOverview();
+}
+
+function loadEntry(dateStr) {
+  const entries = getAll();
+  const data = entries[dateStr];
+  activeChips = { preEmo:[], bias:[], postEmo:[], mistake:[] };
+  
+  if (data) {
+    document.getElementById('sleep').value = data.sleep || 7;
+    document.getElementById('sleepVal').textContent = data.sleep || 7;
+    document.getElementById('clarity').value = data.clarity || 7;
+    document.getElementById('clarityVal').textContent = data.clarity || 7;
+    document.getElementById('confidence').value = data.confidence || 7;
+    document.getElementById('confidenceVal').textContent = data.confidence || 7;
+    document.getElementById('discipline').value = data.discipline || 7;
+    document.getElementById('disciplineVal').textContent = data.discipline || 7;
+    document.getElementById('ruleFollow').value = data.ruleFollow || 7;
+    document.getElementById('ruleFollowVal').textContent = data.ruleFollow || 7;
+    document.getElementById('patience').value = data.patience || 7;
+    document.getElementById('patienceVal').textContent = data.patience || 7;
+    document.getElementById('preIntention').value = data.preIntention || '';
+    document.getElementById('lesson').value = data.lesson || '';
+    document.getElementById('tmrIntention').value = data.tmrIntention || '';
+    setChips({ preEmo: data.preEmo||[], bias: data.bias||[], postEmo: data.postEmo||[], mistake: data.mistake||[] });
+  } else {
+    // reset
+    ['sleep','clarity','confidence','discipline','ruleFollow','patience'].forEach(id => {
+      document.getElementById(id).value = 7;
+      document.getElementById(id+'Val') && (document.getElementById(id+'Val').textContent = 7);
+    });
+    document.getElementById('sleepVal').textContent = 7;
+    document.getElementById('clarityVal').textContent = 7;
+    document.getElementById('confidenceVal').textContent = 7;
+    document.getElementById('disciplineVal').textContent = 7;
+    document.getElementById('ruleFollowVal').textContent = 7;
+    document.getElementById('patienceVal').textContent = 7;
+    document.getElementById('preIntention').value = '';
+    document.getElementById('lesson').value = '';
+    document.getElementById('tmrIntention').value = '';
+    clearChips();
+  }
+}
+
+function getAll() {
+  try { return JSON.parse(localStorage.getItem('ttm_mind_journal') || '{}'); } 
+  catch(e) { return {}; }
+}
+
+// ── STREAK ────────────────────────────────────────────────────────
+function updateStreak() {
+  const entries = getAll();
+  const dates = Object.keys(entries).sort().reverse();
+  let streak = 0;
+  let check = dateToStr(new Date());
+  for (let i = 0; i < 365; i++) {
+    if (entries[check]) { streak++; }
+    else if (i === 0) { /* today not yet saved */ }
+    else break;
+    const [y,m,d] = check.split('-').map(Number);
+    const prev = new Date(y,m-1,d-1);
+    check = dateToStr(prev);
+  }
+  document.getElementById('hdrStreak').textContent = streak > 1 ? `${streak} DAY STREAK 🔥` : '';
+  return streak;
+}
+
+// ── UPGRADE NUDGE ─────────────────────────────────────────────────
+function checkUpgradeNudge() {
+  const entries = getAll();
+  const count = Object.keys(entries).length;
+  const box = document.getElementById('upgradeBox');
+  const tag = document.getElementById('milestoneTag');
+  const title = document.getElementById('upgradeTitle');
+  const msg = document.getElementById('upgradeMsg');
+  
+  if (count >= 30) {
+    box.classList.add('show');
+    tag.textContent = '30 DAYS LOGGED — SERIOUS TRADER';
+    title.textContent = 'TIME TO UNLOCK THE FULL SYSTEM.';
+    msg.textContent = `30 days of self-awareness data. You're serious about this. Now combine it with AI trade analysis that tells you your Killer Mistake, Best Setup EV, and Action Plan — automatically from your trade log.`;
+  } else if (count >= 14) {
+    box.classList.add('show');
+    tag.textContent = '14 DAYS LOGGED';
+    title.textContent = 'TWO WEEKS. THE PATTERN IS CLEAR.';
+    msg.textContent = 'Your emotional patterns are showing. Now imagine combining this with AI that reads your actual trade data and tells you exactly which habit is costing you money.';
+  } else if (count >= 7) {
+    box.classList.add('show');
+    tag.textContent = '7 DAYS LOGGED';
+    title.textContent = 'YOU\'RE BUILDING YOUR EDGE.';
+    msg.textContent = `7 days of self-awareness. You're already ahead of most traders. Now take it further — combine this tracker with an AI that reads your trade data and builds your full coaching report.`;
+  }
+}
+
+// ── OVERVIEW ──────────────────────────────────────────────────────
+function renderOverview() {
+  const entries = getAll();
+  const dates = Object.keys(entries).sort();
+  const count = dates.length;
+  document.getElementById('ovTotalDays').textContent = count;
+  document.getElementById('ovStreak').textContent = updateStreak();
+
+  if (count === 0) {
+    document.getElementById('ovAvgDiscipline').textContent = '—';
+    document.getElementById('ovAvgClarity').textContent = '—';
+    return;
+  }
+
+  const avgDisc = Math.round(dates.reduce((s,d) => s + (+entries[d].discipline||7), 0) / count * 10) / 10;
+  const avgClar = Math.round(dates.reduce((s,d) => s + (+entries[d].clarity||7), 0) / count * 10) / 10;
+  document.getElementById('ovAvgDiscipline').textContent = avgDisc;
+  document.getElementById('ovAvgClarity').textContent = avgClar;
+
+  // Charts — last 14 days
+  const last14 = dates.slice(-14);
+  renderBarChart('disciplineChart', last14, entries, 'discipline', 'g');
+  renderBarChart('sleepChart', last14, entries, 'sleep', 'amber');
+
+  // Top emotions this week
+  const weekDates = dates.filter(d => {
+    const [y,m,dd] = d.split('-').map(Number);
+    const date = new Date(y,m-1,dd);
+    const now = new Date();
+    return (now - date) / 86400000 <= 7;
+  });
+
+  const emoCount = {};
+  weekDates.forEach(d => {
+    (entries[d].preEmo||[]).forEach(e => { emoCount[e] = (emoCount[e]||0)+1; });
+  });
+  const topEmo = Object.entries(emoCount).sort((a,b)=>b[1]-a[1]).slice(0,5);
+  document.getElementById('topEmotions').innerHTML = topEmo.length
+    ? topEmo.map(([e,c]) => `<span style="color:var(--g)">→</span> ${e}: ${c}x<br>`).join('')
+    : 'Log more entries this week to see patterns.';
+
+  const misCount = {};
+  weekDates.forEach(d => {
+    (entries[d].mistake||[]).forEach(m => { if (m !== 'None — Clean Session') misCount[m] = (misCount[m]||0)+1; });
+  });
+  const topMis = Object.entries(misCount).sort((a,b)=>b[1]-a[1]).slice(0,5);
+  document.getElementById('topMistakes').innerHTML = topMis.length
+    ? topMis.map(([m,c]) => `<span style="color:var(--r)">→</span> ${m}: ${c}x<br>`).join('')
+    : 'No mistakes logged this week. Good discipline.';
+}
+
+function renderBarChart(id, dates, entries, field, colorClass) {
+  const container = document.getElementById(id);
+  container.innerHTML = '';
+  const max = 10;
+  dates.forEach(d => {
+    const val = +(entries[d][field]||7);
+    const pct = (val/max)*100;
+    const col = document.createElement('div');
+    col.className = 'bar-col';
+    const shortDate = d.split('-')[2];
+    col.innerHTML = `<div class="bar-fill ${colorClass}" style="height:${pct}%"></div><div class="bar-date">${shortDate}</div>`;
+    container.appendChild(col);
+  });
+}
+
+// ── HISTORY ───────────────────────────────────────────────────────
+function renderHistory() {
+  const entries = getAll();
+  const dates = Object.keys(entries).sort().reverse();
+  const list = document.getElementById('historyList');
+  if (!dates.length) {
+    list.innerHTML = '<p style="font-size:12px;color:var(--mu);text-align:center;padding:32px">No entries yet.</p>';
+    return;
+  }
+  list.innerHTML = dates.map(d => {
+    const e = entries[d];
+    const preview = e.lesson || e.preIntention || '(no notes)';
+    return `<div class="hist-item" onclick="jumpTo('${d}')">
+      <div class="hist-date">${formatDisplay(d)}</div>
+      <div class="hist-preview">${preview.slice(0,80)}${preview.length>80?'...':''}</div>
+      <div class="hist-scores">
+        <div class="hist-score">DISCIPLINE <span>${e.discipline}/10</span></div>
+        <div class="hist-score">SLEEP <span>${e.sleep}/10</span></div>
+        <div class="hist-score">CLARITY <span>${e.clarity}/10</span></div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function jumpTo(dateStr) {
+  currentDate = dateStr;
+  loadEntry(dateStr);
+  updateDateDisplay();
+  switchTab('journal');
+}
+
+// ── TABS ──────────────────────────────────────────────────────────
+function switchTab(name) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+  document.querySelector(`.tab[onclick="switchTab('${name}')"]`).classList.add('active');
+  document.getElementById('tab-'+name).classList.add('active');
+  if (name === 'overview') renderOverview();
+  if (name === 'history') renderHistory();
+}
+
+// ── TOAST ─────────────────────────────────────────────────────────
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2200);
+}
+
+// ── INIT ──────────────────────────────────────────────────────────
+function init() {
+  currentDate = todayStr();
+  updateDateDisplay();
+  loadEntry(currentDate);
+  updateStreak();
+  checkUpgradeNudge();
+}
+
+init();
+</script>
+</body>
+</html>

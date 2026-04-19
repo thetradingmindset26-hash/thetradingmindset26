@@ -1,462 +1,352 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<meta name="description" content="thetradingmindset26 — AI Trading Journal Coach. Basic ₹499 · Pro ₹1,999">
-<title>thetradingmindset26 | AI Trading Journal Coach</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@300;400;500;600;700&family=Bebas+Neue&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Trading Journal Coach — thetradingmindset26</title>
+<meta name="description" content="AI Trading Journal Coach Pro — 8-section AI report from your trade data + Risk Management Tool. Free basic bundle available. Bank Nifty, Nifty 50, Crypto.">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Mono:wght@400;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
-
-:root{
-  --bg:#000;--deep:#030805;--card:#0A140A;--edge:#0F1E0F;
-  --g1:#00FF41;--g2:#00C853;--g3:#007A2F;
-  --gdim:rgba(0,255,65,.08);--gdim2:rgba(0,255,65,.04);
-  --amber:#FFB300;--red:#FF4444;--blue:#4A90FF;--tele:#29B6F6;
-  --text:#B8D4B8;--muted:rgba(184,212,184,.42);
-  --line:rgba(0,255,65,.13);--line2:rgba(0,255,65,.05);
-  --mono:'Geist Mono',monospace;--head:'Bebas Neue',sans-serif;
-  --tg-track:#0A2E0A;--tg-knob:#00C853;
-}
-[data-theme="light"]{
-  --bg:#F2F7F2;--deep:#E4EEE4;--card:#fff;--edge:#EDF5ED;
-  --g1:#006B28;--g2:#007A2F;--g3:#004A1E;
-  --gdim:rgba(0,120,48,.08);--gdim2:rgba(0,120,48,.04);
-  --amber:#8A5400;--red:#CC1030;--blue:#2060CC;--tele:#0288A8;
-  --text:#0A2010;--muted:rgba(10,40,20,.5);
-  --line:rgba(0,120,48,.18);--line2:rgba(0,120,48,.07);
-  --tg-track:#C8E8C8;--tg-knob:#007A2F;
-}
-
-body{background:var(--bg);color:var(--text);font-family:var(--mono);min-height:100vh;overflow-x:hidden;transition:background .3s,color .3s}
-
-[data-theme="dark"] body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9999;
-  background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,255,65,.004) 3px,rgba(0,255,65,.004) 4px)}
-
-body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
-  background-image:linear-gradient(var(--line2) 1px,transparent 1px),linear-gradient(90deg,var(--line2) 1px,transparent 1px);
-  background-size:54px 54px}
-
-.glow{position:fixed;top:0;left:50%;transform:translateX(-50%);
-  width:500px;height:360px;pointer-events:none;z-index:0;
-  background:radial-gradient(ellipse,rgba(0,200,83,.06) 0%,transparent 65%)}
-
-/* WRAPPER */
-.wrap{position:relative;z-index:1;max-width:460px;margin:0 auto;padding:28px 18px 56px}
-
-/* TOGGLE */
-.top-bar{display:flex;justify-content:flex-end;margin-bottom:20px}
-.tg-btn{display:flex;align-items:center;gap:7px;cursor:pointer;user-select:none;
-  padding:6px 10px;background:var(--gdim2);border:1px solid var(--line);
-  transition:all .2s}
-.tg-btn:hover{background:var(--gdim)}
-.tg-emoji{font-size:13px;line-height:1}
-.tg-track{width:36px;height:20px;border-radius:10px;background:var(--tg-track);
-  border:1px solid var(--line);position:relative;transition:background .35s}
-.tg-knob{position:absolute;top:3px;left:3px;width:12px;height:12px;
-  border-radius:50%;background:var(--tg-knob);
-  box-shadow:0 1px 4px rgba(0,0,0,.4);
-  transition:transform .35s cubic-bezier(.4,0,.2,1),background .35s}
-[data-theme="light"] .tg-knob{transform:translateX(16px)}
-
-/* PROFILE */
-.profile{text-align:center;margin-bottom:28px}
-.av{width:76px;height:76px;border-radius:50%;background:var(--card);
-  border:2px solid var(--g2);margin:0 auto 12px;
-  display:flex;align-items:center;justify-content:center;
-  font-family:var(--head);font-size:28px;color:var(--g1);
-  box-shadow:0 0 20px rgba(0,200,83,.18)}
-.handle{font-family:var(--head);font-size:26px;color:var(--g1);
-  letter-spacing:.04em;text-shadow:0 0 16px rgba(0,255,65,.2);margin-bottom:3px}
-.handle span{color:var(--muted)}
-.tagline{font-size:10px;font-weight:300;color:var(--muted);
-  line-height:1.65;max-width:300px;margin:0 auto 12px}
-.badges{display:flex;gap:5px;justify-content:center;flex-wrap:wrap}
-.bdg{font-size:7px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
-  padding:3px 8px;border:1px solid var(--line);color:var(--g2);background:var(--gdim2)}
-.bdg.am{color:var(--amber);border-color:rgba(255,179,0,.2);background:rgba(255,179,0,.05)}
-
-/* SECTION LABEL */
-.slbl{font-size:8px;font-weight:700;letter-spacing:.26em;text-transform:uppercase;
-  color:var(--g3);display:flex;align-items:center;gap:10px;margin:24px 0 10px}
-.slbl::before{content:'';width:18px;height:1px;background:var(--g3)}
-.slbl::after{content:'';flex:1;height:1px;background:var(--line2)}
-
-/* PRODUCT CARD */
-.pcard{background:var(--card);border:1px solid var(--line);margin-bottom:10px;overflow:hidden;
-  transition:border-color .2s}
-.pcard:hover{border-color:var(--g2)}
-.ph{display:flex;align-items:center;gap:12px;padding:14px 16px 12px;
-  border-bottom:1px solid var(--line2)}
-.ptag{font-size:7px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;
-  padding:3px 8px;flex-shrink:0}
-.ptag.pro{color:var(--g1);background:var(--gdim);border:1px solid var(--line)}
-.ptag.basic{color:var(--amber);background:rgba(255,179,0,.08);border:1px solid rgba(255,179,0,.2)}
-.pname{font-size:12px;font-weight:700;color:var(--text);flex:1;line-height:1.3}
-.pprice{font-family:var(--head);font-size:22px;letter-spacing:.04em;flex-shrink:0}
-.pprice.g{color:var(--g1)}.pprice.am{color:var(--amber)}
-
-.pb{padding:12px 16px 14px}
-.pfeats{margin-bottom:12px}
-.pfeat{font-size:9px;color:var(--muted);display:flex;align-items:flex-start;gap:7px;margin-bottom:5px;line-height:1.4}
-.pfeat::before{content:'→';color:var(--g3);font-size:8px;flex-shrink:0;margin-top:1px}
-
-.pbtns{display:flex;gap:7px;margin-bottom:8px}
-.pbtn{flex:1;padding:11px 6px;font-family:var(--mono);font-size:9px;font-weight:700;
-  letter-spacing:.1em;text-transform:uppercase;text-decoration:none;
-  text-align:center;display:block;transition:all .2s;cursor:pointer;border:none}
-.pbtn.g{background:var(--g2);color:#000;
-  clip-path:polygon(0 0,calc(100% - 5px) 0,100% 5px,100% 100%,5px 100%,0 calc(100% - 5px))}
-.pbtn.g:hover{background:var(--g1)}
-.pbtn.u{background:transparent;color:var(--g2);border:1px solid var(--g3)}
-.pbtn.u:hover{background:var(--gdim);border-color:var(--g2)}
-.pbtn.ag{background:var(--amber);color:#000}
-.pbtn.ag:hover{background:#FFC300}
-.pbtn.au{background:transparent;color:var(--amber);border:1px solid rgba(255,179,0,.3)}
-.pbtn.au:hover{background:rgba(255,179,0,.08);border-color:var(--amber)}
-
-/* DETAIL BUTTON */
-.detail-btn{
-  width:100%;padding:8px;font-family:var(--mono);font-size:8px;font-weight:600;
-  letter-spacing:.14em;text-transform:uppercase;
-  background:var(--gdim2);border:1px solid var(--line2);
-  color:var(--muted);cursor:pointer;transition:all .2s;
-  display:flex;align-items:center;justify-content:center;gap:8px;
-}
-.detail-btn:hover{background:var(--gdim);color:var(--g2);border-color:var(--line)}
-
-/* LINK CARD */
-.lcard{display:flex;align-items:center;gap:12px;padding:14px 16px;
-  background:var(--card);border:1px solid var(--line);margin-bottom:8px;
-  text-decoration:none;transition:all .2s;position:relative;overflow:hidden;cursor:pointer}
-.lcard::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;
-  background:var(--g2);transition:width .2s}
-.lcard:hover{background:var(--edge);transform:translateX(3px)}
-.lcard:hover::before{width:5px}
-.lcard:active{transform:scale(.98)}
-.lc-ic{width:36px;height:36px;border-radius:3px;display:flex;align-items:center;
-  justify-content:center;font-size:15px;flex-shrink:0;
-  background:var(--gdim2);border:1px solid var(--line)}
-.lc-bd{flex:1;min-width:0}
-.lc-t{font-size:11px;font-weight:700;color:var(--g1);margin-bottom:2px;letter-spacing:.02em}
-.lc-s{font-size:9px;font-weight:300;color:var(--muted);letter-spacing:.04em}
-.lc-ar{font-size:13px;color:var(--g3);flex-shrink:0;transition:transform .2s}
-.lcard:hover .lc-ar{transform:translateX(3px);color:var(--g2)}
-
-/* MODAL OVERLAY */
-.modal-overlay{
-  display:none;position:fixed;inset:0;z-index:1000;
-  background:rgba(0,0,0,.88);backdrop-filter:blur(8px);
-  align-items:flex-end;justify-content:center;
-  padding:0;
-}
-.modal-overlay.open{display:flex}
-.modal-box{
-  background:var(--deep);border:1px solid var(--line);border-bottom:none;
-  width:100%;max-width:480px;max-height:88vh;overflow-y:auto;
-  padding:24px 20px 36px;
-  border-radius:12px 12px 0 0;
-  animation:slideUp .3s cubic-bezier(.4,0,.2,1);
-  position:relative;
-}
-@keyframes slideUp{from{transform:translateY(100%);opacity:0}to{transform:translateY(0);opacity:1}}
-.modal-close{
-  position:absolute;top:14px;right:14px;
-  width:28px;height:28px;border-radius:50%;
-  background:var(--gdim);border:1px solid var(--line);
-  display:flex;align-items:center;justify-content:center;
-  cursor:pointer;font-size:14px;color:var(--muted);
-  transition:all .2s;
-}
-.modal-close:hover{background:var(--gdim);color:var(--g1);border-color:var(--g2)}
-.modal-tag{font-size:8px;font-weight:800;letter-spacing:.2em;text-transform:uppercase;
-  padding:3px 9px;display:inline-block;margin-bottom:10px}
-.modal-tag.pro{color:var(--g1);background:var(--gdim);border:1px solid var(--line)}
-.modal-tag.basic{color:var(--amber);background:rgba(255,179,0,.08);border:1px solid rgba(255,179,0,.2)}
-.modal-title{font-family:var(--head);font-size:28px;color:var(--g1);
-  letter-spacing:.04em;margin-bottom:4px;line-height:1}
-.modal-title.am{color:var(--amber)}
-.modal-price{font-family:var(--head);font-size:42px;letter-spacing:.04em;margin-bottom:14px}
-.modal-price.g{color:var(--g1)}.modal-price.am{color:var(--amber)}
-.modal-price span{font-family:var(--mono);font-size:13px;color:var(--muted);
-  text-decoration:line-through;margin-right:8px;vertical-align:middle}
-.modal-sec{font-size:8px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;
-  color:var(--g3);margin:16px 0 8px;display:flex;align-items:center;gap:8px}
-.modal-sec::after{content:'';flex:1;height:1px;background:var(--line2)}
-.modal-feat{display:flex;align-items:flex-start;gap:8px;margin-bottom:7px;
-  font-size:10px;color:var(--text);line-height:1.5}
-.modal-feat::before{content:'✓';color:var(--g2);font-weight:700;flex-shrink:0}
-.modal-stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;
-  background:var(--line);margin:12px 0}
-.mstat{padding:12px 10px;background:var(--card);text-align:center}
-.mstat-v{font-family:var(--head);font-size:26px;color:var(--g1);letter-spacing:.04em}
-.mstat-v.am{color:var(--amber)}
-.mstat-l{font-size:7px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
-.modal-btns{display:flex;flex-direction:column;gap:8px;margin-top:16px}
-.modal-btn{padding:14px;font-family:var(--mono);font-size:10px;font-weight:700;
-  letter-spacing:.12em;text-transform:uppercase;text-decoration:none;
-  text-align:center;display:block;transition:all .2s}
-.modal-btn.gum{background:var(--g2);color:#000;
-  clip-path:polygon(0 0,calc(100% - 7px) 0,100% 7px,100% 100%,7px 100%,0 calc(100% - 7px))}
-.modal-btn.gum:hover{background:var(--g1)}
-.modal-btn.upi{background:transparent;color:var(--g2);border:1px solid var(--g3)}
-.modal-btn.upi:hover{background:var(--gdim);border-color:var(--g2)}
-.modal-btn.agum{background:var(--amber);color:#000}
-.modal-btn.agum:hover{background:#FFC300}
-.modal-btn.aupi{background:transparent;color:var(--amber);border:1px solid rgba(255,179,0,.3)}
-.modal-btn.aupi:hover{background:rgba(255,179,0,.08)}
-.modal-note{font-size:8px;color:var(--muted);line-height:1.6;margin-top:10px;
-  padding:10px 12px;background:var(--gdim2);border-left:2px solid var(--g3)}
-
+:root{--g:#00FF41;--gd:#00C853;--a:#FFB300;--o:#FF5000;--r:#FF3B3B;--bg:#030712;--bg2:#080F1A;--bg3:#0D1520;--br:rgba(0,255,65,0.12);--tx:#E8F4FF;--mu:#6B7280}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--tx);font-family:'Inter',sans-serif;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.03) 2px,rgba(0,0,0,0.03) 4px);pointer-events:none;z-index:999}
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;justify-content:space-between;align-items:center;padding:14px 40px;background:rgba(3,7,18,.93);backdrop-filter:blur(14px);border-bottom:1px solid var(--br)}
+.nb{font-family:'Bebas Neue',sans-serif;font-size:22px;color:var(--g);letter-spacing:2px;text-decoration:none}
+.nl{display:flex;gap:22px;list-style:none;align-items:center}
+.nl a{color:var(--mu);text-decoration:none;font-size:11px;letter-spacing:1.5px;font-family:'Space Mono',monospace;transition:color .2s}
+.nl a:hover{color:var(--g)}
+.nc{background:var(--g)!important;color:#000!important;padding:8px 18px!important;font-weight:700!important}
+.hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:110px 24px 80px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(0,255,65,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(0,255,65,.04) 1px,transparent 1px);background-size:60px 60px;mask-image:radial-gradient(ellipse 80% 80% at 50% 50%,black 20%,transparent 100%)}
+.hero::after{content:'';position:absolute;top:10%;left:50%;transform:translateX(-50%);width:700px;height:700px;background:radial-gradient(circle,rgba(0,255,65,.05) 0%,transparent 65%);pointer-events:none}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;background:rgba(0,255,65,.06);border:1px solid rgba(0,255,65,.2);color:var(--g);font-family:'Space Mono',monospace;font-size:10px;padding:7px 18px;letter-spacing:2px;margin-bottom:32px;position:relative;z-index:1}
+.hs{font-family:'Bebas Neue',sans-serif;font-size:clamp(46px,9vw,112px);line-height:.87;color:#fff;position:relative;z-index:1;letter-spacing:-2px}
+.hs .ac{color:var(--g);text-shadow:0 0 40px rgba(0,255,65,.5)}
+.hdiv{font-family:'Space Mono',monospace;font-size:11px;color:var(--mu);letter-spacing:4px;margin:14px 0 26px;position:relative;z-index:1}
+.hh{font-size:clamp(15px,2.2vw,22px);font-weight:300;color:var(--tx);max-width:620px;line-height:1.55;position:relative;z-index:1;margin-bottom:10px}
+.hh strong{color:#fff;font-weight:600}
+.hsub{font-size:14px;color:var(--mu);max-width:480px;line-height:1.75;position:relative;z-index:1;margin-bottom:44px}
+.ctas{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;position:relative;z-index:1;margin-bottom:56px}
+.bp{display:inline-flex;align-items:center;gap:8px;background:var(--g);color:#000;font-family:'Space Mono',monospace;font-size:12px;font-weight:700;padding:15px 32px;text-decoration:none;letter-spacing:1px;transition:all .2s}
+.bp:hover{box-shadow:0 0 28px rgba(0,255,65,.5);transform:translateY(-1px)}
+.ba_{display:inline-flex;align-items:center;gap:8px;background:var(--a);color:#000;font-family:'Space Mono',monospace;font-size:12px;font-weight:700;padding:15px 32px;text-decoration:none;letter-spacing:1px;transition:all .2s}
+.ba_:hover{box-shadow:0 0 28px rgba(255,179,0,.4);transform:translateY(-1px)}
+.bs{display:inline-flex;align-items:center;gap:8px;background:transparent;color:var(--tx);font-family:'Space Mono',monospace;font-size:12px;padding:15px 32px;text-decoration:none;letter-spacing:1px;border:1px solid var(--br);transition:all .2s}
+.bs:hover{border-color:var(--mu);color:var(--tx)}
+.ticker{width:100%;background:var(--bg2);border-top:1px solid var(--br);border-bottom:1px solid var(--br);overflow:hidden;padding:10px 0}
+.ti{display:flex;gap:52px;animation:tk 30s linear infinite;white-space:nowrap}
+@keyframes tk{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.t{font-family:'Space Mono',monospace;font-size:10px;color:var(--mu);letter-spacing:1.5px;flex-shrink:0}
+.t .g{color:var(--g);margin-left:8px}.t .r{color:var(--r);margin-left:8px}.t .a{color:var(--a);margin-left:8px}
+.sec{padding:80px 40px;max-width:1100px;margin:0 auto}
+.sec-dk{max-width:100%;background:var(--bg2);border-top:1px solid var(--br);border-bottom:1px solid var(--br);padding:80px 40px}
+.sec-dk .inn{max-width:1100px;margin:0 auto}
+.stag{font-family:'Space Mono',monospace;font-size:10px;color:var(--o);letter-spacing:3px;margin-bottom:16px}
+.stag.g{color:var(--g)}.stag.a{color:var(--a)}
+.stit{font-family:'Bebas Neue',sans-serif;font-size:clamp(34px,4.8vw,66px);line-height:.93;color:#fff;margin-bottom:12px}
+.stit .ac{color:var(--g)}.stit .aa{color:var(--a)}
+.sbod{font-size:14px;color:var(--mu);max-width:520px;line-height:1.75;margin-bottom:36px}
+/* FREE GRID */
+.fg3{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-bottom:28px}
+.fcard{background:var(--bg);border:1px solid var(--br);padding:26px 22px;transition:all .25s;position:relative}
+.fcard::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--a);transform:scaleX(0);transform-origin:left;transition:transform .35s}
+.fcard:hover{border-color:rgba(255,179,0,.25);transform:translateY(-2px)}
+.fcard:hover::before{transform:scaleX(1)}
+.fci{font-size:24px;margin-bottom:10px;display:block}
+.fcn{font-family:'Bebas Neue',sans-serif;font-size:19px;color:#fff;letter-spacing:1px;margin-bottom:7px}
+.fcd{font-size:12px;color:var(--mu);line-height:1.7}
+.fct{font-family:'Space Mono',monospace;font-size:9px;color:var(--a);letter-spacing:2px;margin-top:10px;display:block;opacity:.8}
+.free-box{background:var(--bg2);border:1px solid rgba(255,179,0,.3);padding:26px 30px;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.free-box h3{font-family:'Bebas Neue',sans-serif;font-size:22px;color:#fff;letter-spacing:1px;margin-bottom:4px}
+.free-box p{font-size:12px;color:var(--mu);line-height:1.6}
+.free-box p span{color:var(--a)}
+/* RISK TOOL */
+.risk-hl{background:linear-gradient(135deg,#0A1A0A,#080F1A);border:1px solid rgba(0,255,65,.3);padding:26px 30px;margin-bottom:2px;display:grid;grid-template-columns:auto 1fr;gap:22px;align-items:center}
+.risk-badge{background:var(--g);color:#000;font-family:'Space Mono',monospace;font-size:9px;font-weight:700;padding:5px 12px;letter-spacing:2px;white-space:nowrap;height:fit-content;text-align:center;line-height:1.5}
+.risk-h3{font-family:'Bebas Neue',sans-serif;font-size:20px;color:var(--g);letter-spacing:1px;margin-bottom:5px}
+.risk-p{font-size:12px;color:var(--mu);line-height:1.65}
+.risk-chips{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+.rc_{font-family:'Space Mono',monospace;font-size:9px;color:var(--g);border:1px solid rgba(0,255,65,.2);padding:3px 9px;letter-spacing:1px}
+/* PRO GRID */
+.pg6{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-top:0}
+.pcard_{background:var(--bg);border:1px solid var(--br);padding:26px 22px;transition:all .25s;position:relative;overflow:hidden}
+.pcard_::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--g);transform:scaleX(0);transform-origin:left;transition:transform .35s}
+.pcard_:hover{border-color:rgba(0,255,65,.2);transform:translateY(-2px)}
+.pcard_:hover::before{transform:scaleX(1)}
+.pci{font-size:22px;margin-bottom:10px;display:block}
+.pcn{font-family:'Bebas Neue',sans-serif;font-size:19px;color:#fff;letter-spacing:1px;margin-bottom:7px}
+.pcd{font-size:12px;color:var(--mu);line-height:1.7}
+.pct{font-family:'Space Mono',monospace;font-size:9px;color:var(--g);letter-spacing:2px;margin-top:10px;display:block;opacity:.7}
+/* REPORT */
+.rw{background:var(--bg2);border:1px solid var(--br);max-width:740px;margin:36px auto 0;overflow:hidden}
+.rh{background:var(--bg3);border-bottom:1px solid var(--br);padding:10px 16px;display:flex;align-items:center;gap:10px}
+.rd{display:flex;gap:5px}.rd span{width:8px;height:8px;border-radius:50%}
+.dr{background:#FF5F57}.dy{background:#FEBC2E}.dg{background:#28C840}
+.rt_t{font-family:'Space Mono',monospace;font-size:9px;color:var(--mu);letter-spacing:1px;margin-left:6px}
+.rb{padding:20px}
+.rr{border-bottom:1px solid rgba(0,255,65,.05);padding:13px 0;display:grid;grid-template-columns:165px 1fr;gap:14px}
+.rr:last-child{border-bottom:none}
+.rl{font-family:'Space Mono',monospace;font-size:9px;color:var(--mu);letter-spacing:2px;text-transform:uppercase;line-height:1.6;padding-top:2px}
+.rbg{display:inline-block;background:var(--g);color:#000;font-size:8px;font-weight:700;padding:2px 7px;margin-top:4px;letter-spacing:1px;font-family:'Space Mono',monospace}
+.rbr{display:inline-block;background:var(--r);color:#fff;font-size:8px;font-weight:700;padding:2px 7px;margin-top:4px;letter-spacing:1px;font-family:'Space Mono',monospace}
+.rc_c{font-size:11px;color:var(--tx);line-height:1.85;font-family:'Space Mono',monospace}
+.rc_c .g{color:var(--g);font-weight:700}.rc_c .r{color:var(--r)}.rc_c .a{color:var(--a)}
+/* FLOW */
+.flow{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;margin-top:36px}
+.fstep{background:var(--bg2);border:1px solid var(--br);padding:22px 18px;text-align:center;position:relative}
+.fstep::after{content:'→';position:absolute;right:-13px;top:50%;transform:translateY(-50%);font-family:'Space Mono',monospace;font-size:14px;color:var(--g);z-index:2}
+.fstep:last-child::after{display:none}
+.fn_{font-family:'Bebas Neue',sans-serif;font-size:38px;color:rgba(0,255,65,.15);line-height:1;margin-bottom:7px}
+.ftit{font-family:'Space Mono',monospace;font-size:9px;color:var(--g);letter-spacing:1.5px;margin-bottom:6px}
+.fdesc{font-size:12px;color:var(--mu);line-height:1.6}
+/* PROOF */
+.prg{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-top:36px}
+.prc{background:var(--bg2);border:1px solid var(--br);padding:24px;position:relative}
+.prc::before{content:'"';font-family:'Bebas Neue',sans-serif;font-size:70px;color:var(--g);opacity:.1;position:absolute;top:2px;left:14px;line-height:1}
+.prt{font-family:'Space Mono',monospace;font-size:10px;color:var(--g);letter-spacing:1px;margin-bottom:9px}
+.prtx{font-size:13px;color:var(--tx);line-height:1.7;margin-bottom:13px;font-style:italic}
+.prr{font-family:'Bebas Neue',sans-serif;font-size:22px;color:var(--g);letter-spacing:1px}
+.prs{font-size:11px;color:var(--mu);margin-top:2px}
+/* PRICING */
+.pw{display:grid;grid-template-columns:1fr 1fr;gap:2px;margin-top:40px}
+.pf-card{background:var(--bg);border:1px solid rgba(255,179,0,.28);padding:38px 32px;position:relative}
+.pf-card::before{content:'FREE FOREVER';position:absolute;top:-12px;left:28px;background:var(--a);color:#000;font-family:'Space Mono',monospace;font-size:9px;font-weight:700;padding:3px 12px;letter-spacing:2px}
+.pp-card{background:linear-gradient(135deg,#080F1A,#0A1A0A);border:1px solid var(--g);padding:38px 32px;position:relative;box-shadow:0 0 36px rgba(0,255,65,.06)}
+.pp-card::before{content:'AI PRO EDITION';position:absolute;top:-12px;left:28px;background:var(--g);color:#000;font-family:'Space Mono',monospace;font-size:9px;font-weight:700;padding:3px 12px;letter-spacing:2px}
+.plabel{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:2px;margin-bottom:10px}
+.plabel.al{color:var(--a)}.plabel.gl{color:var(--g)}
+.pbig{font-family:'Bebas Neue',sans-serif;font-size:68px;color:#fff;line-height:1;letter-spacing:-2px;margin-bottom:5px}
+.pbig .cur{color:var(--g);font-size:22px;vertical-align:super}
+.pbig.af{color:var(--a)}
+.pnote{font-family:'Space Mono',monospace;font-size:10px;color:var(--mu);letter-spacing:1.5px;margin-bottom:22px}
+.pmath{background:var(--bg3);border:1px solid var(--br);padding:12px 14px;margin-bottom:20px;font-family:'Space Mono',monospace;font-size:10px;color:var(--mu);line-height:1.9}
+.pmath .a{color:var(--a)}
+.pitems{margin-bottom:22px}
+.pitem{display:flex;align-items:flex-start;gap:10px;padding:8px 0;border-bottom:1px solid var(--br);font-size:13px;color:var(--tx)}
+.pitem:last-child{border-bottom:none}
+.pitem .ck{flex-shrink:0;margin-top:1px;font-family:'Space Mono',monospace}
+.ck.g{color:var(--g)}.ck.a{color:var(--a)}.ck.x{color:var(--mu)}
+.pitem.dim{opacity:.35}
+.bbuy{display:block;width:100%;font-family:'Space Mono',monospace;font-size:13px;font-weight:700;padding:18px;text-decoration:none;letter-spacing:1.5px;transition:all .2s;text-align:center;border:none;cursor:pointer}
+.bbuy.g{background:var(--g);color:#000}.bbuy.g:hover{box-shadow:0 0 34px rgba(0,255,65,.5);transform:translateY(-1px)}
+.bbuy.a{background:var(--a);color:#000}.bbuy.a:hover{box-shadow:0 0 34px rgba(255,179,0,.4);transform:translateY(-1px)}
+.altpay{margin-top:8px;font-family:'Space Mono',monospace;font-size:9px;color:var(--mu);text-align:center;letter-spacing:1px}
+.altpay a{color:var(--mu);text-decoration:underline}
 /* SEBI */
-.sebi{margin-top:24px;padding:12px 14px;
-  background:rgba(255,23,68,.04);border:1px solid rgba(255,23,68,.1)}
-.sebi p{font-size:8px;color:rgba(255,60,60,.55);line-height:1.65}
-/* FOOT */
-.foot{text-align:center;margin-top:20px;font-size:8px;color:var(--muted);
-  letter-spacing:.08em;line-height:1.8}
+.sebi{background:var(--bg3);border-top:1px solid var(--br);border-bottom:1px solid var(--br);padding:18px 40px}
+.sebi-in{max-width:1100px;margin:0 auto;display:flex;gap:14px;align-items:flex-start}
+.sebi-lab{font-family:'Space Mono',monospace;font-size:9px;color:var(--o);letter-spacing:2px;flex-shrink:0;padding-top:2px;font-weight:700}
+.sebi-tx{font-family:'Space Mono',monospace;font-size:9px;color:rgba(107,114,128,.65);line-height:1.85;letter-spacing:.3px}
+/* FINAL */
+.final{padding:100px 40px;text-align:center;position:relative;overflow:hidden}
+.final::before{content:'';position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:700px;height:350px;background:radial-gradient(ellipse,rgba(0,255,65,.04) 0%,transparent 70%);pointer-events:none}
+.ft{font-family:'Bebas Neue',sans-serif;font-size:clamp(40px,7.5vw,86px);line-height:.93;color:#fff;position:relative;z-index:1;margin-bottom:14px}
+.ft .g{color:var(--g);text-shadow:0 0 36px rgba(0,255,65,.4)}
+.fs{font-size:14px;color:var(--mu);max-width:380px;margin:0 auto 38px;line-height:1.75;position:relative;z-index:1}
+footer{border-top:1px solid var(--br);padding:22px 40px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+.fbr{font-family:'Bebas Neue',sans-serif;font-size:18px;color:var(--g);letter-spacing:2px}
+.fcopy{font-family:'Space Mono',monospace;font-size:9px;color:rgba(107,114,128,.45);line-height:1.8;max-width:560px;text-align:center}
+.fli{display:flex;gap:16px}
+.fli a{font-family:'Space Mono',monospace;font-size:10px;color:var(--mu);text-decoration:none;transition:color .2s}
+.fli a:hover{color:var(--g)}
+.fi{opacity:0;transform:translateY(18px);transition:opacity .55s ease,transform .55s ease}
+.fi.on{opacity:1;transform:translateY(0)}
+@media(max-width:768px){
+nav{padding:12px 18px}.nl li:not(:last-child){display:none}
+.fg3,.pg6,.prg,.pw,.flow{grid-template-columns:1fr}
+.rr{grid-template-columns:1fr;gap:5px}
+.risk-hl{grid-template-columns:1fr}
+.sec,.sec-dk{padding:56px 18px}
+.free-box{flex-direction:column}
+.fstep::after{display:none}
+footer{flex-direction:column;text-align:center}
+.ctas{flex-direction:column;align-items:center}
+.sebi{padding:16px 18px}}
 </style>
 </head>
 <body>
-<div class="glow"></div>
-<div class="wrap">
+<nav>
+  <a class="nb" href="#">TTM ⬡</a>
+  <ul class="nl">
+    <li><a href="#free">FREE TOOLS</a></li>
+    <li><a href="#pro">AI PRO</a></li>
+    <li><a href="#how">HOW IT WORKS</a></li>
+    <li><a href="#pricing">PRICING</a></li>
+    <li><a href="https://tradingmindset2.gumroad.com/l/ttm-pro" class="nc">GET PRO →</a></li>
+  </ul>
+</nav>
 
-  <!-- TOP BAR WITH TOGGLE -->
-  <div class="top-bar">
-    <div class="tg-btn" id="themeToggle">
-      <span class="tg-emoji" id="tg-moon">🌑</span>
-      <div class="tg-track"><div class="tg-knob" id="tgKnob"></div></div>
-      <span class="tg-emoji" id="tg-sun">☀️</span>
+<section class="hero">
+  <div class="eyebrow">⬡ THETRADINGMINDSET26 · AI TRADING JOURNAL COACH</div>
+  <div class="hs">YOU KNOW<br>WHAT TO DO.<br><span class="ac">YOU KEEP</span><br><span class="ac">DOING THE OPPOSITE.</span></div>
+  <div class="hdiv">BANK NIFTY · NIFTY 50 · CRYPTO · F&O</div>
+  <p class="hh">The problem is <strong>not your strategy.</strong><br>It's that you have <strong>no data on what's actually going wrong.</strong></p>
+  <p class="hsub">The AI Trading Journal Coach reads your actual trade data and tells you exactly which habit is bleeding your account — every session.</p>
+  <div class="ctas">
+    <a href="https://tradingmindset2.gumroad.com/l/ttm-pro" class="bp">GET AI PRO — ₹1,499 →</a>
+    <a href="YOUR_GOOGLE_DRIVE_FOLDER_LINK" class="ba_" target="_blank">FREE TOOLS ↓</a>
+    <a href="#how" class="bs">HOW IT WORKS ↓</a>
+  </div>
+</section>
+
+<div class="ticker" aria-hidden="true"><div class="ti">
+  <span class="t">BANK NIFTY<span class="g">MOST TRADED</span></span><span class="t">PROFIT FACTOR<span class="g">AUTO-CALC</span></span><span class="t">REVENGE TRADES<span class="r">TRACKED</span></span><span class="t">RISK TOOL<span class="g">BUILT IN PRO</span></span><span class="t">POSITION SIZING<span class="g">AUTO-CALC</span></span><span class="t">FOMO ENTRIES<span class="r">EXPOSED</span></span><span class="t">WEEKLY GRADE<span class="a">A/B/C/D/F</span></span><span class="t">DISCIPLINE %<span class="g">EVERY SESSION</span></span>
+  <span class="t">BANK NIFTY<span class="g">MOST TRADED</span></span><span class="t">PROFIT FACTOR<span class="g">AUTO-CALC</span></span><span class="t">REVENGE TRADES<span class="r">TRACKED</span></span><span class="t">RISK TOOL<span class="g">BUILT IN PRO</span></span><span class="t">POSITION SIZING<span class="g">AUTO-CALC</span></span><span class="t">FOMO ENTRIES<span class="r">EXPOSED</span></span><span class="t">WEEKLY GRADE<span class="a">A/B/C/D/F</span></span><span class="t">DISCIPLINE %<span class="g">EVERY SESSION</span></span>
+</div></div>
+
+<!-- FREE SECTION -->
+<section class="sec-dk fi" id="free"><div class="inn">
+  <div class="stag a">// FREE — ZERO COST. NO CARD. NO SIGNUP.</div>
+  <div class="stit">START HERE.<br><span class="aa">COMPLETELY FREE.</span></div>
+  <p class="sbod">Three tools + two guides to start understanding your trading data right now. One Google Drive link. Instant access.</p>
+  <div class="fg3">
+    <div class="fcard fi"><span class="fci">📋</span><div class="fcn">Basic Trading Journal</div><p class="fcd">Trade Log with live Dashboard. Win Rate, Profit Factor, Discipline %, Equity Curve — all calculate automatically from your trades. 2 minutes per trade to log.</p><span class="fct">GOOGLE SHEETS · BANK NIFTY · NIFTY 50 · CRYPTO</span></div>
+    <div class="fcard fi"><span class="fci">🧠</span><div class="fcn">Trader Mind Tracker</div><p class="fcd">Track your trading psychology session by session. Emotion patterns, mindset scores, pre-trade mental state check. Know your mental edge — or your mental leak — before the market opens.</p><span class="fct">PSYCHOLOGY · MINDSET · SESSION TRACKER</span></div>
+    <div class="fcard fi"><span class="fci">📚</span><div class="fcn">User Guide + Max Benefit</div><p class="fcd">Two guides. User Guide: every column explained, setup in 5 minutes, common questions answered. Max Benefit: daily routine, 30-day consistency system, the 3 numbers to check every morning.</p><span class="fct">7-PAGE USER GUIDE · 5-PAGE MAX BENEFIT GUIDE</span></div>
+  </div>
+  <div class="free-box fi">
+    <div>
+      <h3 style="font-family:'Bebas Neue',sans-serif;font-size:22px;color:#fff;letter-spacing:1px;margin-bottom:4px">Download Free Bundle — All 3 Tools + 2 Guides</h3>
+      <p style="font-size:12px;color:var(--mu);line-height:1.6">One link. Everything included. <span style="color:var(--a)">Basic Journal · Trader Mind Tracker · User Guide · Max Benefit Guide</span></p>
+    </div>
+    <a href="YOUR_GOOGLE_DRIVE_FOLDER_LINK" class="ba_" target="_blank" style="white-space:nowrap">FREE DOWNLOAD →</a>
+  </div>
+</div></section>
+
+<!-- PRO SECTION -->
+<section class="sec fi" id="pro">
+  <div class="stag g">// AI PRO EDITION — ₹1,499 ONE-TIME</div>
+  <div class="stit">EVERYTHING IN FREE.<br><span class="ac">PLUS THE AI COACH.</span></div>
+  <p class="sbod">The AI reads your actual trade data and tells you exactly what to fix. Every session. One button.</p>
+  <div class="risk-hl fi">
+    <div class="risk-badge">INCLUDED<br>WITH PRO</div>
+    <div>
+      <div class="risk-h3">⚡ Risk Management Tool</div>
+      <p class="risk-p">A dedicated risk calculator built into your Pro journal. Before every trade — enter your capital and risk percentage. Get your exact position size, lot size, stop loss level, target price, and daily loss limit. Calculated automatically. No more guessing your size.</p>
+      <div class="risk-chips"><div class="rc_">POSITION SIZING</div><div class="rc_">SL CALCULATOR</div><div class="rc_">TARGET CALC</div><div class="rc_">DAILY LOSS LIMIT</div><div class="rc_">LOT SIZE AUTO</div></div>
     </div>
   </div>
+  <div class="pg6">
+    <div class="pcard_ fi"><span class="pci">🤖</span><div class="pcn">AI Coach Report</div><p class="pcd">8 sections generated from your data. Performance Reality, Killer Mistake, Best Setup, Psychology, Market Condition, Action Plan, Grade. One button. Every session.</p><span class="pct">8 SECTIONS · ONE CLICK · YOUR DATA</span></div>
+    <div class="pcard_ fi"><span class="pci">📅</span><div class="pcn">Weekly Review</div><p class="pcd">Type week-end date. One click. AI fills 7 sections: what worked, what failed, setup focus, habit to eliminate, next week rules, grade.</p><span class="pct">7 SECTIONS · WEEKLY GRADE · AUTO</span></div>
+    <div class="pcard_ fi"><span class="pci">📈</span><div class="pcn">Setup Analysis</div><p class="pcd">Every setup ranked by Expected Value. Know which setup makes you money. Know which one to stop trading. Ranked from your actual trade history.</p><span class="pct">EV RANKING · 12 SETUPS · REAL EDGE</span></div>
+    <div class="pcard_ fi"><span class="pci">🧠</span><div class="pcn">Psychology Log</div><p class="pcd">3 charts. Emotion before + after every trade. Mistake frequency. Market condition win rates. The data your broker never shows you.</p><span class="pct">EMOTION DATA · MISTAKE MAP · CHARTS</span></div>
+    <div class="pcard_ fi"><span class="pci">🖼</span><div class="pcn">Chart Analysis</div><p class="pcd">Paste your chart screenshot. Run the AI PA prompt through any free AI. Paste result back. Price action notes stored permanently alongside every chart.</p><span class="pct">PA NOTES · FREE AI · STORED FOREVER</span></div>
+    <div class="pcard_ fi"><span class="pci">⚡</span><div class="pcn">Risk Management Tool</div><p class="pcd">Position sizing, stop loss, target, daily loss limit — calculated from your capital and risk % automatically. Know your numbers before you enter. Every trade.</p><span class="pct">POSITION SIZE · SL · TARGET · DAILY LIMIT</span></div>
+  </div>
+</section>
 
-  <!-- PROFILE -->
-  <div class="profile">
-    <div class="av">⬡</div>
-    <div class="handle"><span>@</span>thetradingmindset26</div>
-    <p class="tagline">AI Trading Journal Coach for Indian traders.<br>Track trades, emotions and setups automatically.<br>Free stock market learning on YouTube.</p>
-    <div class="badges">
-      <span class="bdg">Formula AI</span>
-      <span class="bdg">Zero Extra Cost</span>
-      <span class="bdg am">Excel + Google Sheets</span>
-      <span class="bdg">SEBI Compliant</span>
+<!-- REPORT PREVIEW -->
+<section class="sec-dk fi" style="text-align:center;"><div class="inn" style="text-align:center;">
+  <div class="stag g" style="text-align:center;">// WHAT THE AI COACH GENERATES</div>
+  <div class="stit" style="text-align:center;">YOUR DATA.<br><span class="ac">YOUR REPORT.</span></div>
+  <p class="sbod" style="margin:0 auto">Log 5 trades. Click one button. Generated from your actual numbers.</p>
+  <div class="rw fi">
+    <div class="rh"><div class="rd"><span class="dr"></span><span class="dy"></span><span class="dg"></span></div><div class="rt_t">AI COACH REPORT · GENERATED FROM YOUR TRADE DATA · thetradingmindset26</div></div>
+    <div class="rb">
+      <div class="rr"><div class="rl">SECTION 1<br>PERFORMANCE<br>REALITY</div><div class="rc_c"><span class="g">10 trades.</span> Win Rate <span class="g">80.0%</span> (above target). Profit Factor <span class="g">3.67</span> (strong edge). Expectancy <span class="g">+₹107/trade</span>. System profitable. <span class="a">Protect and scale carefully.</span></div></div>
+      <div class="rr"><div class="rl">SECTION 2<br>KILLER MISTAKE<br><span class="rbr">CRITICAL</span></div><div class="rc_c"><span class="r">Revenge Trades in 10.0% of trades.</span> Hard rule: 2 consecutive losses = trading day ends. Close platform immediately.</div></div>
+      <div class="rr"><div class="rl">SECTION 3<br>BEST SETUP</div><div class="rc_c">Best Setup: <span class="g">Opening Range</span> | Win Rate: 100% | Avg PnL: <span class="g">+₹300</span> | EV: +₹300. <span class="a">Trade this preferentially. Skip negative-EV setups.</span></div></div>
+      <div class="rr"><div class="rl">SECTION 7<br>ACTION PLAN</div><div class="rc_c"><span class="g">①</span> Maintain discipline above 80%.<br><span class="g">②</span> R:R 1.69 — push toward 2.0+ by holding longer.<br><span class="g">③</span> Opening Range only — highest EV (+₹300).<br><span class="r">④</span> HARD STOP: 2 losses — platform closes.</div></div>
+      <div class="rr"><div class="rl">SECTION 8<br>OVERALL GRADE<br><span class="rbg">GRADE: A</span></div><div class="rc_c"><span class="g">A — Excellent.</span> Strong WR, PF, discipline. <span class="a">Scale carefully. Protect this edge.</span></div></div>
     </div>
   </div>
+</div></section>
 
-  <!-- BUY SECTION -->
-  <div class="slbl">Buy Now</div>
+<!-- HOW IT WORKS -->
+<section class="sec fi" id="how">
+  <div class="stag g">// HOW IT WORKS</div>
+  <div class="stit">FOUR STEPS.<br><span class="ac">THAT'S IT.</span></div>
+  <div class="flow">
+    <div class="fstep fi"><div class="fn_">01</div><div class="ftit">GET YOUR COPY</div><p class="fdesc">Click the link. Google Sheet opens. File → Make a Copy. Saves to your Drive. No download needed. Works on phone too.</p></div>
+    <div class="fstep fi"><div class="fn_">02</div><div class="ftit">LOG YOUR TRADES</div><p class="fdesc">Go to TRADE_LOG. One row per trade. All dropdowns — no free typing needed. Takes 2 minutes per trade.</p></div>
+    <div class="fstep fi"><div class="fn_">03</div><div class="ftit">RUN AI COACH</div><p class="fdesc">After 5 trades: ⬡ AI COACH → Run Full Analysis. Wait 15 seconds. All 8 sections fill automatically.</p></div>
+    <div class="fstep fi"><div class="fn_">04</div><div class="ftit">ACT ON ONE THING</div><p class="fdesc">Read Killer Mistake + Action Plan. Do exactly one thing it says in your next session. Track the change.</p></div>
+  </div>
+</section>
 
-  <!-- PRO CARD -->
-  <div class="pcard">
-    <div class="ph">
-      <span class="ptag pro">PRO · 80% OFF</span>
-      <span class="pname">AI Trading Journal Coach</span>
-      <span class="pprice g">₹1,999</span>
-    </div>
-    <div class="pb">
-      <div class="pfeats">
-        <div class="pfeat">Formula AI auto-writes all 8 coaching sections</div>
-        <div class="pfeat">9 sheets · 1,297 formulas · 7 charts</div>
-        <div class="pfeat">Risk Management Tool included</div>
-        <div class="pfeat">Zero extra cost · No API keys ever</div>
+<!-- PROOF -->
+<section class="sec-dk fi"><div class="inn">
+  <div class="stag g">// REAL TRADER DISCOVERIES</div>
+  <div class="stit">NOT TESTIMONIALS.<br><span class="ac">DATA DISCOVERIES.</span></div>
+  <p class="sbod">What traders found when they finally looked at their own numbers.</p>
+  <div class="prg">
+    <div class="prc fi"><div class="prt">▶ WIN RATE TRAP</div><p class="prtx">"58% win rate. Losing ₹8,000 a month. Dashboard showed avg win ₹800, avg loss ₹2,100. Profit Factor 0.74. Winning more trades, losing more money."</p><div class="prr">PF 0.74 → 1.6</div><div class="prs">6 weeks. One fix: stopped moving stop losses.</div></div>
+    <div class="prc fi"><div class="prt">▶ EMOTION LOOP</div><p class="prtx">"Psychology section showed FOMO entries = 30% of my trades. After those trades I felt Regretful 70% of the time. Added a 10-minute rule before any entry."</p><div class="prr">50% → 82%</div><div class="prs">Discipline score in 3 weeks.</div></div>
+    <div class="prc fi"><div class="prt">▶ SETUP TRUTH</div><p class="prtx">"I thought Reversal was my best setup. EV was -₹140 per trade. Opening Range EV was +₹290 per trade. Stopped trading Reversals the same week."</p><div class="prr">-₹140 → +₹290</div><div class="prs">EV per trade. Same capital. Same market.</div></div>
+  </div>
+</div></section>
+
+<!-- PRICING -->
+<section class="sec fi" id="pricing">
+  <div class="stag g">// CHOOSE YOUR PLAN</div>
+  <div class="stit">START FREE.<br><span class="ac">UPGRADE WHEN READY.</span></div>
+  <div class="pw">
+    <div class="pf-card fi">
+      <div class="plabel al">FREE BUNDLE</div>
+      <div class="pbig af">₹0</div>
+      <div class="pnote">NO PAYMENT · NO ACCOUNT · INSTANT</div>
+      <div class="pitems">
+        <div class="pitem"><span class="ck a">✓</span>Basic Trading Journal (Google Sheets)</div>
+        <div class="pitem"><span class="ck a">✓</span>Trader Mind Tracker</div>
+        <div class="pitem"><span class="ck a">✓</span>User Guide PDF</div>
+        <div class="pitem"><span class="ck a">✓</span>Max Benefit Guide PDF</div>
+        <div class="pitem"><span class="ck a">✓</span>Live Dashboard — Win Rate, PF, Discipline %</div>
+        <div class="pitem"><span class="ck a">✓</span>Equity Curve chart</div>
+        <div class="pitem dim"><span class="ck x">✗</span>AI Coach Report (Pro only)</div>
+        <div class="pitem dim"><span class="ck x">✗</span>Risk Management Tool (Pro only)</div>
+        <div class="pitem dim"><span class="ck x">✗</span>Weekly Review AI (Pro only)</div>
+        <div class="pitem dim"><span class="ck x">✗</span>Setup Analysis + Psychology Log (Pro only)</div>
       </div>
-      <div class="pbtns">
-        <a href="https://tradingmindset2.gumroad.com/l/ttm-pro" class="pbtn g" target="_blank">🌍 Gumroad</a>
-        <a href="https://imjo.in/tY8rTC" class="pbtn u" target="_blank">⚡ UPI / Cards</a>
+      <a href="YOUR_GOOGLE_DRIVE_FOLDER_LINK" class="bbuy a" target="_blank">DOWNLOAD FREE BUNDLE →</a>
+    </div>
+    <div class="pp-card fi">
+      <div class="plabel gl">AI PRO EDITION</div>
+      <div class="pbig"><span class="cur">₹</span>1,499</div>
+      <div class="pnote">ONE-TIME · NO SUBSCRIPTION · FOREVER</div>
+      <div class="pmath"><div>One revenge trade avoided = <span class="a">₹1,500+ saved</span></div><div>One stop loss honoured = <span class="a">₹1,500+ saved</span></div><div>Costs less than <span class="a">one bad trade.</span></div></div>
+      <div class="pitems">
+        <div class="pitem"><span class="ck g">✓</span>Everything in Free Bundle</div>
+        <div class="pitem"><span class="ck g">✓</span>AI Coach Report — 8 sections, one click</div>
+        <div class="pitem"><span class="ck g">✓</span>Risk Management Tool (position size, SL, target, daily limit)</div>
+        <div class="pitem"><span class="ck g">✓</span>Weekly Review — AI-generated, 7 sections</div>
+        <div class="pitem"><span class="ck g">✓</span>Setup Analysis — ranked by EV</div>
+        <div class="pitem"><span class="ck g">✓</span>Psychology Log — emotion + mistake charts</div>
+        <div class="pitem"><span class="ck g">✓</span>Chart Analysis — PA notes + AI prompt</div>
+        <div class="pitem"><span class="ck g">✓</span>Works desktop + mobile (Google Sheets)</div>
+        <div class="pitem"><span class="ck g">✓</span>DM support @thetradingmindset26</div>
       </div>
-      <button class="detail-btn" onclick="openModal('pro')">▼ &nbsp; See everything included &nbsp; ▼</button>
+      <a href="https://tradingmindset2.gumroad.com/l/ttm-pro" class="bbuy g" target="_blank">GET AI PRO — ₹1,499 →</a>
+      <div class="altpay">Also on Instamojo → <a href="https://imjo.in/tY8rTC" target="_blank">imjo.in/tY8rTC</a></div>
     </div>
   </div>
+</section>
 
-  <!-- BASIC CARD -->
-  <div class="pcard">
-    <div class="ph">
-      <span class="ptag basic">BASIC</span>
-      <span class="pname">AI Trading Journal Coach</span>
-      <span class="pprice am">₹499</span>
-    </div>
-    <div class="pb">
-      <div class="pfeats">
-        <div class="pfeat">7 sheets · 924 formulas · Equity curve chart</div>
-        <div class="pfeat">Win Rate · Discipline % · Setup EV ranking</div>
-        <div class="pfeat">Free AI coaching via ChatGPT / Gemini / Claude</div>
-        <div class="pfeat">Instant download · Excel + Google Sheets</div>
-      </div>
-      <div class="pbtns">
-        <a href="https://tradingmindset2.gumroad.com/l/ttm-basic" class="pbtn ag" target="_blank">🌍 Gumroad</a>
-        <a href="https://imjo.in/sm4YKX" class="pbtn au" target="_blank">⚡ UPI / Cards</a>
-      </div>
-      <button class="detail-btn" onclick="openModal('basic')" style="border-color:rgba(255,179,0,.15);color:rgba(255,179,0,.5)">▼ &nbsp; See everything included &nbsp; ▼</button>
-    </div>
+<!-- SEBI DISCLAIMER -->
+<div class="sebi"><div class="sebi-in">
+  <div class="sebi-lab">⚠ SEBI</div>
+  <div class="sebi-tx">SEBI DISCLAIMER: This product is a personal self-improvement and trade journaling tool for educational purposes only. It does not constitute investment advice, trading recommendations, or buy/sell signals of any kind. thetradingmindset26 is not a SEBI-registered investment adviser, research analyst, or portfolio manager. All AI-generated coaching output is based solely on the user's own trade data and is intended for personal self-review only. Past performance data entered into this journal does not guarantee future trading results. Trading in equity, derivatives, and cryptocurrency markets involves substantial risk of financial loss. Users are advised to consult a SEBI-registered investment adviser before making any financial decisions. SEBI Grievance Redressal: sebi.gov.in | SCORES Portal. © thetradingmindset26 2026. All rights reserved. Unauthorised redistribution, resale, or sharing of this product is strictly prohibited.</div>
+</div></div>
+
+<section class="final fi">
+  <div class="ft">STOP GUESSING.<br><span class="g">START KNOWING.</span></div>
+  <p class="fs">Your trades already contain the answer. The AI Coach reads them and tells you what they say.</p>
+  <div class="ctas">
+    <a href="https://tradingmindset2.gumroad.com/l/ttm-pro" class="bp">GET AI PRO — ₹1,499 →</a>
+    <a href="YOUR_GOOGLE_DRIVE_FOLDER_LINK" class="ba_" target="_blank">FREE BUNDLE ↗</a>
   </div>
+</section>
 
-  <!-- FOLLOW & SUPPORT SECTION -->
-  <div class="slbl">Follow & Support</div>
-
-  <!-- INSTAGRAM -->
-  <a href="https://instagram.com/thetradingmindset26" class="lcard" target="_blank">
-    <div class="lc-ic">📸</div>
-    <div class="lc-bd">
-      <div class="lc-t">Follow on Instagram</div>
-      <div class="lc-s">@thetradingmindset26 · Trading mindset · Journal updates</div>
-    </div>
-    <div class="lc-ar">→</div>
-  </a>
-
-  <!-- YOUTUBE -->
-  <a href="https://youtube.com/@thetradingmindset26" class="lcard" target="_blank" style="border-color:rgba(255,60,60,.2)">
-    <div class="lc-ic" style="background:rgba(255,0,0,.08);border-color:rgba(255,60,60,.2)">▶</div>
-    <div class="lc-bd">
-      <div class="lc-t" style="color:#FF4444">Subscribe on YouTube</div>
-      <div class="lc-s">@thetradingmindset26 · Free stock market learning · New videos weekly</div>
-    </div>
-    <div class="lc-ar" style="color:rgba(255,80,80,.4)">→</div>
-  </a>
-
-  <!-- TELEGRAM -->
-  <a href="https://t.me/thetradingmindset26" class="lcard" target="_blank" style="border-color:rgba(41,182,246,.2)">
-    <div class="lc-ic" style="background:rgba(41,182,246,.08);border-color:rgba(41,182,246,.2);font-size:18px">✈</div>
-    <div class="lc-bd">
-      <div class="lc-t" style="color:#29B6F6">Join Telegram Support</div>
-      <div class="lc-s">For Basic and Pro buyers · Setup help · Quick answers</div>
-    </div>
-    <div class="lc-ar" style="color:rgba(41,182,246,.4)">→</div>
-  </a>
-
-  <!-- SEBI -->
-  <div class="sebi">
-    <p>⚠ SEBI: Personal educational journaling tool only. Not investment advice. Not SEBI-registered. Trading involves substantial risk of financial loss. sebi.gov.in</p>
-  </div>
-
-  <!-- FOOTER -->
-  <div class="foot">
-    <p>© thetradingmindset26 2026 · Educational Only · Not Investment Advice</p>
-  </div>
-
-</div>
-
-<!-- ═══════════ PRO MODAL ═══════════ -->
-<div class="modal-overlay" id="modal-pro" onclick="closeOnOverlay(event,'modal-pro')">
-  <div class="modal-box">
-    <div class="modal-close" onclick="closeModal('modal-pro')">✕</div>
-    <span class="modal-tag pro">PRO EDITION · 80% OFF LAUNCH</span>
-    <div class="modal-title">AI Trading Journal Coach</div>
-    <div class="modal-price g"><span>₹9,999</span>₹1,999</div>
-
-    <div class="modal-stat-row">
-      <div class="mstat"><div class="mstat-v">9</div><div class="mstat-l">Sheets</div></div>
-      <div class="mstat"><div class="mstat-v">1,297</div><div class="mstat-l">Formulas</div></div>
-      <div class="mstat"><div class="mstat-v">7</div><div class="mstat-l">Charts</div></div>
-    </div>
-
-    <div class="modal-sec">What you get — 5 items</div>
-    <div class="modal-feat">Pro Journal (Google Sheets) — 9 sheets, 1,297 live formulas, 7 auto-charts. File → Make a Copy to your Drive.</div>
-    <div class="modal-feat">Risk Management Tool (HTML) — Profitability matrix, break-even table, 100-trade simulator, position sizing. Works offline in any browser.</div>
-    <div class="modal-feat">User Guide PDF — Every sheet and field explained step by step.</div>
-    <div class="modal-feat">Max Benefit Guide PDF — Daily and weekly workflow. Monthly milestones.</div>
-    <div class="modal-feat">20 Emotional Mistakes PDF — Hindi + English bonus guide.</div>
-
-    <div class="modal-sec">Formula AI Engine</div>
-    <div class="modal-feat">Coach Report — 8 sections auto-written from your trade data. No copy-paste ever.</div>
-    <div class="modal-feat">Weekly Review — Type date → 7 coaching sections auto-fill instantly.</div>
-    <div class="modal-feat">Quality + Decision Score — Calculate automatically from your R:R, emotions, and rules.</div>
-    <div class="modal-feat">Market Condition Win Rate — Trending vs Ranging vs Volatile. Your actual numbers.</div>
-    <div class="modal-feat">3 Pie Charts — Emotion Before, Emotion After, Mistake Frequency. All automatic.</div>
-
-    <div class="modal-sec">Zero Extra Cost</div>
-    <div class="modal-feat">No API keys · No subscriptions · No internet needed after setup · Works offline.</div>
-
-    <div class="modal-btns">
-      <a href="https://tradingmindset2.gumroad.com/l/ttm-pro" class="modal-btn gum" target="_blank">🌍 Buy on Gumroad — ₹1,999 / $24</a>
-      <a href="https://imjo.in/tY8rTC" class="modal-btn upi" target="_blank">⚡ Pay via UPI — Instamojo</a>
-    </div>
-    <div class="modal-note">One-time payment · Instant delivery · Single user licence · Support: @thetradingmindset26 on Instagram or Telegram</div>
-  </div>
-</div>
-
-<!-- ═══════════ BASIC MODAL ═══════════ -->
-<div class="modal-overlay" id="modal-basic" onclick="closeOnOverlay(event,'modal-basic')">
-  <div class="modal-box">
-    <div class="modal-close" onclick="closeModal('modal-basic')">✕</div>
-    <span class="modal-tag basic">BASIC EDITION</span>
-    <div class="modal-title am">AI Trading Journal Coach</div>
-    <div class="modal-price am">₹499 <span style="font-family:var(--mono);font-size:11px;color:var(--muted);text-decoration:none">/ $6 USD</span></div>
-
-    <div class="modal-stat-row">
-      <div class="mstat"><div class="mstat-v am">7</div><div class="mstat-l">Sheets</div></div>
-      <div class="mstat"><div class="mstat-v am">924</div><div class="mstat-l">Formulas</div></div>
-      <div class="mstat"><div class="mstat-v am">₹0</div><div class="mstat-l">Extra Cost</div></div>
-    </div>
-
-    <div class="modal-sec">What you get — 4 files</div>
-    <div class="modal-feat">Basic Journal (.xlsx) — 7 sheets, 924 live formulas, equity curve chart, psychology pie chart. Excel 2016+ and Google Sheets.</div>
-    <div class="modal-feat">User Guide PDF — Every sheet and every field explained. What to fill, what not to touch.</div>
-    <div class="modal-feat">Max Benefit Guide PDF — Daily and weekly workflow. How to read your psychology chart.</div>
-    <div class="modal-feat">20 Emotional Mistakes PDF — Hindi + English. Every mistake with pattern and exact fix.</div>
-
-    <div class="modal-sec">Auto-calculated metrics</div>
-    <div class="modal-feat">Win Rate · Profit Factor · Discipline % · Expectancy · Average R:R — all automatic.</div>
-    <div class="modal-feat">Setup EV Ranking — which setup actually makes you money. Bar chart auto-generated.</div>
-    <div class="modal-feat">Psychology Pie Chart — FOMO %, Revenge %, Confidence % — from your own trades.</div>
-
-    <div class="modal-sec">Free AI Coaching</div>
-    <div class="modal-feat">AI Prompt sheet — your live metrics auto-filled. Copy once → paste into free ChatGPT, Gemini, or Claude → get full coaching report every week.</div>
-
-    <div class="modal-btns">
-      <a href="https://tradingmindset2.gumroad.com/l/ttm-basic" class="modal-btn agum" target="_blank">🌍 Buy on Gumroad — ₹499 / $6</a>
-      <a href="https://imjo.in/sm4YKX" class="modal-btn aupi" target="_blank">⚡ Pay via UPI — Instamojo</a>
-    </div>
-    <div class="modal-note">One-time payment · Instant download · Single user licence · Support: @thetradingmindset26 on Instagram or Telegram</div>
-  </div>
-</div>
+<footer>
+  <div class="fbr">TTM ⬡</div>
+  <div class="fcopy">© thetradingmindset26 2026 · AI Trading Journal Coach · All Rights Reserved · Educational only · Not investment advice · Unauthorised redistribution prohibited</div>
+  <div class="fli"><a href="https://instagram.com/thetradingmindset26" target="_blank">INSTAGRAM</a><a href="https://youtube.com/@thetradingmindset26" target="_blank">YOUTUBE</a></div>
+</footer>
 
 <script>
-// ── THEME TOGGLE ──────────────────────────────────────
-var html = document.documentElement;
-
-function applyTheme(theme){
-  html.setAttribute('data-theme', theme);
-  localStorage.setItem('tmm26-bio', theme);
-}
-
-// Apply saved theme immediately on load
-(function(){
-  var saved = localStorage.getItem('tmm26-bio');
-  if(saved){ applyTheme(saved); }
-})();
-
-document.getElementById('themeToggle').addEventListener('click', function(){
-  var current = html.getAttribute('data-theme');
-  applyTheme(current === 'dark' ? 'light' : 'dark');
-});
-
-// ── MODALS ────────────────────────────────────────────
-function openModal(which){
-  document.getElementById('modal-' + which).classList.add('open');
-  document.body.style.overflow = 'hidden';
-}
-
-function closeModal(id){
-  document.getElementById(id).classList.remove('open');
-  document.body.style.overflow = '';
-}
-
-function closeOnOverlay(e, id){
-  if(e.target === document.getElementById(id)){
-    closeModal(id);
-  }
-}
-
-// Close on escape key
-document.addEventListener('keydown', function(e){
-  if(e.key === 'Escape'){
-    closeModal('modal-pro');
-    closeModal('modal-basic');
-  }
-});
+const io=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('on')}),{threshold:.07});
+document.querySelectorAll('.fi').forEach((el,i)=>{el.style.transitionDelay=`${(i%5)*.06}s`;io.observe(el)});
 </script>
 </body>
 </html>
