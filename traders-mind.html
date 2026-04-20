@@ -147,6 +147,30 @@ body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradi
 .sync-btn:hover{border-color:var(--g);color:var(--g)}
 .sync-btn.warn:hover{border-color:var(--r);color:var(--r)}
 
+
+/* HOW TO USE */
+.howto-card{background:var(--bg2);border:1px solid var(--br);padding:20px;margin-bottom:10px}
+.howto-card-title{font-size:11px;color:var(--g);letter-spacing:2px;margin-bottom:14px;font-weight:700;display:flex;align-items:center;gap:8px}
+.howto-step{display:flex;gap:14px;padding:10px 0;border-bottom:1px solid var(--br2)}
+.howto-step:last-child{border-bottom:none}
+.step-num{width:28px;height:28px;background:var(--g);color:#000;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:'Courier New',monospace}
+.step-content h4{font-size:12px;color:#fff;margin-bottom:4px;letter-spacing:.5px}
+.step-content p{font-size:11px;color:var(--mu);line-height:1.65}
+.step-content p span{color:var(--g)}
+.sync-option{background:var(--bg3);border:1px solid var(--br2);border-left:3px solid var(--g);padding:14px 16px;margin-bottom:8px}
+.sync-option.amber{border-left-color:var(--a)}
+.sync-option h4{font-size:11px;color:#fff;margin-bottom:6px;letter-spacing:.5px}
+.sync-option p{font-size:11px;color:var(--mu);line-height:1.6}
+.sync-option p span{color:var(--g)}
+.sync-option p span.a{color:var(--a)}
+.webapp-steps{display:flex;flex-direction:column;gap:6px}
+.webapp-step{display:flex;gap:10px;align-items:flex-start}
+.ws-icon{font-size:14px;flex-shrink:0;margin-top:1px}
+.ws-text{font-size:11px;color:var(--mu);line-height:1.55}
+.ws-text strong{color:var(--tx)}
+.tip-box{background:rgba(0,255,65,.05);border:1px solid rgba(0,255,65,.15);padding:12px 14px;margin-top:10px}
+.tip-box p{font-size:10px;color:var(--mu);line-height:1.7;font-family:'Courier New',monospace}
+.tip-box p span{color:var(--g)}
 </style>
 </head>
 <body>
@@ -168,6 +192,7 @@ body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradi
   <button class="tab active" onclick="switchTab('journal')">JOURNAL</button>
   <button class="tab" onclick="switchTab('overview')">OVERVIEW</button>
   <button class="tab" onclick="switchTab('history')">HISTORY</button>
+  <button class="tab" onclick="switchTab('setup')">HOW TO USE</button>
 </div>
 
 
@@ -386,6 +411,135 @@ body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradi
 <div class="toast" id="toast">ENTRY SAVED ✓</div>
 
 <!-- FOOTER -->
+
+<!-- HOW TO USE TAB -->
+<div class="tab-content" id="tab-setup">
+<div class="main">
+
+  <div class="sec-hdr"><div class="sec-hdr-line"></div><div class="sec-hdr-label">WHAT IS THIS TOOL</div><div class="sec-hdr-line"></div></div>
+
+  <div class="howto-card">
+    <div class="howto-card-title">⬡ TRADER MIND TRACKER — PURPOSE</div>
+    <div class="howto-step">
+      <div class="step-num">?</div>
+      <div class="step-content">
+        <h4>What does this tool do?</h4>
+        <p>This is your daily trading psychology journal. Every session — before and after — you record your mental state, emotions, bias, mistakes and lessons. Over time the data shows your patterns: which emotion leads to your worst trades, which days you are most disciplined, and exactly which mistake keeps repeating.</p>
+      </div>
+    </div>
+    <div class="howto-step">
+      <div class="step-num">!</div>
+      <div class="step-content">
+        <h4>This is NOT the AI Trading Journal</h4>
+        <p>The AI Trading Journal (Pro Edition) tracks your actual <span>trade data</span> — entries, exits, P&L, setup, R:R — and generates an 8-section AI coaching report. This Mind Tracker tracks your <span>psychology</span>. They work together. Use both.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec-hdr"><div class="sec-hdr-line"></div><div class="sec-hdr-label">DAILY ROUTINE — USE IT LIKE THIS</div><div class="sec-hdr-line"></div></div>
+
+  <div class="howto-card">
+    <div class="howto-card-title">📋 STEP BY STEP — EVERY TRADING DAY</div>
+    <div class="howto-step">
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <h4>Before market opens — PRE-MARKET (2 minutes)</h4>
+        <p>Open the app → go to JOURNAL tab → fill Sleep, Clarity, Confidence sliders → select your dominant <span>Emotion</span> → select your <span>Market Bias</span> → write your <span>Today's Intention</span> (what is your plan, your max trades, your loss limit).</p>
+      </div>
+    </div>
+    <div class="howto-step">
+      <div class="step-num">2</div>
+      <div class="step-content">
+        <h4>After session closes — POST-MARKET (3 minutes)</h4>
+        <p>Fill Discipline, Rule Follow, Patience sliders → select <span>Post-Trade Emotion</span> → select <span>Today's Mistake</span> (be honest — this is private) → write <span>What Did Today Teach Me</span> → write <span>Tomorrow's Intention</span> → tap <span>SAVE TODAY'S ENTRY.</span></p>
+      </div>
+    </div>
+    <div class="howto-step">
+      <div class="step-num">3</div>
+      <div class="step-content">
+        <h4>Once a week — check OVERVIEW tab</h4>
+        <p>See your 14-day discipline chart, sleep chart, top emotions this week, top mistakes this week. This is where patterns become visible. If you see FOMO appearing 4x this week — that is your focus for next week.</p>
+      </div>
+    </div>
+    <div class="howto-step">
+      <div class="step-num">4</div>
+      <div class="step-content">
+        <h4>Any time — check HISTORY tab</h4>
+        <p>Every saved entry is listed here newest first. Tap any entry to jump back to that date and re-read what you wrote. Useful for weekly review — see what your intention was on Monday vs what actually happened by Friday.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec-hdr"><div class="sec-hdr-line"></div><div class="sec-hdr-label">HOW TO USE ON PHONE + LAPTOP + DESKTOP</div><div class="sec-hdr-line"></div></div>
+
+  <div class="howto-card">
+    <div class="howto-card-title">📱 INSTALL AS AN APP ON YOUR PHONE — NO DOWNLOAD NEEDED</div>
+    <div class="webapp-steps">
+      <div class="webapp-step"><div class="ws-icon">📱</div><div class="ws-text"><strong>Android (Chrome):</strong> Open this page in Chrome → tap the 3-dot menu (⋮) top right → tap "Add to Home screen" → tap Add. A TTM icon appears on your home screen. Tap it every morning — opens like a real app.</div></div>
+      <div class="webapp-step"><div class="ws-icon">🍎</div><div class="ws-text"><strong>iPhone (Safari):</strong> Open this page in Safari → tap the Share button (square with arrow, bottom of screen) → scroll down → tap "Add to Home Screen" → tap Add. Same result — TTM icon on home screen.</div></div>
+      <div class="webapp-step"><div class="ws-icon">💻</div><div class="ws-text"><strong>Laptop / Desktop:</strong> Open this page in Chrome → press Ctrl+D to bookmark it → or click the install icon in the address bar if it appears. Open every morning from bookmarks.</div></div>
+    </div>
+    <div class="tip-box">
+      <p><span>⬡ TIP:</span> Once installed on your phone home screen, this app works completely offline. No internet connection needed after the first load. Your data is 100% private — stored only on your device.</p>
+    </div>
+  </div>
+
+  <div class="sec-hdr"><div class="sec-hdr-line"></div><div class="sec-hdr-label">DATA SYNC BETWEEN DEVICES</div><div class="sec-hdr-line"></div></div>
+
+  <div class="howto-card">
+    <div class="howto-card-title">🔄 HOW TO GET YOUR DATA ON ALL DEVICES</div>
+
+    <div class="sync-option">
+      <h4>How data is saved</h4>
+      <p>Your entries save automatically in your browser's local storage when you tap Save. This means the data lives <span>on that specific device and browser</span>. It does not automatically move to another device.</p>
+    </div>
+
+    <div class="sync-option amber">
+      <h4>To move data from Phone → Laptop (or any device to another)</h4>
+      <p>
+        <span class="a">Step 1:</span> On your phone — go to OVERVIEW tab → tap <span>↓ BACKUP</span> button → a .json file downloads to your phone<br><br>
+        <span class="a">Step 2:</span> Send that .json file to yourself via WhatsApp, email, or Google Drive<br><br>
+        <span class="a">Step 3:</span> On your laptop — open this same page → OVERVIEW tab → tap <span>↑ RESTORE</span> → select the .json file → all entries appear immediately
+      </p>
+    </div>
+
+    <div class="sync-option">
+      <h4>Best practice — where to use it daily</h4>
+      <p>Pick <span>ONE primary device</span> for daily entries — your phone is ideal since you have it before market opens. Use the Backup/Restore only when switching devices or as a safety backup once a week. Tap <span>↓ BACKUP</span> every Sunday — takes 5 seconds.</p>
+    </div>
+
+    <div class="tip-box">
+      <p><span>⚠ IMPORTANT:</span> Do NOT clear your browser's cache or site data — this deletes your journal entries. If you accidentally clear it, restore from your last backup file. Always keep at least one recent backup in your WhatsApp Saved Messages or Google Drive.</p>
+    </div>
+  </div>
+
+  <div class="sec-hdr"><div class="sec-hdr-line"></div><div class="sec-hdr-label">UPGRADE TO AI PRO</div><div class="sec-hdr-line"></div></div>
+
+  <div class="howto-card">
+    <div class="howto-card-title">🤖 THIS + AI PRO = COMPLETE SYSTEM</div>
+    <div class="howto-step">
+      <div class="step-num">+</div>
+      <div class="step-content">
+        <h4>This tracker → Psychology data</h4>
+        <p>Tracks how you feel before/after each session. Identifies your emotional patterns. Tells you which emotions lead to your worst decisions.</p>
+      </div>
+    </div>
+    <div class="howto-step">
+      <div class="step-num">+</div>
+      <div class="step-content">
+        <h4>AI Pro Journal → Trade data + AI coaching</h4>
+        <p>Tracks every trade. Calculates Profit Factor, Win Rate, EV per setup. Runs an 8-section AI coach report. Tells you your <span>Killer Mistake</span>, your best setup, and exactly what to do next session. Includes Risk Management Tool.</p>
+      </div>
+    </div>
+    <div style="text-align:center;padding:16px 0 6px">
+      <a href="https://tradingmindset2.gumroad.com/l/ttm-pro" style="display:inline-block;background:var(--g);color:#000;font-family:'Courier New',monospace;font-size:12px;font-weight:700;padding:13px 32px;text-decoration:none;letter-spacing:2px;" target="_blank">UPGRADE TO AI PRO — ₹1,499 →</a>
+    </div>
+  </div>
+
+</div>
+</div>
+<!-- END HOW TO USE TAB -->
+
 <footer class="site-footer">
   <p>INSIDE A TRADER'S MIND · Personal Psychology Journal</p>
   <p class="copy">© thetradingmindset26 2026 · All rights reserved · Unauthorised redistribution prohibited</p>
@@ -724,7 +878,13 @@ function jumpTo(dateStr) {
 function switchTab(name) {
   document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
   document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
-  document.querySelector(`.tab[onclick="switchTab('${name}')"]`).classList.add('active');
+  const btn = document.querySelector(`.tab[onclick="switchTab('${name}')"]`);
+  if(btn) btn.classList.add('active');
+  const content = document.getElementById('tab-'+name);
+  if(content) content.classList.add('active');
+  if (name === 'overview') renderOverview();
+  if (name === 'history') renderHistory();
+}')"]`).classList.add('active');
   document.getElementById('tab-'+name).classList.add('active');
   if (name === 'overview') renderOverview();
   if (name === 'history') renderHistory();
