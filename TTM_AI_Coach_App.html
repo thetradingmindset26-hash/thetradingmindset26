@@ -25,9 +25,87 @@
 .kpi-tip:hover::after{opacity:1}
 .kpi-tip-icon{width:14px;height:14px;border-radius:50%;background:rgba(255,255,255,0.08);color:#7A96A8;font-size:9px;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;font-style:normal}
 
+
+/* ── ACCESS GATE ── */
+#ttm-gate{
+  position:fixed;inset:0;background:#060A10;z-index:9999;
+  display:flex;align-items:center;justify-content:center;
+  padding:20px;
+}
+#ttm-gate.unlocked{display:none}
+.gate-card{
+  background:#0D1420;border:1px solid rgba(0,255,136,0.25);
+  border-radius:14px;padding:36px;max-width:440px;width:100%;
+  text-align:center;box-shadow:0 0 60px rgba(0,255,136,0.06);
+  position:relative;z-index:1;
+}
+.gate-card::before{
+  content:'';position:fixed;inset:0;
+  background-image:linear-gradient(rgba(0,255,136,.04) 1px,transparent 1px),
+                   linear-gradient(90deg,rgba(0,255,136,.04) 1px,transparent 1px);
+  background-size:48px 48px;pointer-events:none;z-index:-1;
+}
+.gate-logo{width:64px;height:64px;border-radius:50%;border:2px solid rgba(0,255,136,0.35);object-fit:cover;margin:0 auto 14px;display:block}
+.gate-title{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;color:#fff;margin-bottom:6px}
+.gate-sub{font-size:13px;color:var(--mu);line-height:1.65;margin-bottom:24px}
+.gate-price{font-family:'Syne',sans-serif;font-size:42px;font-weight:800;color:var(--g);margin-bottom:4px;text-shadow:0 0 24px rgba(0,255,136,0.3)}
+.gate-price-note{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--mu);letter-spacing:1.5px;margin-bottom:20px}
+.gate-buy{display:block;width:100%;background:var(--g);color:#000;font-family:'Syne',sans-serif;font-size:15px;font-weight:800;padding:16px;border:none;border-radius:8px;cursor:pointer;text-decoration:none;margin-bottom:18px;transition:all 0.2s;letter-spacing:0.3px}
+.gate-buy:hover{box-shadow:0 0 28px rgba(0,255,136,0.45);transform:translateY(-1px)}
+.gate-divider{display:flex;align-items:center;gap:10px;margin-bottom:16px}
+.gate-divider::before,.gate-divider::after{content:'';flex:1;height:1px;background:rgba(255,255,255,0.08)}
+.gate-divider span{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--mu);letter-spacing:2px}
+.gate-input-label{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--tx2);letter-spacing:1.5px;text-align:left;margin-bottom:6px;display:block}
+.gate-input{width:100%;background:#0A1220;border:1px solid rgba(255,255,255,0.14);border-radius:7px;padding:11px 14px;color:var(--tx);font-family:'JetBrains Mono',monospace;font-size:12px;outline:none;transition:border-color 0.2s;margin-bottom:8px;letter-spacing:0.5px}
+.gate-input:focus{border-color:var(--g);box-shadow:0 0 0 2px rgba(0,255,136,0.1)}
+.gate-input::placeholder{color:var(--mu);letter-spacing:0}
+.gate-unlock{width:100%;background:transparent;border:1px solid rgba(0,255,136,0.3);color:var(--g);font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;padding:11px;border-radius:7px;cursor:pointer;letter-spacing:1px;transition:all 0.2s}
+.gate-unlock:hover{background:rgba(0,255,136,0.08)}
+.gate-error{font-size:11px;color:var(--r);font-family:'JetBrains Mono',monospace;margin-top:7px;display:none;text-align:left}
+.gate-sebi{font-family:'JetBrains Mono',monospace;font-size:8px;color:rgba(107,114,128,0.35);margin-top:18px;line-height:1.8}
+.gate-already{font-size:11px;color:var(--mu);margin-top:12px;cursor:pointer;font-family:'JetBrains Mono',monospace}
+.gate-already:hover{color:var(--g)}
+
 </style>
 </head>
+
 <body>
+
+<!-- ACCESS GATE -->
+<div id="ttm-gate" style="position:fixed;inset:0;background:#060A10;z-index:99999;display:flex;align-items:center;justify-content:center;padding:20px">
+  <div style="background:#0D1420;border:1px solid rgba(0,255,136,0.3);border-radius:14px;padding:36px;max-width:420px;width:100%;text-align:center">
+    <img src="data:image/jpeg;base64,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Bz0RQ4d4mNHJNhq8rNqG4zUB2XOQXHcA438q9oNNC5dnuyJXSRWUrR2cVk1JzQu9uQS4fly+3sAbcBtgAPDcYtKdpdNSpspUBT5SCFJUEqSGcalOQcOwzyPQeb4hTppXIpY0YBABzjYZB3bcHOfMd+RnOTjTnRERERERERES5ZIx1kHMuCjxMwF2zMSTJXUbePjNgomPLzlYLZ35StdQ38/CX06SlsHlIZjjIkgxxuZuJbJk7/GV6zJacNfnNyhZUCAW5zBqjDlMirTVPz+7++/9p27fhVGoudW+B9e+fwlTViOkq+nqPiZa3C7ZCVY5AO31f1zJFYnlITir/X+nymsLGjsAep+rp9kvFSWtiL9/3/8AqYVLCkvXv9h8v2SxXBhcZfv/APvzmqbOgScntz79fwmyoBlBjKfn/CUNaUWzkjbl7pmFHeQvjDb4+Zz2t0xn9KNG0hNY8f1mk1NcjPxmOMShUSspTz6RtImmowAO3KYykxiIiIiIiIiIiIiViJUGZAyMSRGm0jysiSm2bfiSvTJKbptUqu+8wZZtMO4T1/D6yZ800ainpLM60fKL+qmfKZNJT1mGl05VKuMzZKxa4llasuJkgMxjZOM9bfabIlptms1XMzlwsleuWhpFY01XMgmWEzTJmMsmERERERIiJMRERERERERESoaSDIleUz1yMS4NLVqSCJNXkbTo0rorKmTMpZkbyal0WgJiWCyUCsRM9MNbJa4JkBZZymqaksxKbzAvJleUjxJMoTMS+YlCZVEpERERERIiJMRERERERERERERERESu8y1GI3jUYjeRkxG8ZiJESkREREREREREREREiIkxEREREREREREREREREREREREREREREREREREREREREiIkxEREREREiIiIkxEREREREREREREREREREREREREREREREREREREREREREREREREREREREREREREREREREREREREiIiIkxEREREiIkxEiIkxEREiIiIiIiIiIiIkxEiIkxEREREREiJ//2Q==" style="width:64px;height:64px;border-radius:50%;border:2px solid rgba(0,255,136,0.35);object-fit:cover;margin:0 auto 14px;display:block" alt="TTM">
+    <div style="font-family:'Syne',sans-serif;font-size:22px;font-weight:800;color:#fff;margin-bottom:6px">TTM AI Trading Coach</div>
+    <div style="font-size:12px;color:#7A96A8;line-height:1.65;margin-bottom:20px">Complete AI trading psychology web app.<br>Dhan/Zerodha import · Coach Report · Risk Calculator</div>
+    <div style="font-family:'Syne',sans-serif;font-size:44px;font-weight:800;color:#00FF88;margin-bottom:4px;text-shadow:0 0 24px rgba(0,255,136,0.3)">₹499</div>
+    <div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#7A96A8;letter-spacing:1.5px;margin-bottom:20px">ONE-TIME · NO SUBSCRIPTION</div>
+    <a href="https://rzp.io/rzp/thetradingmindset26" target="_blank" onclick="sessionStorage.setItem('ttm_paying','1')"
+      style="display:block;width:100%;background:#00FF88;color:#000;font-family:'Syne',sans-serif;font-size:15px;font-weight:800;padding:16px;border-radius:8px;text-decoration:none;margin-bottom:18px;box-sizing:border-box;transition:box-shadow 0.2s">
+      ⚡ PAY ₹499 — UPI / CARD →
+    </a>
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px">
+      <div style="flex:1;height:1px;background:rgba(255,255,255,0.08)"></div>
+      <span style="font-family:'JetBrains Mono',monospace;font-size:9px;color:#7A96A8;letter-spacing:2px">ALREADY PAID?</span>
+      <div style="flex:1;height:1px;background:rgba(255,255,255,0.08)"></div>
+    </div>
+    <div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:#C8D8E8;letter-spacing:1.5px;text-align:left;margin-bottom:6px">ENTER YOUR RAZORPAY PAYMENT ID</div>
+    <input id="gate-pid" type="text" placeholder="pay_XXXXXXXXXXXXXXXX"
+      style="width:100%;background:#0A1220;border:1px solid rgba(255,255,255,0.14);border-radius:7px;padding:11px 14px;color:#F0F6FF;font-family:'JetBrains Mono',monospace;font-size:12px;outline:none;margin-bottom:8px;box-sizing:border-box;letter-spacing:0.5px"
+      autocomplete="off" spellcheck="false">
+    <div id="gate-err" style="font-size:11px;color:#FF4466;font-family:'JetBrains Mono',monospace;margin-bottom:8px;display:none;text-align:left">
+      Invalid ID. Must start with "pay_" followed by 14+ characters.<br>
+      Find it in your Razorpay SMS or email confirmation.
+    </div>
+    <button onclick="tryUnlock()"
+      style="width:100%;background:transparent;border:1px solid rgba(0,255,136,0.3);color:#00FF88;font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;padding:12px;border-radius:7px;cursor:pointer;letter-spacing:1px">
+      UNLOCK APP WITH PAYMENT ID →
+    </button>
+    <div style="font-family:'JetBrains Mono',monospace;font-size:8px;color:rgba(107,114,128,0.4);margin-top:16px;line-height:1.8">
+      Not a buy/sell recommendation · Educational purpose only<br>
+      Not SEBI-registered investment advice · © thetradingmindset26 2026
+    </div>
+  </div>
+</div>
 
 <!-- ONBOARDING -->
 <div class="onboard" id="onboard">
@@ -832,7 +910,79 @@
 
   <!-- FAQ -->
   <div class="page" id="page-faq">
-    <div style="max-width:700px" id="faq-list"></div>
+    <div style="max-width:700px">
+
+      <div class="faq-item">
+        <div class="faq-q" onclick="faqToggle(this)">
+          <div class="faq-qt">Do I need any technical skills?</div>
+          <div class="faq-arr">+</div>
+        </div>
+        <div class="faq-a">None at all. Every field has a dropdown. Works like filling a form. If you can open a browser you can use this app.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="faqToggle(this)">
+          <div class="faq-qt">Does it work on my phone?</div>
+          <div class="faq-arr">+</div>
+        </div>
+        <div class="faq-a">Yes. Open in Chrome on Android or Safari on iPhone. Tap Menu → Add to Home Screen. Works exactly like a real app with one tap daily.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="faqToggle(this)">
+          <div class="faq-qt">How is this different from a normal trading journal?</div>
+          <div class="faq-arr">+</div>
+        </div>
+        <div class="faq-a">Most journals just show your P&L. TTM Coach identifies your FOMO pattern, revenge trade loops, highest-EV setup by name, and gives 4 specific actions for tomorrow — all from your actual trade data.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="faqToggle(this)">
+          <div class="faq-qt">Can I import my Dhan or Zerodha trades?</div>
+          <div class="faq-arr">+</div>
+        </div>
+        <div class="faq-a">Yes. Go to Import Trades → select your broker → download the P&L CSV from your broker app → upload it. All trades appear in seconds with P&L auto-calculated.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="faqToggle(this)">
+          <div class="faq-qt">What is Expected Value (EV) in Setup Analysis?</div>
+          <div class="faq-arr">+</div>
+        </div>
+        <div class="faq-a">EV = (Win% × Avg Win) − (Loss% × Avg Loss). Positive EV means the setup makes money on average over many trades. Negative EV means you lose money on that setup regardless of how many you take.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="faqToggle(this)">
+          <div class="faq-qt">Do Coach Report and Weekly Review need an API key?</div>
+          <div class="faq-arr">+</div>
+        </div>
+        <div class="faq-a">No. Both run 100% from your own trade data — zero cost, works offline. Only Chart Analysis needs an API key because it physically reads a chart image.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="faqToggle(this)">
+          <div class="faq-qt">My data disappeared. What happened?</div>
+          <div class="faq-arr">+</div>
+        </div>
+        <div class="faq-a">Browser cache was cleared. Always export a backup weekly using the Export button (top right). Go to Settings → Import Backup to restore.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="faqToggle(this)">
+          <div class="faq-qt">Can I use this on multiple devices?</div>
+          <div class="faq-arr">+</div>
+        </div>
+        <div class="faq-a">Yes. Export your data → send the .json file to yourself → open app on new device → Settings → Import Backup. Full history restored instantly.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="faqToggle(this)">
+          <div class="faq-qt">Is my data private?</div>
+          <div class="faq-arr">+</div>
+        </div>
+        <div class="faq-a">Your data is stored only in your browser on your device. Nobody can access it. Nothing is sent to any server. 100% private.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="faqToggle(this)">
+          <div class="faq-qt">Is this SEBI-registered investment advice?</div>
+          <div class="faq-arr">+</div>
+        </div>
+        <div class="faq-a">No. Educational journaling tool only. Not a SEBI-registered investment adviser. Not a trading signal service. For financial decisions, consult a SEBI-registered adviser.</div>
+      </div>
+    </div>
   </div>
 
   <!-- SETTINGS -->
@@ -887,7 +1037,7 @@
           <a href="https://instagram.com/thetradingmindset26" target="_blank" class="social-btn" style="background:linear-gradient(135deg,#833ab4,#fd1d1d,#fcb045);color:#fff">📸 INSTAGRAM</a>
           <a href="https://youtube.com/@thetradingmindset26" target="_blank" class="social-btn" style="background:#FF0000;color:#fff">▶ YOUTUBE</a>
           <a href="https://thetradingmindset26-hash.github.io/thetradingmindset26/" target="_blank" class="social-btn" style="background:var(--bg3);border:1px solid var(--b1);color:var(--g)">🌐 WEBSITE</a>
-          <a href="https://razorpay.me/@thetradingmindset26bypankajku" target="_blank" class="social-btn" style="background:rgba(0,255,136,0.1);border:1px solid rgba(0,255,136,0.3);color:var(--g)">💳 BUY ₹499</a>
+          <a href="https://rzp.io/rzp/thetradingmindset26" target="_blank" class="social-btn" style="background:rgba(0,255,136,0.1);border:1px solid rgba(0,255,136,0.3);color:var(--g)">💳 BUY ₹499</a>
         </div>
       </div>
       <div class="panel">
@@ -1197,6 +1347,54 @@ function savePastedResult(){
   document.getElementById('ca-paste-wrap').style.display='none';
   toast('Analysis saved to history ✓');
 }
+
+// ═══════════════════════════════════════════════════════════════
+// ACCESS GATE — Razorpay Payment ID verification
+// ═══════════════════════════════════════════════════════════════
+
+function tryUnlock() {
+  var pid = ((document.getElementById('gate-pid')||{}).value||'').trim();
+  var errEl = document.getElementById('gate-err');
+  // Razorpay Payment ID: pay_ + 14 to 20 alphanumeric chars
+  var valid = /^pay_[A-Za-z0-9]{14,20}$/.test(pid);
+  if (!valid) {
+    if(errEl) errEl.style.display = 'block';
+    var inp = document.getElementById('gate-pid');
+    if(inp) inp.style.borderColor = '#FF4466';
+    return;
+  }
+  // Valid — grant permanent access on this device
+  localStorage.setItem('ttm_access_v3', 'yes');
+  localStorage.setItem('ttm_pid', pid);
+  var gate = document.getElementById('ttm-gate');
+  if(gate) gate.style.display = 'none';
+  if(errEl) errEl.style.display = 'none';
+  toast('✓ Access granted! Welcome to TTM AI Coach.');
+}
+
+// Check access — run immediately when script loads
+(function checkAccess() {
+  var granted = localStorage.getItem('ttm_access_v3');
+  if (granted === 'yes') {
+    // Already paid — hide gate immediately
+    var gate = document.getElementById('ttm-gate');
+    if(gate) gate.style.display = 'none';
+    return;
+  }
+  // Coming back from Razorpay?
+  if (sessionStorage.getItem('ttm_paying') === '1') {
+    sessionStorage.removeItem('ttm_paying');
+    var inp = document.getElementById('gate-pid');
+    if(inp) {
+      inp.focus();
+      inp.placeholder = 'Check your SMS/email for pay_XXXX ID';
+      inp.style.borderColor = '#00FF88';
+    }
+  }
+  // Add Enter key listener
+  var inp2 = document.getElementById('gate-pid');
+  if(inp2) inp2.addEventListener('keydown', function(e){ if(e.key==='Enter') tryUnlock(); });
+})();
 
 </script>
 
