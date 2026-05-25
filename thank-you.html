@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>TTM AI Coach — Access Your App</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=JetBrains+Mono:wght@400;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--g:#00FF88;--a:#FFB800;--r:#FF4466;--bg:#060A10;--bg2:#0D1420;--card:#111B28;--b1:rgba(0,255,136,0.2);--b2:rgba(255,255,255,0.1);--tx:#F0F6FF;--mu:#7A96A8}
+body{background:var(--bg);color:var(--tx);font-family:'Inter',sans-serif;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
+body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(0,255,136,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(0,255,136,.04) 1px,transparent 1px);background-size:48px 48px;pointer-events:none}
+.wrap{max-width:480px;width:100%;position:relative;z-index:1}
+
+.success-box{background:linear-gradient(135deg,#0C1A12,#0A1218);border:1px solid rgba(0,255,136,0.3);border-radius:14px;padding:32px;text-align:center;margin-bottom:20px}
+.logo-wrap{display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:20px}
+.logo-wrap img{width:52px;height:52px;border-radius:50%;border:2px solid rgba(0,255,136,0.35);object-fit:cover}
+.brand{font-family:'Syne',sans-serif;font-size:16px;font-weight:800;color:#fff;text-align:left}
+.brand-sub{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--mu);letter-spacing:2px}
+.tick{width:72px;height:72px;background:rgba(0,255,136,0.1);border:2px solid rgba(0,255,136,0.3);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:32px}
+.success-title{font-family:'Syne',sans-serif;font-size:26px;font-weight:800;color:#fff;margin-bottom:8px}
+.success-sub{font-size:13px;color:var(--mu);line-height:1.7}
+.success-sub strong{color:var(--g);font-size:15px}
+
+.dl-main{display:block;background:var(--g);color:#000;font-family:'Syne',sans-serif;font-size:16px;font-weight:800;padding:20px;border-radius:10px;text-decoration:none;text-align:center;letter-spacing:0.5px;margin-bottom:12px;transition:all 0.2s;box-shadow:0 0 30px rgba(0,255,136,0.25)}
+.dl-main:hover{box-shadow:0 0 40px rgba(0,255,136,0.45);transform:translateY(-2px)}
+.dl-note{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--mu);text-align:center;margin-bottom:24px;line-height:1.8}
+.dl-note span{color:var(--g)}
+
+.steps-box{background:var(--card);border:1px solid var(--b2);border-radius:10px;padding:20px;margin-bottom:16px}
+.steps-title{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--g);letter-spacing:2px;margin-bottom:14px}
+.step-row{display:flex;gap:12px;padding:9px 0;border-bottom:1px solid rgba(255,255,255,0.05)}
+.step-row:last-child{border-bottom:none}
+.sn{width:26px;height:26px;background:var(--g);color:#000;border-radius:50%;font-family:'Syne',sans-serif;font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.st{font-size:13px;color:#fff;font-weight:600;margin-bottom:3px}
+.sd{font-size:11px;color:var(--mu);line-height:1.55}
+.sd span{color:var(--g)}
+
+.install-box{background:rgba(255,184,0,0.05);border:1px solid rgba(255,184,0,0.15);border-radius:10px;padding:16px 18px;margin-bottom:16px}
+.install-title{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--a);letter-spacing:2px;margin-bottom:10px}
+.install-row{display:flex;gap:10px;font-size:12px;color:var(--mu);padding:5px 0}
+.install-row strong{color:var(--tx)}
+
+.support-box{background:rgba(0,0,0,0.2);border:1px solid var(--b2);border-radius:8px;padding:14px 16px;text-align:center;margin-bottom:14px}
+.support-box p{font-size:12px;color:var(--mu);line-height:1.7}
+.support-box a{color:var(--g);text-decoration:none;font-weight:600}
+
+.sebi{font-family:'JetBrains Mono',monospace;font-size:8px;color:rgba(107,114,128,0.35);text-align:center;line-height:1.9;padding-top:4px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="success-box">
+    <div class="logo-wrap">
+      <img src="data:image/jpeg;base64,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Bz0RQ4d4mNHJNhq8rNqG4zUB2XOQXHcA438q9oNNC5dnuyJXSRWUrR2cVk1JzQu9uQS4fly+3sAbcBtgAPDcYtKdpdNSpspUBT5SCFJUEqSGcalOQcOwzyPQeb4hTppXIpY0YBABzjYZB3bcHOfMd+RnOTjTnRERERERERES5ZIx1kHMuCjxMwF2zMSTJXUbePjNgomPLzlYLZ35StdQ38/CX06SlsHlIZjjIkgxxuZuJbJk7/GV6zJacNfnNyhZUCAW5zBqjDlMirTVPz+7++/9p27fhVGoudW+B9e+fwlTViOkq+nqPiZa3C7ZCVY5AO31f1zJFYnlITir/X+nymsLGjsAep+rp9kvFSWtiL9/3/8AqYVLCkvXv9h8v2SxXBhcZfv/APvzmqbOgScntz79fwmyoBlBjKfn/CUNaUWzkjbl7pmFHeQvjDb4+Zz2t0xn9KNG0hNY8f1mk1NcjPxmOMShUSspTz6RtImmowAO3KYykxiIiIiIiIiIiIiViJUGZAyMSRGm0jysiSm2bfiSvTJKbptUqu+8wZZtMO4T1/D6yZ800ainpLM60fKL+qmfKZNJT1mGl05VKuMzZKxa4llasuJkgMxjZOM9bfabIlptms1XMzlwsleuWhpFY01XMgmWEzTJmMsmERERERIiJMRERERERERESoaSDIleUz1yMS4NLVqSCJNXkbTo0rorKmTMpZkbyal0WgJiWCyUCsRM9MNbJa4JkBZZymqaksxKbzAvJleUjxJMoTMS+YlCZVEpERERERIiJMRERERERERERERERESu8y1GI3jUYjeRkxG8ZiJESkREREREREREREREiIkxEREREREREREREREREREREREREREREREREREREREREiIkxEREREREiIiIkxEREREREREREREREREREREREREREREREREREREREREREREREREREREREREREREREREREREREREiIiIkxEREREiIkxEiIkxEREiIiIiIiIiIiIkxEiIkxEREREREiJ//2Q==" alt="TTM">
+      <div>
+        <div class="brand">TTM AI Coach</div>
+        <div class="brand-sub">THETRADINGMINDSET26</div>
+      </div>
+    </div>
+    <div class="tick">✓</div>
+    <div class="success-title">Payment Confirmed!</div>
+    <div class="success-sub">
+      Thank you. Your purchase is complete.<br><br>
+      <strong>Tap the button below to open your app.</strong><br>
+      No download needed — runs directly in your browser.
+    </div>
+  </div>
+
+  <a href="https://thetradingmindset26-hash.github.io/thetradingmindset26/TTM_AI_Coach_App.html" class="dl-main" target="_blank">
+    ▶ OPEN TTM AI COACH APP
+  </a>
+  <div class="dl-note">
+    Opens directly in your browser · No installation needed<br>
+    <span>🤖 AI Coach · ⚡ Risk Tool · 🧠 Mind Tracker · 📈 Setup Analysis · 🖼 Chart Analysis</span>
+  </div>
+
+  <div class="steps-box">
+    <div class="steps-title">// HOW TO START</div>
+    <div class="step-row">
+      <div class="sn">1</div>
+      <div><div class="st">Open the app above</div><div class="sd">Tap the button above → the app opens instantly in your browser</div></div>
+    </div>
+    <div class="step-row">
+      <div class="sn">2</div>
+      <div><div class="st">Bookmark or install on home screen</div><div class="sd">Bookmark the page — or tap the 3-dot menu → Add to Home Screen to install on your phone</div></div>
+    </div>
+    <div class="step-row">
+      <div class="sn">3</div>
+      <div><div class="st">Import your trades</div><div class="sd">Sidebar → <span>Import Trades</span> → select Dhan or Zerodha → upload your P&L CSV → trades appear instantly</div></div>
+    </div>
+    <div class="step-row">
+      <div class="sn">4</div>
+      <div><div class="st">Get your Coach Report</div><div class="sd">After 5 trades → <span>AI Coach Report</span> → Generate → read your Killer Mistake and Action Plan</div></div>
+    </div>
+  </div>
+
+  <div class="install-box">
+    <div class="install-title">// SAVE APP TO YOUR PHONE HOME SCREEN (one tap daily access)</div>
+    <div class="install-row"><strong>Android:</strong>&nbsp; Chrome → menu (3 dots) → <span style="color:var(--a)">Add to Home Screen</span></div>
+    <div class="install-row"><strong>iPhone:&nbsp;</strong>&nbsp; Safari → Share button → <span style="color:var(--a)">Add to Home Screen</span></div>
+    <div class="install-row" style="margin-top:4px;font-size:11px;color:rgba(122,150,168,0.6)">App icon on your home screen. One tap every morning. Works offline after first load.</div>
+  </div>
+
+  <div class="support-box">
+    <p>Need help? DM <a href="https://instagram.com/thetradingmindset26" target="_blank">@thetradingmindset26</a> on Instagram.<br>
+    Response within 24 hours.</p>
+  </div>
+
+  <div class="sebi">
+    ⚠ EDUCATIONAL TOOL ONLY · NOT SEBI-REGISTERED INVESTMENT ADVICE<br>
+    © THETRADINGMINDSET26 2026 · ALL RIGHTS RESERVED · UNAUTHORISED REDISTRIBUTION PROHIBITED
+  </div>
+
+</div>
+</body>
+</html>
