@@ -530,20 +530,18 @@
           </div>
         </div>
         <div class="panel">
-          <div class="ph"><div class="pt">AI Price Action Reading</div><button class="btn" onclick="saveChart()" style="font-size:10px;padding:5px 10px;color:var(--g);border-color:rgba(0,255,136,0.3)">↓ Save to History</button></div>
+          <div class="ph"><div class="pt">AI Price Action Reading <span style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--mu);font-weight:400;letter-spacing:1px">(result appears here)</span></div><button class="btn" onclick="saveChart()" style="font-size:10px;padding:5px 10px;color:var(--g);border-color:rgba(0,255,136,0.3)">↓ Save to History</button></div>
           <div class="pb">
             <div class="pa-out" id="caOut" style="min-height:80px">Upload a chart and click Analyse.</div>
             <div id="ca-paste-wrap" style="display:none;margin-top:14px">
-              <div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--a);letter-spacing:2px;margin-bottom:7px">✏ PASTE AI RESULT FROM CLAUDE.AI OR CHATGPT HERE</div>
-              <textarea id="ca-paste" class="ta" style="min-height:130px;font-size:11px;line-height:1.7" placeholder="Steps:
-1. Copy the prompt shown above
-2. Go to claude.ai (free) or chatgpt.com
-3. Upload your chart screenshot + paste the prompt
-4. Copy the AI response
-5. Paste it here
-6. Click Save Analysis"></textarea>
+              <div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--a);letter-spacing:2px;margin-bottom:7px">✏ STEP 3 — PASTE THE AI RESPONSE HERE THEN SAVE</div>
+              <textarea id="ca-paste" class="ta" style="min-height:130px;font-size:11px;line-height:1.7" placeholder="STEP 1: Copy the prompt above
+STEP 2: Go to claude.ai → New chat → upload chart image → paste prompt → send
+STEP 3: Copy Claude's full response
+STEP 4: Paste it here
+STEP 5: Click Save Analysis → saved to history ✓"></textarea>
               <div style="display:flex;gap:8px;margin-top:8px">
-                <button class="btn btn-g" onclick="savePastedResult()" style="padding:8px 18px;font-size:12px;font-weight:700">Save Analysis →</button>
+                <button onclick="savePastedResult()" style="flex:1;background:var(--g);color:#000;border:none;font-family:'Syne',sans-serif;font-size:13px;font-weight:800;padding:12px;border-radius:7px;cursor:pointer;letter-spacing:0.3px">✓ SAVE TO HISTORY →</button>
                 <button class="btn" onclick="document.getElementById('ca-paste-wrap').style.display='none'" style="padding:8px 12px;font-size:11px">Cancel</button>
               </div>
             </div>
@@ -1253,7 +1251,7 @@ function saveChart(){if(!window._caLatest){toast('Run analysis first');return;}
 _cH.unshift({id:Date.now(),date:localDate(),instrument:document.getElementById('ca-inst').value,tf:document.getElementById('ca-tf').value,q:document.getElementById('ca-q').value,analysis:window._caLatest});if(_cH.length>50)_cH=_cH.slice(0,50);save();renderCaHist();toast('Saved ✓');}
 function renderCaHist(){var el=document.getElementById('ca-hist'),cEl=document.getElementById('ca-hist-count');if(!el)return;if(cEl)cEl.textContent=_cH.length+' chart'+(_cH.length!==1?'s':'');if(!_cH.length){el.innerHTML='<div style="font-size:11px;color:var(--mu);text-align:center;padding:20px">No saved analyses yet</div>';return;}
 el.innerHTML=_cH.map(function(ca){return'<div onclick="viewCa('+ca.id+')" style="padding:11px 14px;border-bottom:1px solid var(--b2);cursor:pointer;transition:background 0.15s" onmouseover="this.style.background=\'rgba(255,255,255,0.02)\'" onmouseout="this.style.background=\'\'">'
-+'<div style="font-family:JetBrains Mono,monospace;font-size:9px;color:var(--g);margin-bottom:3px">'+ca.date+' · '+ca.instrument+' · '+ca.tf+'</div>'
++'<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:3px">'+'<span style="font-family:JetBrains Mono,monospace;font-size:9px;color:var(--g)">'+ca.date+' · '+ca.instrument+' · '+ca.tf+'</span>'+'<span style="font-family:JetBrains Mono,monospace;font-size:8px;padding:1px 6px;border-radius:3px;'+(ca.source==="manual"?'background:rgba(255,184,0,0.1);color:var(--a)':'background:rgba(0,255,136,0.1);color:var(--g)')+'">'+(ca.source==="manual"?'MANUAL':'AI')+'</span>'+'</div>'
 +'<div style="font-size:11px;color:var(--mu);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+ca.q.slice(0,60)+(ca.q.length>60?'...':'')+'</div>'
 +'</div>';}).join('');}
 function viewCa(id){var e=_cH.find(function(c){return c.id===id;});if(!e)return;document.getElementById('ca-inst').value=e.instrument;document.getElementById('ca-tf').value=e.tf;document.getElementById('ca-q').value=e.q||'';var outEl=document.getElementById('caOut');if(outEl)outEl.textContent=e.analysis||e.prompt||'(no result saved)';window._caLatest=e.analysis||e.prompt||'';document.querySelectorAll('.ca-hist-item').forEach(function(x){x.style.background='';});var sel=document.querySelector('.ca-hist-item[data-id="'+id+'"]');if(sel)sel.style.background='rgba(0,255,136,0.06)';toast('Analysis loaded ✓');}
