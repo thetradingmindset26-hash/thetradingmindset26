@@ -439,51 +439,248 @@
     </div>
   </div>
 
-  <!-- RISK CALCULATOR -->
   <div class="page" id="page-risk">
-    <div style="display:grid;grid-template-columns:380px 1fr;gap:16px;max-width:1000px">
-      <div>
-        <div class="panel">
-          <div class="ph"><div class="pt">⚡ Risk Calculator</div><span class="badge bg">BEFORE EVERY TRADE</span></div>
-          <div class="pb" style="display:flex;flex-direction:column;gap:10px">
-            <div class="fg"><label class="fl">Account Capital (₹)</label><input type="number" class="fi" id="r-cap" placeholder="e.g. 500000" oninput="calcRisk()"></div>
-            <div class="fr fr2"><div class="fg"><label class="fl">Risk Per Trade (%)</label><input type="number" class="fi" id="r-rp" value="1" step="0.1" oninput="calcRisk()"></div><div class="fg"><label class="fl">Max Daily Loss (%)</label><input type="number" class="fi" id="r-dp" value="2" step="0.5" oninput="calcRisk()"></div></div>
-            <div class="fg"><label class="fl">Entry Price</label><input type="number" class="fi" id="r-en" placeholder="e.g. 48250" oninput="calcRisk()"></div>
-            <div class="fr fr2"><div class="fg"><label class="fl">Stop Loss Price</label><input type="number" class="fi" id="r-sl" placeholder="e.g. 48100" oninput="calcRisk()"></div><div class="fg"><label class="fl">Target Price</label><input type="number" class="fi" id="r-tg" placeholder="e.g. 48550" oninput="calcRisk()"></div></div>
-            <div class="fg"><label class="fl">Instrument Type</label><select class="fs" id="r-inst" onchange="calcRisk()"><option value="fo">Options / F&O (enter lot size)</option><option value="eq">Equity / Stocks (shares)</option><option value="cr">Crypto (units)</option></select></div>
-            <div class="fg" id="r-ls-row"><label class="fl">Lot Size <span style="color:var(--mu);font-size:8px">(check NSE for current)</span></label><input type="number" class="fi" id="r-ls" placeholder="e.g. 15 — verify on nseindia.com" oninput="calcRisk()"></div>
-            <div class="fg"><label class="fl">Your Historical Win Rate (%)</label><input type="number" class="fi" id="r-wr" value="55" step="1" oninput="calcRisk()"></div>
-          </div>
-        </div>
-        <div style="background:rgba(255,184,0,0.05);border:1px solid rgba(255,184,0,0.18);border-radius:8px;padding:12px;font-size:11px;color:var(--mu);line-height:1.7">
-          <span style="color:var(--a);font-weight:700">⚠ LOT SIZES CHANGE:</span> SEBI revises F&O lot sizes. Always check current size at <span style="color:var(--g)">nseindia.com → Equity Derivatives</span> before trading.
+    <div style="max-width:1100px">
+
+      <!-- INSIGHT BOX -->
+      <div style="background:rgba(255,184,0,0.06);border:1px solid rgba(255,184,0,0.2);border-left:3px solid var(--a);padding:14px 18px;margin-bottom:20px;border-radius:0 7px 7px 0">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--a);letter-spacing:2px;margin-bottom:5px">⬡ INDUSTRY STANDARD</div>
+        <div style="font-size:12px;color:var(--tx2);line-height:1.7">
+          SEBI research shows 9 out of 10 F&O traders lose money. The primary reasons: <strong style="color:#fff">over-leveraging, ignoring position sizing, and no defined risk per trade.</strong>
+          This tool applies institutional-grade risk management mathematics to your capital.
+          <span style="color:var(--r)">Not investment advice. Educational purpose only.</span>
         </div>
       </div>
-      <div style="display:flex;flex-direction:column;gap:12px">
-        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:9px">
-          <div class="risk-out"><div><div class="rol">RISK AMOUNT</div><div class="rov" id="ro-risk">—</div><div style="font-size:9px;color:var(--mu);font-family:'JetBrains Mono',monospace;margin-top:2px">₹ at risk</div></div></div>
-          <div class="risk-out"><div><div class="rol">MAX LOTS/QTY</div><div class="rov" id="ro-lots">—</div><div style="font-size:9px;color:var(--mu);font-family:'JetBrains Mono',monospace;margin-top:2px">based on inputs</div></div></div>
-          <div class="risk-out"><div><div class="rol">DAILY LIMIT</div><div class="rov rv" id="ro-daily">—</div><div style="font-size:9px;color:var(--mu);font-family:'JetBrains Mono',monospace;margin-top:2px">stop if hit</div></div></div>
-          <div class="risk-out"><div><div class="rol">SL (pts)</div><div class="rov rv" id="ro-sl">—</div></div></div>
-          <div class="risk-out"><div><div class="rol">TARGET (pts)</div><div class="rov" id="ro-tg">—</div></div></div>
-          <div class="risk-out"><div><div class="rol">R:R RATIO</div><div class="rov ra" id="ro-rr">—</div></div></div>
+
+      <!-- KEY INSIGHT BOX -->
+      <div style="background:rgba(255,184,0,0.06);border:1px solid rgba(255,184,0,0.25);border-left:3px solid var(--a);border-radius:0 8px 8px 0;padding:14px 18px;margin-bottom:18px">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--a);letter-spacing:2px;margin-bottom:7px">⬡ THE MOST IMPORTANT INSIGHT IN TRADING</div>
+        <div style="font-size:12px;color:var(--tx2);line-height:1.8">
+          Most traders think they need a <strong style="color:#fff">high win rate</strong> to be profitable. This is wrong.<br>
+          A trader with <strong style="color:var(--g)">30% win rate</strong> and <strong style="color:var(--g)">1:3 R:R</strong> has Expectancy = <strong style="color:var(--g)">+0.20R</strong> → makes money every 100 trades.<br>
+          A trader with <strong style="color:var(--r)">70% win rate</strong> and <strong style="color:var(--r)">1:0.5 R:R</strong> has Expectancy = <strong style="color:var(--r)">−0.05R</strong> → loses money every 100 trades.<br>
+          <span style="color:var(--a);font-weight:700">Win rate alone tells you nothing. R:R + Expectancy tells you everything.</span>
         </div>
-        <div class="panel">
-          <div class="ph"><div class="pt">📊 Risk : Reward Visual</div></div>
-          <div class="pb">
-            <div class="g2" style="gap:10px;margin-bottom:10px">
-              <div><div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--r);margin-bottom:5px">RISK (SL distance)</div><div class="rr-bar-wrap"><div id="rr-risk" class="rr-bar" style="width:0%;background:var(--r)"><span class="rr-lbl" id="rr-risk-l"></span></div></div></div>
-              <div><div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--g);margin-bottom:5px">REWARD (Target distance)</div><div class="rr-bar-wrap"><div id="rr-tg" class="rr-bar" style="width:0%;background:var(--g)"><span class="rr-lbl" id="rr-tg-l"></span></div></div></div>
+      </div>
+
+      <!-- SECTION 1: POSITION SIZE CALCULATOR -->
+      <div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--a);letter-spacing:3px;margin-bottom:10px;display:flex;align-items:center;gap:10px">
+        <span style="background:rgba(255,184,0,0.1);border:1px solid rgba(255,184,0,0.25);padding:2px 10px">01</span> POSITION SIZE CALCULATOR
+      </div>
+
+      <div style="display:grid;grid-template-columns:400px 1fr;gap:16px;margin-bottom:24px">
+        <div>
+          <div class="panel">
+            <div class="ph"><div class="pt">⚡ Risk Calculator</div><span class="badge bg">BEFORE EVERY TRADE</span></div>
+            <div class="pb" style="display:flex;flex-direction:column;gap:10px">
+              <div class="fg"><label class="fl">Account Capital (₹)</label><input type="number" class="fi" id="r-cap" placeholder="e.g. 500000" oninput="calcRisk()" value="500000"></div>
+              <div class="fr fr2">
+                <div class="fg"><label class="fl">Risk Per Trade (%)</label><input type="number" class="fi" id="r-rp" value="1" step="0.1" min="0.1" max="5" oninput="calcRisk()"></div>
+                <div class="fg"><label class="fl">Max Daily Loss (%)</label><input type="number" class="fi" id="r-dp" value="2" step="0.5" oninput="calcRisk()"></div>
+              </div>
+              <div class="fg"><label class="fl">Entry Price</label><input type="number" class="fi" id="r-en" placeholder="e.g. 48250" oninput="calcRisk()" value="48250"></div>
+              <div class="fr fr2">
+                <div class="fg"><label class="fl">Stop Loss Price</label><input type="number" class="fi" id="r-sl" placeholder="e.g. 48100" oninput="calcRisk()" value="48100"></div>
+                <div class="fg"><label class="fl">Target Price</label><input type="number" class="fi" id="r-tg" placeholder="e.g. 48550" oninput="calcRisk()" value="48550"></div>
+              </div>
+              <div class="fg"><label class="fl">Instrument Type</label>
+                <select class="fs" id="r-inst" onchange="calcRisk()">
+                  <option value="fo">Options / F&O (enter lot size)</option>
+                  <option value="eq">Equity / Stocks (shares)</option>
+                  <option value="cr">Crypto (units)</option>
+                </select>
+              </div>
+              <div class="fg" id="r-ls-row"><label class="fl">Lot Size <span style="color:var(--mu);font-size:8px">(check NSE for current)</span></label><input type="number" class="fi" id="r-ls" placeholder="e.g. 15 — verify on nseindia.com" oninput="calcRisk()" value="15"></div>
+              <div class="fg">
+                <label class="fl">Your Historical Win Rate (%)</label>
+                <div style="display:flex;align-items:center;gap:10px">
+                  <input type="range" id="r-wr-sl" min="10" max="90" value="55" step="1"
+                    oninput="document.getElementById('r-wr').value=this.value;calcRisk()"
+                    style="flex:1;appearance:none;height:4px;background:var(--bg3);border-radius:2px;outline:none;cursor:pointer">
+                  <input type="number" class="fi" id="r-wr" value="55" step="1" min="1" max="99"
+                    oninput="document.getElementById('r-wr-sl').value=this.value;calcRisk()"
+                    style="width:70px;text-align:center;font-weight:700;color:var(--g)">
+                  <span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--g);font-weight:700">%</span>
+                </div>
+              </div>
             </div>
-            <div class="rr-verdict" id="rr-verdict">Fill entry, SL and target to see R:R verdict</div>
+          </div>
+          <div style="background:rgba(255,68,102,0.05);border:1px solid rgba(255,68,102,0.15);border-radius:7px;padding:10px 13px;font-size:11px;color:var(--mu);line-height:1.7">
+            <span style="color:var(--a);font-weight:700">⚠ LOT SIZES CHANGE:</span> SEBI revises F&O lot sizes periodically. Always verify at <span style="color:var(--g)">nseindia.com → Equity Derivatives</span>
           </div>
         </div>
-        <div class="panel">
-          <div class="ph"><div class="pt">📈 Win Rate Projections (20 trades)</div><span class="badge ba">EXPECTED P&L</span></div>
-          <div class="pb" id="wr-proj"><div style="font-size:11px;color:var(--mu);text-align:center">Fill all fields to see projections</div></div>
-          <div class="pb" style="border-top:1px solid var(--b2);padding-top:12px" id="wr-sum" style="display:none"></div>
+
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <!-- Output Cards -->
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">
+            <div class="risk-out"><div><div class="rol">RISK AMOUNT</div><div class="rov" id="ro-risk">—</div><div style="font-size:9px;color:var(--mu);font-family:'JetBrains Mono',monospace;margin-top:2px">₹ at risk</div></div></div>
+            <div class="risk-out"><div><div class="rol">MAX LOTS/QTY</div><div class="rov" id="ro-lots">—</div><div style="font-size:9px;color:var(--mu);font-family:'JetBrains Mono',monospace;margin-top:2px">based on inputs</div></div></div>
+            <div class="risk-out"><div><div class="rol">DAILY LIMIT</div><div class="rov rv" id="ro-daily">—</div><div style="font-size:9px;color:var(--mu);font-family:'JetBrains Mono',monospace;margin-top:2px">stop if hit</div></div></div>
+            <div class="risk-out"><div><div class="rol">SL DISTANCE</div><div class="rov rv" id="ro-sl">—</div></div></div>
+            <div class="risk-out"><div><div class="rol">TARGET DIST</div><div class="rov" id="ro-tg">—</div></div></div>
+            <div class="risk-out"><div><div class="rol">R:R (Risk:Reward)</div><div class="rov ra" id="ro-rr">—</div></div></div>
+          </div>
+          <!-- Verdict -->
+          <div id="rr-verdict-box" style="background:var(--bg3);border:1px solid var(--b2);border-radius:7px;padding:12px 14px">
+            <div id="rr-verdict" style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--mu)">Fill entry, SL and target to see verdict</div>
+          </div>
+          <!-- R:R Visual -->
+          <div class="panel">
+            <div class="ph"><div class="pt">📊 Risk : Reward Visual</div><span style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--mu)">updates as you type</span></div>
+            <div class="pb">
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:10px">
+                <div>
+                  <div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--r);margin-bottom:5px">RISK (Stop Loss distance)</div>
+                  <div class="rr-bar-wrap"><div id="rr-risk" class="rr-bar" style="width:0%;background:var(--r)"><span class="rr-lbl" id="rr-risk-l"></span></div></div>
+                </div>
+                <div>
+                  <div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--g);margin-bottom:5px">REWARD (Target distance)</div>
+                  <div class="rr-bar-wrap"><div id="rr-tg" class="rr-bar" style="width:0%;background:var(--g)"><span class="rr-lbl" id="rr-tg-l"></span></div></div>
+                </div>
+              </div>
+              <!-- Kelly Criterion -->
+              <div style="background:#0A1220;border:1px solid var(--b2);border-radius:6px;padding:10px 12px;margin-top:6px">
+                <div style="display:flex;justify-content:space-between;align-items:center">
+                  <div>
+                    <div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--mu);letter-spacing:1.5px">KELLY CRITERION</div>
+                    <div style="font-size:11px;color:var(--tx2);margin-top:3px">Mathematically optimal position size for your edge</div>
+                  </div>
+                  <div style="text-align:right">
+                    <div style="font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:var(--a)" id="ro-kelly">—</div>
+                    <div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--mu)">Full Kelly</div>
+                  </div>
+                  <div style="text-align:right">
+                    <div style="font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:var(--g)" id="ro-halfkelly">—</div>
+                    <div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--mu)">Half-Kelly (safe)</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- WR Projections -->
+          <div class="panel">
+            <div class="ph"><div class="pt">📈 Win Rate Projections (20 trades)</div><span class="badge ba">EXPECTED P&L</span></div>
+            <div class="pb" id="wr-proj"><div style="font-size:11px;color:var(--mu);text-align:center">Fill all fields to see projections</div></div>
+            <div class="pb" style="border-top:1px solid var(--b2);padding-top:10px" id="wr-sum"></div>
+          <!-- Edge Quality Verdict -->
+          <div id="edge-verdict" style="display:none;background:#0A1220;border:1px solid var(--b2);border-radius:7px;padding:12px 14px;margin:0 18px 14px">
+            <div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--mu);letter-spacing:1.5px;margin-bottom:6px">EDGE QUALITY ASSESSMENT</div>
+            <div id="edge-text" style="font-size:12px;line-height:1.75;color:var(--tx2)"></div>
+          </div>
+          </div>
         </div>
       </div>
+
+      <!-- SECTION 2: PROFITABILITY MATRIX -->
+      <div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--a);letter-spacing:3px;margin-bottom:10px;display:flex;align-items:center;gap:10px">
+        <span style="background:rgba(255,184,0,0.1);border:1px solid rgba(255,184,0,0.25);padding:2px 10px">02</span> PROFITABILITY MATRIX — WIN RATE × R:R HEAT MAP
+      </div>
+      <div class="panel" style="margin-bottom:20px">
+        <div class="ph">
+          <div class="pt">Expected Value per ₹1 Risked</div>
+          <span class="badge bg">YOUR POSITION HIGHLIGHTED</span>
+        </div>
+        <div class="pb">
+          <div style="font-size:11px;color:var(--mu);margin-bottom:10px;line-height:1.7">
+            Each cell shows how much you earn per ₹1 risked over many trades. <span style="color:var(--g)">Green = profitable edge.</span> <span style="color:var(--r)">Red = losing system.</span> Your current Win Rate and R:R is marked <span style="color:var(--a);font-weight:700">YOU →</span>
+          </div>
+          <div style="overflow-x:auto"><table id="profMatrix" style="border-collapse:collapse;width:100%;min-width:600px"></table></div>
+          <div style="display:flex;gap:16px;margin-top:10px;flex-wrap:wrap">
+            <div style="display:flex;align-items:center;gap:5px;font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--mu)"><div style="width:14px;height:9px;background:#4A0808;border-radius:2px"></div>Heavy Loss</div>
+            <div style="display:flex;align-items:center;gap:5px;font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--mu)"><div style="width:14px;height:9px;background:#1A2A1A;border-radius:2px"></div>Break-even</div>
+            <div style="display:flex;align-items:center;gap:5px;font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--mu)"><div style="width:14px;height:9px;background:#0A4E24;border-radius:2px"></div>Strong Edge</div>
+            <div style="display:flex;align-items:center;gap:5px;font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--a);font-weight:700"><div style="width:14px;height:9px;background:var(--a);border-radius:2px"></div>YOU are here</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SECTION 3: BREAK-EVEN TABLE -->
+      <div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--a);letter-spacing:3px;margin-bottom:10px;display:flex;align-items:center;gap:10px">
+        <span style="background:rgba(255,184,0,0.1);border:1px solid rgba(255,184,0,0.25);padding:2px 10px">03</span> BREAK-EVEN WIN RATE TABLE
+      </div>
+      <div class="panel" style="margin-bottom:20px">
+        <div class="ph"><div class="pt">Minimum Win Rate Required to Break Even</div></div>
+        <div class="pb">
+          <div style="font-size:11px;color:var(--mu);margin-bottom:10px">At each R:R ratio, you need AT LEAST this win rate to not lose money over time.</div>
+          <div id="beTable" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:1px;background:var(--b2)"></div>
+        </div>
+      </div>
+
+      <!-- R:R WIN RATE REQUIREMENT CHART -->
+      <div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--a);letter-spacing:3px;margin-bottom:10px;display:flex;align-items:center;gap:10px">
+        <span style="background:rgba(255,184,0,0.1);border:1px solid rgba(255,184,0,0.25);padding:2px 10px">03B</span> R:R vs MINIMUM WIN RATE REQUIRED
+      </div>
+      <div class="panel" style="margin-bottom:20px">
+        <div class="ph">
+          <div class="pt">Win Rate You Need to Survive at Each R:R</div>
+          <span class="badge bg">LOWER IS BETTER</span>
+        </div>
+        <div class="pb">
+          <div style="font-size:11px;color:var(--mu);margin-bottom:14px;line-height:1.7">
+            The higher your R:R, the <strong style="color:#fff">less often you need to win</strong> to be profitable.
+            This is why R:R matters more than win rate. Your current win rate is marked <span style="color:var(--g);font-weight:700">■</span>
+          </div>
+          <div id="rr-chart-wrap" style="display:flex;flex-direction:column;gap:8px"></div>
+          <div style="margin-top:14px;background:rgba(0,255,136,0.04);border:1px solid rgba(0,255,136,0.12);border-radius:6px;padding:10px 14px;font-size:11px;color:var(--mu);line-height:1.75">
+            <strong style="color:var(--g)">Key takeaway:</strong> At 1:2 R:R, you only need to win <strong style="color:#fff">34%</strong> of trades to break even.
+            At 1:3 R:R, only <strong style="color:#fff">25%</strong>. Most traders chase win rate — professionals engineer their R:R.
+          </div>
+        </div>
+      </div>
+
+      <!-- SECTION 4: MONTE CARLO SIMULATOR -->
+      <div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--a);letter-spacing:3px;margin-bottom:10px;display:flex;align-items:center;gap:10px">
+        <span style="background:rgba(255,184,0,0.1);border:1px solid rgba(255,184,0,0.25);padding:2px 10px">04</span> MONTE CARLO TRADE SIMULATOR
+      </div>
+      <div class="panel" style="margin-bottom:20px">
+        <div class="ph"><div class="pt">100-Trade Random Simulation</div><span class="badge ba">RUN MULTIPLE TIMES</span></div>
+        <div class="pb">
+          <div style="font-size:11px;color:var(--mu);margin-bottom:12px;line-height:1.7">
+            Simulates 100 random trades using your Win Rate and R:R. Each run is different — this shows real variance. Run it 5 times to understand best/worst case. Uses ₹500,000 starting capital with your risk %.
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:14px">
+            <div class="fg"><label class="fl">Win Rate %</label><input type="number" class="fi" id="sim-wr" value="55" min="1" max="99"></div>
+            <div class="fg"><label class="fl">R:R Ratio</label><input type="number" class="fi" id="sim-rr" value="2" step="0.1" min="0.1"></div>
+            <div class="fg"><label class="fl">Risk Per Trade %</label><input type="number" class="fi" id="sim-risk" value="1" step="0.1" min="0.1" max="5"></div>
+          </div>
+          <button onclick="runSim()" class="run-btn" style="margin-bottom:14px">▶ RUN 100-TRADE SIMULATION</button>
+          <canvas id="simCanvas" style="width:100%;height:160px;background:#0A1220;border:1px solid var(--b2);border-radius:6px;display:block"></canvas>
+          <div id="simResult" style="margin-top:12px;font-size:12px;color:var(--tx2);line-height:1.75;background:#0A1220;border:1px solid var(--b2);border-radius:6px;padding:12px;display:none"></div>
+        </div>
+      </div>
+
+      <!-- SECTION 5: THE 5 IRON RULES -->
+      <div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--a);letter-spacing:3px;margin-bottom:10px;display:flex;align-items:center;gap:10px">
+        <span style="background:rgba(255,184,0,0.1);border:1px solid rgba(255,184,0,0.25);padding:2px 10px">05</span> THE 5 IRON RULES OF RISK MANAGEMENT
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px">
+        <div style="background:#0A1220;border:1px solid var(--b1);border-left:3px solid var(--g);border-radius:0 7px 7px 0;padding:14px 16px">
+          <div style="font-family:'Syne',sans-serif;font-size:14px;font-weight:800;color:#fff;margin-bottom:5px">Rule 1 — Never Risk More Than 1%</div>
+          <div style="font-size:11px;color:var(--mu);line-height:1.7">At 1% risk, you need 100 consecutive losses to blow your account. At 5%, you need only 20. SEBI data shows over-leveraging is the #1 reason retail traders lose capital permanently.</div>
+        </div>
+        <div style="background:#0A1220;border:1px solid var(--b1);border-left:3px solid var(--g);border-radius:0 7px 7px 0;padding:14px 16px">
+          <div style="font-family:'Syne',sans-serif;font-size:14px;font-weight:800;color:#fff;margin-bottom:5px">Rule 2 — Set Stop Before Entry</div>
+          <div style="font-size:11px;color:var(--mu);line-height:1.7">Your stop loss is a decision made when you are calm and logical. During a trade, fear distorts judgment. Set the stop as a hard order immediately on entry. Never cancel it.</div>
+        </div>
+        <div style="background:#0A1220;border:1px solid var(--b1);border-left:3px solid var(--r);border-radius:0 7px 7px 0;padding:14px 16px">
+          <div style="font-family:'Syne',sans-serif;font-size:14px;font-weight:800;color:#fff;margin-bottom:5px">Rule 3 — Honour the Daily Loss Limit</div>
+          <div style="font-size:11px;color:var(--mu);line-height:1.7">When your daily loss limit hits — stop. No exceptions. The market will be there tomorrow. Revenge trading after hitting the limit is how small losses become account-ending losses.</div>
+        </div>
+        <div style="background:#0A1220;border:1px solid var(--b1);border-left:3px solid var(--r);border-radius:0 7px 7px 0;padding:14px 16px">
+          <div style="font-family:'Syne',sans-serif;font-size:14px;font-weight:800;color:#fff;margin-bottom:5px">Rule 4 — Minimum R:R of 1:1.5</div>
+          <div style="font-size:11px;color:var(--mu);line-height:1.7">If your target is not at least 1.5x your stop distance (1:1.5) — skip the trade. A 50% win rate with 1:1.5 R:R is profitable. A 60% win rate with 1:0.8 R:R loses money. R:R matters more than win rate.</div>
+        </div>
+        <div style="background:#0A1220;border:1px solid var(--b1);border-left:3px solid var(--a);border-radius:0 7px 7px 0;padding:14px 16px;grid-column:1/-1">
+          <div style="font-family:'Syne',sans-serif;font-size:14px;font-weight:800;color:#fff;margin-bottom:5px">Rule 5 — Use the Kelly Criterion for Sizing</div>
+          <div style="font-size:11px;color:var(--mu);line-height:1.7">Kelly % = Win Rate − (Loss Rate ÷ R:R). Use Half-Kelly for safety. This is the mathematically optimal bet size proven by information theory. It maximises long-term growth while preventing ruin. Never exceed Kelly — it leads to bankruptcy even with a positive edge.</div>
+        </div>
+      </div>
+
+      <!-- SEBI NOTE -->
+      <div style="background:rgba(6,10,16,0.98);border:1px solid rgba(255,68,102,0.2);border-radius:7px;padding:12px 16px;font-family:'JetBrains Mono',monospace;font-size:9px;color:rgba(200,216,232,0.45);line-height:1.9">
+        <span style="color:rgba(255,68,102,0.7);font-weight:700">⚠ DISCLAIMER:</span> Not a buy/sell recommendation · Educational purpose only · Not SEBI-registered investment advice · All calculations are theoretical based on user inputs · Trading involves substantial risk of financial loss · Consult a SEBI-registered adviser · sebi.gov.in · © thetradingmindset26 2026
+      </div>
+
     </div>
   </div>
 
@@ -884,6 +1081,76 @@ STEP 5: Click Save Analysis → saved to history ✓"></textarea>
         <div class="pb" style="display:flex;flex-direction:column;gap:0" id="howto-steps"></div>
       </div>
       <div class="panel" style="margin-bottom:14px">
+        <div class="ph"><div class="pt">⚡ Risk Calculator — Complete Guide</div><span class="badge ba">MUST READ</span></div>
+        <div class="pb">
+
+          <!-- Section 01 -->
+          <div style="margin-bottom:18px">
+            <div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--a);letter-spacing:2px;margin-bottom:10px">01 — POSITION SIZE CALCULATOR</div>
+            <div class="howto-step"><div class="hs-num" style="background:var(--a)">A</div><div><div class="hs-title">Account Capital</div><div class="hs-desc">Enter your total trading capital. Not your monthly budget — your full capital dedicated to trading. This is the base for all calculations.</div></div></div>
+            <div class="howto-step"><div class="hs-num" style="background:var(--a)">B</div><div><div class="hs-title">Risk Per Trade %</div><div class="hs-desc">The % of capital you are willing to lose on ONE trade. Industry standard: 1%. At 1%, you need 100 consecutive losses to lose everything. Never go above 2%. Professionals use 0.5-1%.</div></div></div>
+            <div class="howto-step"><div class="hs-num" style="background:var(--a)">C</div><div><div class="hs-title">Max Daily Loss %</div><div class="hs-desc">The maximum you can lose in one trading day before stopping completely. Set 2-3%. When this number is hit — close the platform. No exceptions. This prevents one bad day from destroying a month of gains.</div></div></div>
+            <div class="howto-step"><div class="hs-num" style="background:var(--a)">D</div><div><div class="hs-title">Entry, Stop Loss, Target</div><div class="hs-desc">Enter your planned entry price, stop loss price, and target price BEFORE taking the trade. The calculator shows your exact lot size, R:R ratio, and whether the trade is worth taking.</div></div></div>
+            <div class="howto-step"><div class="hs-num" style="background:var(--a)">E</div><div><div class="hs-title">Lot Size</div><div class="hs-desc">For F&O: enter the current lot size. SEBI changes these periodically. Always verify at nseindia.com → Equity Derivatives → before trading. Bank Nifty lot size has changed multiple times.</div></div></div>
+            <div class="howto-step"><div class="hs-num" style="background:var(--a)">F</div><div><div class="hs-title">Your Historical Win Rate</div><div class="hs-desc">Use the slider to set your actual win rate from your trade history. Check your Dashboard or Coach Report for this number. Do NOT use an assumed number — use your real data.</div></div></div>
+          </div>
+
+          <!-- Section 02 -->
+          <div style="margin-bottom:18px">
+            <div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--a);letter-spacing:2px;margin-bottom:10px">02 — PROFITABILITY MATRIX</div>
+            <div style="font-size:12px;color:var(--mu);line-height:1.8;background:#0A1220;padding:12px 14px;border-radius:7px;border-left:3px solid var(--a)">
+              The heat map shows Expectancy (EV) for every combination of Win Rate and R:R.<br>
+              <strong style="color:#fff">EV = (Win% × Avg Win) − (Loss% × Avg Loss)</strong><br>
+              Find YOUR row (win rate) and YOUR column (R:R). The number in that cell is your edge per ₹1 risked.<br>
+              <strong style="color:var(--g)">Positive number = your system makes money.</strong> <strong style="color:var(--r)">Negative = losing system.</strong><br>
+              The cell highlighted in amber is YOUR current position. If it is red — fix your R:R or stop trading this setup.
+            </div>
+          </div>
+
+          <!-- Section 03 -->
+          <div style="margin-bottom:18px">
+            <div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--a);letter-spacing:2px;margin-bottom:10px">03 — BREAK-EVEN TABLE & R:R CHART</div>
+            <div style="font-size:12px;color:var(--mu);line-height:1.8;background:#0A1220;padding:12px 14px;border-radius:7px;border-left:3px solid var(--a)">
+              The break-even table shows the MINIMUM win rate you need at each R:R to not lose money.<br><br>
+              <strong style="color:#fff">Key insight:</strong><br>
+              At 1:1 R:R → you need 50% win rate to break even<br>
+              At 1:2 R:R → you need only 34% win rate to break even<br>
+              At 1:3 R:R → you need only 25% win rate to break even<br><br>
+              The R:R chart shows YOUR win rate as a green line on every bar. If the green line is to the RIGHT of the required minimum — you have edge at that R:R. If to the LEFT — you need a wider target or tighter stop.
+            </div>
+          </div>
+
+          <!-- Section 04 -->
+          <div style="margin-bottom:18px">
+            <div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--a);letter-spacing:2px;margin-bottom:10px">04 — MONTE CARLO SIMULATOR</div>
+            <div style="font-size:12px;color:var(--mu);line-height:1.8;background:#0A1220;padding:12px 14px;border-radius:7px;border-left:3px solid var(--a)">
+              Simulates 100 random trades using your Win Rate and R:R. Each run is DIFFERENT — that is the point.<br><br>
+              <strong style="color:#fff">How to use it:</strong><br>
+              1. Set your real Win Rate and R:R in the simulator fields<br>
+              2. Click Run — see 100 random trades played out<br>
+              3. Click Run again 5 more times — watch how different each run is<br>
+              4. This shows you the VARIANCE in your system — even a good system has losing streaks<br>
+              5. If even the BEST runs show your capital dropping — your system has negative expectancy<br><br>
+              <strong style="color:var(--g)">The lesson:</strong> Good traders plan for variance. Bad traders quit during a losing streak that was statistically expected.
+            </div>
+          </div>
+
+          <!-- Section 05 -->
+          <div>
+            <div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--a);letter-spacing:2px;margin-bottom:10px">05 — KELLY CRITERION</div>
+            <div style="font-size:12px;color:var(--mu);line-height:1.8;background:#0A1220;padding:12px 14px;border-radius:7px;border-left:3px solid var(--a)">
+              Kelly % = Win Rate − (Loss Rate ÷ R:R)<br><br>
+              This is the mathematically optimal % of capital to risk per trade to maximise long-term growth.<br>
+              <strong style="color:#fff">Always use Half-Kelly (the safer value shown in green).</strong><br><br>
+              Full Kelly is theoretically optimal but causes massive drawdowns in practice. Half-Kelly gives 75% of the growth with 50% of the drawdown. Most professional traders use 25-50% Kelly.<br><br>
+              <strong style="color:var(--r)">If Kelly shows N/A or negative</strong> — your system has no edge at the current Win Rate and R:R. Do not risk real capital.
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="panel" style="margin-bottom:14px">
         <div class="ph"><div class="pt">💾 Backup Your Data</div></div>
         <div class="pb" style="font-size:12px;color:var(--mu);line-height:1.85">
           Data saves in your browser automatically.<br>
@@ -1060,7 +1327,7 @@ STEP 5: Click Save Analysis → saved to history ✓"></textarea>
 <script>
 'use strict';
 function localDate(){var d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}var trades=JSON.parse(localStorage.getItem('ttm3_trades')||'[]');var mtData=JSON.parse(localStorage.getItem('ttm3_mt')||'{}');var _cH=JSON.parse(localStorage.getItem('ttm3_charts')||'[]');var _eB='Neutral';var _eA='Neutral';var _mC={pre:'Neutral',post:'Neutral',mistake:'None'};var _mD=localDate();var _mtDE=document.getElementById('mtDate');if(_mtDE)_mtDE.textContent=mtDateStr(_mD);var _iB=[];var _cI=null;var _cT='image/png';var _aB='dhan';function save(){localStorage.setItem('ttm3_trades',JSON.stringify(trades));localStorage.setItem('ttm3_mt',JSON.stringify(mtData));localStorage.setItem('ttm3_charts',JSON.stringify(_cH));}
-var _PM={dashboard:['Dashboard','Overview of your trading performance'],trades:['Trade Log','Log and manage all your trades'],import:['Import Trades','Import from Dhan or Zerodha CSV'],ai:['Coach Report','Data-driven coaching from your trades'],setups:['Setup Analysis','Expected Value ranking for all setups'],risk:['Risk Calculator','Position size before every trade'],weekly:['Weekly Review','Data-driven weekly performance review'],chart:['Chart Analysis','Upload chart — AI reads price action'],mindtracker:['Mind Tracker','Daily psychology journal'],mistakes:['20 Mistakes','Emotional mistakes with specific fixes'],howto:['How to Use','Step-by-step guide'],faq:['FAQ','Frequently asked questions'],settings:['Settings','API key and data management'],support:['Support & About','Contact and channel info'],};function SP(name){document.querySelectorAll('.page').forEach(function(p){p.classList.remove('active');});document.querySelectorAll('.nav-item').forEach(function(n){n.classList.remove('active');});var pg=document.getElementById('page-'+name);if(pg)pg.classList.add('active');var meta=_PM[name]||[name,''];var navEl=document.querySelector('.nav-item[onclick="SP(\''+name+'\')"]');if(navEl)navEl.classList.add('active');var tEl=document.getElementById('pageTitle');var sEl=document.getElementById('pageSub');if(tEl)tEl.textContent=meta[0];if(sEl)sEl.textContent=meta[1];if(name==='dashboard')refreshDash();if(name==='setups')refreshSetups();if(name==='mindtracker')mtRefresh();if(name==='settings')refreshSettings();if(name==='mistakes'||name==='faq'||name==='howto')buildStatic();}
+var _PM={dashboard:['Dashboard','Overview of your trading performance'],trades:['Trade Log','Log and manage all your trades'],import:['Import Trades','Import from Dhan or Zerodha CSV'],ai:['Coach Report','Data-driven coaching from your trades'],setups:['Setup Analysis','Expected Value ranking for all setups'],risk:['Risk Calculator','Position size before every trade'],weekly:['Weekly Review','Data-driven weekly performance review'],chart:['Chart Analysis','Upload chart — AI reads price action'],mindtracker:['Mind Tracker','Daily psychology journal'],mistakes:['20 Mistakes','Emotional mistakes with specific fixes'],howto:['How to Use','Step-by-step guide'],faq:['FAQ','Frequently asked questions'],settings:['Settings','API key and data management'],support:['Support & About','Contact and channel info'],};function SP(name){document.querySelectorAll('.page').forEach(function(p){p.classList.remove('active');});document.querySelectorAll('.nav-item').forEach(function(n){n.classList.remove('active');});var pg=document.getElementById('page-'+name);if(pg)pg.classList.add('active');var meta=_PM[name]||[name,''];var navEl=document.querySelector('.nav-item[onclick="SP(\''+name+'\')"]');if(navEl)navEl.classList.add('active');var tEl=document.getElementById('pageTitle');var sEl=document.getElementById('pageSub');if(tEl)tEl.textContent=meta[0];if(sEl)sEl.textContent=meta[1];if(name==='dashboard')refreshDash();if(name==='risk'){calcRisk();setTimeout(function(){buildMatrix();buildBreakEven();buildRRChart();updateEdgeVerdict();},50);}if(name==='setups')refreshSetups();if(name==='mindtracker')mtRefresh();if(name==='settings')refreshSettings();if(name==='mistakes'||name==='faq'||name==='howto')buildStatic();}
 function toast(msg,dur){dur=dur||2500;var t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(function(){t.classList.remove('show');},dur);}
 function calcStats(arr){arr=arr||trades;var n=arr.length;if(!n)return null;var wins=arr.filter(function(t){return t.pnl>0;});var losses=arr.filter(function(t){return t.pnl<0;});var wrRaw=wins.length/n;var avgW=wins.length?wins.reduce(function(s,t){return s+t.pnl;},0)/wins.length:0;var avgL=losses.length?Math.abs(losses.reduce(function(s,t){return s+t.pnl;},0)/losses.length):1;var totalW=wins.reduce(function(s,t){return s+t.pnl;},0);var totalL=Math.abs(losses.reduce(function(s,t){return s+t.pnl;},0));var pfNum=totalL>0?totalW/totalL:99;var pf=totalL>0?pfNum.toFixed(2):'∞';var discR=arr.filter(function(t){return t.rulesOk;}).length/n;var exp=(wrRaw*avgW-(1-wrRaw)*avgL).toFixed(1);var rrArr=arr.filter(function(t){return t.rr>0;}).map(function(t){return t.rr;});var avgRR=rrArr.length?(rrArr.reduce(function(a,b){return a+b;},0)/rrArr.length).toFixed(2):0;var emoB={},emoA={};arr.forEach(function(t){var eb=(t._eB||'Neutral').replace(/[^a-zA-Z\s]/g,'').trim();var ea=(t._eA||'Neutral').replace(/[^a-zA-Z\s]/g,'').trim();emoB[eb]=(emoB[eb]||0)+1;emoA[ea]=(emoA[ea]||0)+1;});var topEB=Object.keys(emoB).sort(function(a,b){return emoB[b]-emoB[a];})[0]||'Neutral';var topEA=Object.keys(emoA).sort(function(a,b){return emoA[b]-emoA[a];})[0]||'Neutral';var fomoP=(emoB['FOMO']||0)/n;var revP=(emoB['Revenge']||0)/n;var fearP=((emoB['Fearful']||0)+(emoB['Anxious']||0))/n;var mkMap={};arr.forEach(function(t){if(t.mistake&&t.mistake!=='None')mkMap[t.mistake]=(mkMap[t.mistake]||0)+1;});var topMk=Object.keys(mkMap).sort(function(a,b){return mkMap[b]-mkMap[a];})[0]||'None';var setMap={};arr.forEach(function(t){var s=t.setup||'';if(!s||s==='Unknown'||s==='Imported')return;if(!setMap[s])setMap[s]={n:0,w:0,pnl:0,winPnl:0,lossPnl:0};setMap[s].n++;if(t.pnl>0){setMap[s].w++;setMap[s].winPnl+=t.pnl;}else if(t.pnl<0){setMap[s].lossPnl+=t.pnl;}setMap[s].pnl+=t.pnl;});Object.keys(setMap).forEach(function(s){var d=setMap[s];d.wr=d.w/d.n;d.avgPnL=d.pnl/d.n;d.avgWin=d.w>0?d.winPnl/d.w:0;d.avgLoss=(d.n-d.w)>0?Math.abs(d.lossPnl/(d.n-d.w)):0;d.ev=d.wr*d.avgWin-(1-d.wr)*d.avgLoss;});var setArr=Object.keys(setMap).map(function(s){return{name:s,d:setMap[s]};}).sort(function(a,b){return b.d.ev-a.d.ev;});var bestSet=setArr[0]?setArr[0].name:'N/A';var bestEV=setArr[0]?setArr[0].d.ev:0;var worstSet=setArr[setArr.length-1]?setArr[setArr.length-1].name:'N/A';var mktMap={};arr.forEach(function(t){var mc=t.mkt||'';if(!mc)return;if(!mktMap[mc])mktMap[mc]={n:0,w:0};mktMap[mc].n++;if(t.pnl>0)mktMap[mc].w++;});Object.keys(mktMap).forEach(function(mc){mktMap[mc].wr=mktMap[mc].w/mktMap[mc].n;});var mktArr=Object.keys(mktMap).map(function(k){return{name:k,d:mktMap[k]};}).sort(function(a,b){return b.d.wr-a.d.wr;});var bestMkt=mktArr[0]?mktArr[0].name:'N/A';var worstMkt=mktArr[mktArr.length-1]?mktArr[mktArr.length-1].name:'N/A';function grade(wr,pf,disc,n){if(n<5)return'—';if(wr>=0.60&&pf>=1.8&&disc>=0.80)return'A';if(wr>=0.55&&pf>=1.5&&disc>=0.70)return'B';if(wr>=0.50&&pf>=1.2&&disc>=0.60)return'C';if(wr>=0.45&&pf>=1.0)return'D';return'F';}
 return{n:n,wins:wins.length,losses:losses.length,wr:(wrRaw*100).toFixed(1),wrRaw:wrRaw,avgW:avgW,avgL:avgL,totalW:totalW,totalL:totalL,pf:pf,pfNum:pfNum,exp:exp,disc:(discR*100).toFixed(0),discRaw:discR,avgRR:avgRR,emoB:emoB,emoA:emoA,topEB:topEB,topEA:topEA,fomoP:fomoP,revP:revP,fearP:fearP,mkMap:mkMap,topMk:topMk,setMap:setMap,setArr:setArr,bestSet:bestSet,bestEV:bestEV,worstSet:worstSet,mktMap:mktMap,mktArr:mktArr,bestMkt:bestMkt,worstMkt:worstMkt,grade:grade(wrRaw,pfNum,discR,n),};}
@@ -1118,11 +1385,12 @@ var gc=function(v,hi,lo){return v>=hi?'var(--g)':v>=lo?'var(--a)':'var(--r)';};s
   if(totEl){totEl.textContent=(finalPnl>=0?'+':'')+'₹'+finalPnl.toFixed(0);totEl.style.color=finalPnl>=0?'var(--g)':'var(--r)';}
   if(bestEl)bestEl.textContent='+₹'+bestPnl.toFixed(0);
   if(wrstEl)wrstEl.textContent='₹'+wrstPnl.toFixed(0);
-}ementById('eq-ymax'),ymn=document.getElementById('eq-ymin'),ymd=document.getElementById('eq-ymid');if(ymx)ymx.textContent='₹'+mx.toFixed(0);if(ymn)ymn.textContent='₹'+mn.toFixed(0);if(ymd)ymd.textContent='₹0';var xs=document.getElementById('eq-xstart'),xe=document.getElementById('eq-xend');if(xs)xs.textContent=sorted[0].date.slice(5);if(xe)xe.textContent=sorted[sorted.length-1].date.slice(5);}
+}
 var byDate={};trades.forEach(function(t){byDate[t.date]=(byDate[t.date]||0)+t.pnl;});var dts=Object.keys(byDate).sort().slice(-14);var barsEl=document.getElementById('dailyBars');if(barsEl&&dts.length){var vals=dts.map(function(d){return byDate[d];});var mx2=Math.max.apply(null,vals.map(Math.abs).concat([1]));barsEl.innerHTML=dts.map(function(d,i){var v=vals[i],h2=Math.max((Math.abs(v)/mx2)*100,2);var col=v>=0?'var(--g)':'var(--r)';return'<div class="bar-col"><div class="bar-fill" style="height:'+h2+'%;background:'+col+'"></div><div class="bar-lbl">'+d.split('-')[2]+'</div></div>';}).join('');}
 var eEl=document.getElementById('emo-pattern');if(eEl&&Object.keys(st.emoB).length){var top=Object.keys(st.emoB).sort(function(a,b){return st.emoB[b]-st.emoB[a];}).slice(0,4);eEl.innerHTML=top.map(function(e){var pct=(st.emoB[e]/st.n*100).toFixed(0);var col=['FOMO','Revenge','Frustrated','Angry','Greedy'].indexOf(e)>=0?'var(--r)':['Calm','Confident','Focused'].indexOf(e)>=0?'var(--g)':'var(--a)';return'<div style="margin-bottom:7px"><div style="display:flex;justify-content:space-between;margin-bottom:3px"><span style="font-size:11px;color:var(--tx2)">'+e+'</span><span style="font-family:JetBrains Mono,monospace;font-size:10px;color:'+col+'">'+pct+'%</span></div><div style="height:3px;background:var(--bg3);border-radius:2px"><div style="height:100%;width:'+pct+'%;background:'+col+';border-radius:2px"></div></div></div>';}).join('');}
 var rb=document.getElementById('recentBody');if(rb&&trades.length){rb.innerHTML=trades.slice(0,5).map(function(t){return'<tr><td class="mono">'+t.date+'</td><td>'+t.instrument+'</td><td><span class="stag">'+t.setup.split(' ').slice(0,2).join(' ')+'</span></td><td class="mono">'+t.entry+'</td><td class="mono">'+t.exit+'</td><td class="mono '+(t.pnl>=0?'pos':'neg')+'">'+(t.pnl>=0?'+':'')+'₹'+t.pnl.toFixed(2)+'</td><td class="mono">'+t.rr+'x</td><td style="font-size:10px">'+t._eB+'</td></tr>';}).join('');}
 var dsEl=document.getElementById('dash-setups');if(dsEl&&st.setArr.length){var top4=st.setArr.slice(0,4);var maxEV=Math.max.apply(null,top4.map(function(s){return Math.abs(s.d.ev);}));maxEV=maxEV||1;dsEl.innerHTML=top4.map(function(s){var col=s.d.ev>=0?'var(--g)':'var(--r)';var bw=(Math.abs(s.d.ev)/maxEV*75).toFixed(0);return'<div class="ev-row"><div class="ev-name">'+s.name.split(' ').slice(0,3).join(' ')+'</div><div class="ev-bar-bg"><div class="ev-bar-fill" style="width:'+bw+'%;background:'+col+'"></div></div><div class="ev-val" style="color:'+col+'">'+(s.d.ev>=0?'+':'')+s.d.ev.toFixed(0)+'</div><div class="ev-n">'+s.d.n+' tr</div></div>';}).join('');}
+}
 function pickEmo(el,type,cls){var grp=type==='before'?'emoBeforeChips':'emoAfterChips';document.getElementById(grp).querySelectorAll('.chip').forEach(function(c){c.className='chip';});el.className='chip '+cls;var txt=el.textContent.trim().replace(/^[^a-zA-Z]+/,'');if(type==='before')_eB=txt;else _eA=txt;}
 function calcQuality(rr,rulesOk,mistake,pnl){var s=5;if(rr>=2.0)s+=2;else if(rr>=1.5)s+=1;else if(rr<1.0)s-=1;if(rulesOk&&(!mistake||mistake==='None'))s+=2;if(mistake&&mistake!=='None')s-=2;if(pnl>0)s+=1;else if(pnl<0)s-=1;return Math.max(1,Math.min(10,s));}
 function calcDecision(rr,rulesOk,mistake,eb){var s=5;if(rulesOk&&(!mistake||mistake==='None'))s+=2;if(rr>=2.0)s+=1;else if(rr<1.0)s-=1;if(mistake&&mistake!=='None')s-=2;if(['FOMO','Revenge','Greedy','Overconfident'].indexOf(eb)>=0)s-=1;if(['Confident','Calm','Focused'].indexOf(eb)>=0)s+=1;return Math.max(1,Math.min(10,s));}
@@ -1218,7 +1486,7 @@ function renderReport(r,container){var gc={A:'var(--g)',B:'var(--g)',C:'var(--a)
 +'<div class="ai-sec"><div class="ai-lbl">07 — ACTION PLAN — NEXT SESSION</div><div class="ai-txt">'+r.actions.map(function(a,i){return(i+1)+'. '+a;}).join('<br>')+'</div></div>'
 +'<div style="font-family:JetBrains Mono,monospace;font-size:9px;color:var(--mu);text-align:center;padding:10px 0;border-top:1px solid var(--b2);margin-top:8px">⬡ TTM COACH REPORT · YOUR TRADE DATA · © THETRADINGMINDSET26 2026 · Educational only</div>';}
 function calcRisk(){var cap=+document.getElementById('r-cap').value||0;var rp=+document.getElementById('r-rp').value||1;var dp=+document.getElementById('r-dp').value||2;var en=+document.getElementById('r-en').value||0;var sl=+document.getElementById('r-sl').value||0;var tg=+document.getElementById('r-tg').value||0;var inst=document.getElementById('r-inst').value;var ls=+document.getElementById('r-ls').value||1;var wr=+document.getElementById('r-wr').value||55;var lsRow=document.getElementById('r-ls-row');if(lsRow)lsRow.style.display=inst==='eq'?'none':'flex';if(!cap||!en||!sl)return;var riskAmt=cap*rp/100,dailyLim=cap*dp/100;var slPts=Math.abs(en-sl),tgPts=tg?Math.abs(tg-en):0;var rr=slPts>0&&tgPts>0?tgPts/slPts:0;var maxLots=0;if(inst==='eq')maxLots=slPts>0?Math.floor(riskAmt/slPts):0;else maxLots=slPts>0&&ls>0?Math.floor(riskAmt/(slPts*ls)):0;function s(id,v){var el=document.getElementById(id);if(el)el.textContent=v;}
-s('ro-risk','₹'+riskAmt.toFixed(0));s('ro-daily','₹'+dailyLim.toFixed(0));s('ro-sl',slPts>0?slPts.toFixed(1)+' pts':'—');s('ro-tg',tgPts>0?tgPts.toFixed(1)+' pts':'—');var rrEl=document.getElementById('ro-rr');if(rrEl){rrEl.textContent=rr>0?rr.toFixed(2)+'x':'—';rrEl.style.color=rr>=2?'var(--g)':rr>=1.5?'var(--a)':'var(--r)';}
+s('ro-risk','₹'+riskAmt.toFixed(0));s('ro-daily','₹'+dailyLim.toFixed(0));s('ro-sl',slPts>0?slPts.toFixed(1)+' pts':'—');s('ro-tg',tgPts>0?tgPts.toFixed(1)+' pts':'—');var rrEl=document.getElementById('ro-rr');if(rrEl){rrEl.textContent=rr>0?'1:'+rr.toFixed(2):'—';rrEl.style.color=rr>=2?'var(--g)':rr>=1.5?'var(--a)':'var(--r)';}
 var lotsEl=document.getElementById('ro-lots');if(lotsEl){if(maxLots>0)lotsEl.textContent=inst==='eq'?maxLots+' shares':maxLots+(maxLots===1?' lot':' lots');else if(!ls&&inst!=='eq')lotsEl.textContent='Enter lot size';else lotsEl.textContent='—';}
 if(slPts>0&&tgPts>0){var tot=slPts+tgPts;var rw=(slPts/tot*100).toFixed(0),tw=(tgPts/tot*100).toFixed(0);var rBar=document.getElementById('rr-risk'),tBar=document.getElementById('rr-tg');if(rBar)rBar.style.width=rw+'%';if(tBar)tBar.style.width=tw+'%';var rl=document.getElementById('rr-risk-l'),tl=document.getElementById('rr-tg-l');if(rl)rl.textContent=slPts.toFixed(0)+' pts';if(tl)tl.textContent=tgPts.toFixed(0)+' pts';var vEl=document.getElementById('rr-verdict');if(vEl){if(rr>=2){vEl.textContent='✓ EXCELLENT — R:R '+rr.toFixed(2)+'x. Strong setup.';vEl.style.color='var(--g)';}
 else if(rr>=1.5){vEl.textContent='✓ ACCEPTABLE — R:R '+rr.toFixed(2)+'x. Minimum met.';vEl.style.color='var(--a)';}
@@ -1228,7 +1496,7 @@ if(rr>0&&slPts>0&&maxLots>0){var trSz=inst==='eq'?maxLots:maxLots*ls;var winPnl=
 +'<div style="width:130px;font-family:JetBrains Mono,monospace;font-size:9px;color:'+(sc.yours?'var(--g)':'var(--mu)')+';flex-shrink:0">'+sc.lbl+'</div>'
 +'<div style="flex:1;height:16px;background:var(--bg3);border-radius:3px;overflow:hidden"><div style="height:100%;width:'+bw+'%;background:'+col+';opacity:'+(sc.yours?1:0.6)+';border-radius:3px"></div></div>'
 +'<div style="width:80px;text-align:right;font-family:JetBrains Mono,monospace;font-size:11px;color:'+col+';font-weight:700;flex-shrink:0">'+(ev>=0?'+':'')+'₹'+Math.abs(ev).toFixed(0)+'</div>'
-+'</div>';}).join('');var myEV=(wr/100)*winPnl-(1-wr/100)*lossPnl;var sEl=document.getElementById('wr-sum');if(sEl)sEl.innerHTML='<div style="font-family:JetBrains Mono,monospace;font-size:10px;color:var(--mu)">Expectancy at '+wr+'% WR: <span style="color:'+(myEV>=0?'var(--g)':'var(--r)')+';font-weight:700">'+(myEV>=0?'+':'')+'₹'+myEV.toFixed(0)+'</span> per trade</div>';}}
++'</div>';}).join('');var myEV=(wr/100)*winPnl-(1-wr/100)*lossPnl;var sEl=document.getElementById('wr-sum');if(sEl)sEl.innerHTML='<div style="font-family:JetBrains Mono,monospace;font-size:10px;color:var(--mu)">Expectancy at '+wr+'% WR: <span style="color:'+(myEV>=0?'var(--g)':'var(--r)')+';font-weight:700">'+(myEV>=0?'+':'')+'₹'+myEV.toFixed(0)+'</span> per trade</div>';}var kelly=kellyPct(wr/100,rr>0?rr:2)*100;var kEl=document.getElementById('ro-kelly');var hkEl=document.getElementById('ro-halfkelly');if(kEl)kEl.textContent=kelly>0?kelly.toFixed(1)+'%':'N/A';if(hkEl)hkEl.textContent=kelly>0?(kelly/2).toFixed(1)+'%':'N/A';var vEl=document.getElementById('rr-verdict');var vBox=document.getElementById('rr-verdict-box');if(vEl&&rr>0){var E=expectancy(wr/100,rr);var beWR=(breakEvenWR(rr)*100).toFixed(1);if(rr>=2&&E>0){vEl.textContent='✓ STRONG EDGE — R:R 1:'+rr+', EV+'+(E*100).toFixed(0)+'p per ₹100 risked. WR '+wr+'% beats break-even of '+beWR+'%. Optimal half-Kelly: '+(kelly/2).toFixed(1)+'%.';vEl.style.color='var(--g)';if(vBox)vBox.style.borderColor='rgba(0,255,136,0.3)';}else if(rr>=1.5&&E>0){vEl.textContent='✓ ACCEPTABLE — R:R 1:'+rr+', EV+'+(E*100).toFixed(0)+'p. Minimum standard met. Aim for 2:1+ R:R.';vEl.style.color='var(--a)';if(vBox)vBox.style.borderColor='rgba(255,184,0,0.3)';}else if(rr>=1){vEl.textContent='⚠ WEAK — R:R '+rr+'x below 1.5 standard. Adjust your target or skip this trade.';vEl.style.color='var(--r)';if(vBox)vBox.style.borderColor='rgba(255,68,102,0.3)';}else{vEl.textContent='✗ DO NOT TRADE — Target closer than stop loss. Invalid setup.';vEl.style.color='var(--r)';}}if(document.getElementById('profMatrix'))buildMatrix();if(document.getElementById('beTable'))buildBreakEven();if(document.getElementById('rr-chart-wrap'))buildRRChart();updateEdgeVerdict();}
 function runWeekly(){var dateEl=document.getElementById('w-date');if(!dateEl.value){toast('Select week end date');return;}
 if(trades.length<3){toast('Log at least 3 trades first');return;}
 document.getElementById('wkLoad').style.display='block';document.getElementById('wkOut').style.display='none';setTimeout(function(){var we=dateEl.value;var ws=new Date(we);ws.setDate(ws.getDate()-6);var wsStr=ws.toLocaleDateString('en-CA');var wt=trades.filter(function(t){return t.date>=wsStr&&t.date<=we;});var st=wt.length>=2?calcStats(wt):calcStats();var isWeek=wt.length>=2;var gc={A:'var(--g)',B:'var(--g)',C:'var(--a)',D:'var(--r)',F:'var(--r)'}[st.grade]||'var(--a)';var disc=parseFloat(st.disc)/100,wr=st.wrRaw,pf=st.pfNum;var p=function(v){return(v*100).toFixed(1)+'%';};var worked=disc>=0.80?'Discipline at '+st.disc+'% — rules followed. ':'';worked+=wr>=0.55?'Win rate '+st.wr+'% above target. ':'';worked+=pf>=1.5?'Profit factor '+st.pf+' showing edge. ':'';worked=worked||st.n+' trades logged this week.';var failed=disc<0.70?'Discipline '+st.disc+'% — rules broken in '+p(1-disc)+' of sessions. ':'';failed+=wr<0.50?'Win rate '+st.wr+'% below 50%. ':'';failed+=pf<1.0?'Profit factor '+st.pf+' below 1.0 — losing system. ':'';failed+=st.topMk&&st.topMk!=='None'?st.topMk+' was top mistake. ':'';failed=failed||'No critical failures. Maintain standards.';var mis=st.topMk&&st.topMk!=='None'?st.topMk+': create one hard rule to prevent this next week.':'No dominant mistake. Keep logging every trade.';var setup=st.bestSet!=='N/A'&&st.bestEV>0?'Focus on '+st.bestSet+' — highest EV. Skip lower-EV setups.':'Log 10+ trades per setup to see EV data.';var mindset='Before: '+st.topEB+'. After: '+st.topEA+'. ';if(st.fomoP>=0.15)mindset+='FOMO in '+p(st.fomoP)+' — primary focus next week.';else if(st.revP>=0.10)mindset+='Revenge detected. 2-loss stop mandatory.';else if(['Confident','Calm','Focused'].indexOf(st.topEB)>=0)mindset+='Healthy entry state. Protect this.';var rules=[];rules.push(disc<0.80?'Rule 1: Follow ALL rules every trade. Target 80%+.':'Rule 1: Maintain discipline above 80%. Current '+p(disc)+'.');rules.push(st.bestSet!=='N/A'&&st.bestEV>0?'Rule 2: '+st.bestSet+' setups only — skip others.':'Rule 2: Max 3 trades per day. No overtrading.');rules.push(st.topMk&&st.topMk!=='None'?'Rule 3: Zero '+st.topMk+' next week.':'Rule 3: Log emotion before every trade.');var summary=st.grade==='A'?'Strong week — protect this edge.':st.grade==='B'?'Solid foundation. Fix one thing next week.':st.grade==='C'?'Progress happening. Discipline is the unlock.':'Data showing where to focus. One fix at a time.';var out=document.getElementById('wkOut');out.innerHTML='<div class="grade-box"><div class="grade-letter" style="color:'+gc+'">'+st.grade+'</div><div class="grade-info"><div class="gl">WEEK '+wsStr+' → '+we+' · '+(isWeek?wt.length:st.n)+' TRADES</div><div class="gd">'+summary+'</div></div></div>'
@@ -1393,6 +1661,233 @@ function tryUnlock() {
   var inp2 = document.getElementById('gate-pid');
   if(inp2) inp2.addEventListener('keydown', function(e){ if(e.key==='Enter') tryUnlock(); });
 })();
+
+// ═══════════════════════════════════════════════════════════════
+// RISK CALCULATOR — COMPLETE WITH MATRIX, BREAK-EVEN, SIMULATOR
+// ═══════════════════════════════════════════════════════════════
+
+function expectancy(wr, rr) { return wr * rr - (1 - wr); }
+function breakEvenWR(rr) { return 1 / (1 + rr); }
+function kellyPct(wr, rr) { return wr - (1 - wr) / rr; }
+
+function cellColor(E) {
+  if (E < -0.20) return '#4A0808';
+  if (E < -0.10) return '#6B1010';
+  if (E < 0)     return '#8B1818';
+  if (E < 0.05)  return '#1A2A1A';
+  if (E < 0.10)  return '#0A2E18';
+  if (E < 0.20)  return '#0A3D1E';
+  if (E < 0.35)  return '#0A4E24';
+  if (E < 0.50)  return '#0A6030';
+  return '#0A7038';
+}
+
+function buildMatrix() {
+  var wr = parseFloat(document.getElementById('r-wr').value) / 100 || 0.55;
+  var rr = calcRR() || 2;
+  var wrs = [30,35,40,45,50,55,60,65,70,75,80];
+  var rrs = [0.5,0.75,1.0,1.25,1.5,1.75,2.0,2.5,3.0,4.0];
+  var tbl = document.getElementById('profMatrix');
+  if (!tbl) return;
+  var html = '<tr><th style="font-family:JetBrains Mono,monospace;font-size:8px;color:#7A96A8;padding:6px;text-align:right">WR \ R:R</th>';
+  rrs.forEach(function(r){ html += '<th style="font-family:JetBrains Mono,monospace;font-size:9px;color:#7A96A8;padding:6px;text-align:center">1:'+(r%1===0?r:r)+'</th>'; });
+  html += '</tr>';
+  wrs.forEach(function(w) {
+    var wrDec = w/100;
+    html += '<tr>';
+    html += '<td style="font-family:JetBrains Mono,monospace;font-size:9px;color:#7A96A8;padding:6px 10px;text-align:right;white-space:nowrap">'+w+'%</td>';
+    rrs.forEach(function(r) {
+      var E = expectancy(wrDec, r);
+      var bg = cellColor(E);
+      var isYou = Math.abs(wrDec - wr) < 0.03 && Math.abs(r - rr) < 0.2;
+      var txtCol = E >= 0 ? '#28CC78' : '#FF4466';
+      var border = isYou ? 'border:2px solid #FFB800;' : '';
+      html += '<td style="'+border+'background:'+bg+';padding:0;position:relative">';
+      html += '<div style="padding:8px 4px;text-align:center;font-family:JetBrains Mono,monospace">';
+      if (isYou) html += '<div style="font-size:7px;color:#FFB800;font-weight:800;letter-spacing:1px">YOU</div>';
+      html += '<div style="font-size:10px;font-weight:700;color:'+txtCol+'">'+(E>=0?'+':'')+E.toFixed(2)+'</div>';
+      html += '</div></td>';
+    });
+    html += '</tr>';
+  });
+  tbl.innerHTML = html;
+}
+
+function buildBreakEven() {
+  var rrs = [0.5,0.75,1.0,1.25,1.5,1.75,2.0,2.5,3.0,4.0,5.0];
+  var el = document.getElementById('beTable');
+  if (!el) return;
+  el.innerHTML = rrs.map(function(r) {
+    var beWR = (breakEvenWR(r)*100).toFixed(1);
+    var isGood = parseFloat(document.getElementById('r-wr').value||55) > parseFloat(beWR);
+    var col = isGood ? 'var(--g)' : 'var(--r)';
+    var fillW = Math.min(parseFloat(beWR),100).toFixed(0);
+    return '<div style="background:var(--card);padding:13px 14px">'
+      +'<div style="font-family:Syne,sans-serif;font-size:22px;font-weight:800;color:var(--a)">1:'+r+'</div>'
+      +'<div style="font-family:JetBrains Mono,monospace;font-size:11px;font-weight:700;color:'+col+';margin-bottom:4px">'+beWR+'% needed</div>'
+      +'<div style="font-family:JetBrains Mono,monospace;font-size:8px;color:var(--mu)">to break even</div>'
+      +'<div style="height:3px;background:var(--bg3);margin-top:8px;border-radius:2px">'
+      +'<div style="height:100%;width:'+fillW+'%;background:'+col+';border-radius:2px"></div></div>'
+      +'</div>';
+  }).join('');
+}
+
+function calcRR() {
+  var en = +document.getElementById('r-en').value||0;
+  var sl = +document.getElementById('r-sl').value||0;
+  var tg = +document.getElementById('r-tg').value||0;
+  if (!en||!sl||!tg) return 0;
+  var slD = Math.abs(en-sl), tgD = Math.abs(tg-en);
+  return slD>0 ? parseFloat((tgD/slD).toFixed(2)) : 0;
+}
+
+function runSim() {
+  var wr   = (parseFloat(document.getElementById('sim-wr').value)||55)/100;
+  var rr   = parseFloat(document.getElementById('sim-rr').value)||2;
+  var rp   = (parseFloat(document.getElementById('sim-risk').value)||1)/100;
+  var cap  = 500000;
+  var curve= [cap];
+  var wins = 0, maxDD=0, peak=cap;
+  for (var i=0;i<100;i++) {
+    var win = Math.random()<wr;
+    var risk = cap*rp;
+    cap = win ? cap+risk*rr : cap-risk;
+    if(cap>peak) peak=cap;
+    var dd=peak-cap; if(dd>maxDD)maxDD=dd;
+    if(win)wins++;
+    curve.push(cap);
+  }
+  var finalEq = cap-500000;
+  var col = finalEq>=0?'#28CC78':'#FF4466';
+  var resEl = document.getElementById('simResult');
+  resEl.style.display='block';
+  resEl.innerHTML='This simulation: <strong style="color:'+col+'">'+(finalEq>=0?'+':'')+'₹'+Math.round(finalEq).toLocaleString()+'</strong>'
+    +' across 100 trades · '+wins+' wins · Max drawdown: ₹'+Math.round(maxDD).toLocaleString()
+    +'<br><span style="color:#7A96A8;font-size:10px">Run again — each simulation is different. This is why position sizing matters more than win rate alone.</span>';
+  drawSimCurve(curve, cap);
+}
+
+function drawSimCurve(curve, finalCap) {
+  var canvas = document.getElementById('simCanvas');
+  if (!canvas) return;
+  canvas.width  = canvas.offsetWidth  || 600;
+  canvas.height = canvas.offsetHeight || 160;
+  var ctx = canvas.getContext('2d');
+  var W=canvas.width, H=canvas.height;
+  ctx.clearRect(0,0,W,H);
+  var mn=Math.min.apply(null,curve), mx=Math.max.apply(null,curve);
+  var rng=mx-mn||1;
+  var pad=16;
+  function xp(i){ return pad+(i/(curve.length-1))*(W-2*pad); }
+  function yp(v){ return H-pad-((v-mn)/rng)*(H-2*pad); }
+  // Zero/start line
+  var startY = yp(500000);
+  ctx.strokeStyle='rgba(255,255,255,0.15)'; ctx.lineWidth=1; ctx.setLineDash([4,4]);
+  ctx.beginPath(); ctx.moveTo(pad,startY); ctx.lineTo(W-pad,startY); ctx.stroke();
+  ctx.setLineDash([]);
+  // Area fill
+  var col = finalCap>=500000?'rgba(0,255,136,0.15)':'rgba(255,68,102,0.12)';
+  ctx.fillStyle=col;
+  ctx.beginPath(); ctx.moveTo(xp(0),startY);
+  curve.forEach(function(v,i){ ctx.lineTo(xp(i),yp(v)); });
+  ctx.lineTo(xp(curve.length-1),startY); ctx.closePath(); ctx.fill();
+  // Line
+  ctx.strokeStyle=finalCap>=500000?'#00FF88':'#FF4466'; ctx.lineWidth=2; ctx.setLineDash([]);
+  ctx.beginPath(); curve.forEach(function(v,i){ i?ctx.lineTo(xp(i),yp(v)):ctx.moveTo(xp(i),yp(v)); }); ctx.stroke();
+  // Labels
+  ctx.fillStyle='#7A96A8'; ctx.font='9px JetBrains Mono';
+  ctx.fillText('₹'+Math.round(mx).toLocaleString(),pad+2,pad+8);
+  ctx.fillText('₹'+Math.round(mn).toLocaleString(),pad+2,H-pad-2);
+  ctx.fillText('Trade 1',pad,H-2);
+  ctx.fillText('Trade 100',W-70,H-2);
+}
+
+
+// ═══ R:R WIN RATE REQUIREMENT CHART ═══════════════════════════
+function buildRRChart() {
+  var el = document.getElementById('rr-chart-wrap');
+  if (!el) return;
+  var wr = parseFloat(document.getElementById('r-wr').value) || 55;
+
+  // R:R values and their required minimum win rates
+  var data = [
+    { rr: 0.5,  label: '1 : 0.5', beWR: 66.7 },
+    { rr: 0.75, label: '1 : 0.75',beWR: 57.1 },
+    { rr: 1.0,  label: '1 : 1',   beWR: 50.0 },
+    { rr: 1.25, label: '1 : 1.25',beWR: 44.4 },
+    { rr: 1.5,  label: '1 : 1.5', beWR: 40.0 },
+    { rr: 1.75, label: '1 : 1.75',beWR: 36.4 },
+    { rr: 2.0,  label: '1 : 2',   beWR: 33.3 },
+    { rr: 2.5,  label: '1 : 2.5', beWR: 28.6 },
+    { rr: 3.0,  label: '1 : 3',   beWR: 25.0 },
+    { rr: 4.0,  label: '1 : 4',   beWR: 20.0 },
+    { rr: 5.0,  label: '1 : 5',   beWR: 16.7 },
+  ];
+
+  el.innerHTML = data.map(function(d) {
+    var pct = d.beWR;
+    var hasEdge = wr > pct;
+    var barCol = hasEdge ? 'var(--g)' : 'var(--r)';
+    var edgeMargin = (wr - pct).toFixed(1);
+    var yourMarker = Math.min(wr, 95);
+
+    return '<div style="display:grid;grid-template-columns:90px 1fr 80px 100px;gap:10px;align-items:center;padding:6px 0;border-bottom:1px solid rgba(255,255,255,0.04)">'
+      // R:R label
+      + '<div style="font-family:JetBrains Mono,monospace;font-size:11px;font-weight:700;color:var(--a)">' + d.label + '</div>'
+      // Bar track
+      + '<div style="position:relative;height:20px;background:var(--bg3);border-radius:4px;overflow:visible">'
+        // Required WR bar
+        + '<div style="position:absolute;left:0;top:0;bottom:0;width:' + pct + '%;background:' + barCol + ';opacity:0.35;border-radius:4px;transition:width 0.5s"></div>'
+        // Required WR label inside bar
+        + '<div style="position:absolute;left:' + Math.min(pct,90) + '%;top:50%;transform:translateY(-50%);font-family:JetBrains Mono,monospace;font-size:9px;color:' + barCol + ';font-weight:700;white-space:nowrap;padding-left:4px">' + pct.toFixed(1) + '%</div>'
+        // YOUR win rate marker
+        + '<div style="position:absolute;left:' + yourMarker + '%;top:-3px;bottom:-3px;width:2px;background:var(--g);border-radius:1px;transition:left 0.3s" title="Your win rate: ' + wr + '%"></div>'
+        + '<div style="position:absolute;left:' + yourMarker + '%;top:-14px;font-family:JetBrains Mono,monospace;font-size:7px;color:var(--g);transform:translateX(-50%);white-space:nowrap">YOU ' + wr + '%</div>'
+      + '</div>'
+      // Min WR needed
+      + '<div style="text-align:right;font-family:JetBrains Mono,monospace;font-size:11px;font-weight:700;color:' + barCol + '">' + pct.toFixed(1) + '% min</div>'
+      // Edge status
+      + '<div style="text-align:right;font-family:JetBrains Mono,monospace;font-size:9px;color:' + (hasEdge ? 'var(--g)' : 'var(--r)') + '">'
+        + (hasEdge ? '✓ +' + edgeMargin + '% edge' : '✗ ' + Math.abs(edgeMargin) + '% short')
+      + '</div>'
+      + '</div>';
+  }).join('');
+}
+
+// ═══ EDGE QUALITY VERDICT ════════════════════════════════════
+function updateEdgeVerdict() {
+  var wr  = parseFloat(document.getElementById('r-wr').value) / 100 || 0.55;
+  var rr  = calcRR() || 2;
+  var E   = expectancy(wr, rr);
+  var beWR= (breakEvenWR(rr) * 100).toFixed(1);
+  var kelly = Math.max(0, kellyPct(wr, rr) * 100);
+  var p100  = (E * 100).toFixed(1);
+
+  var el   = document.getElementById('edge-verdict');
+  var txt  = document.getElementById('edge-text');
+  if (!el || !txt) return;
+  el.style.display = 'block';
+
+  var col, grade, desc;
+  if (E >= 0.30) {
+    col = 'var(--g)'; grade = 'STRONG EDGE';
+    desc = 'Exceptional. Your ' + (wr*100).toFixed(0) + '% win rate with ' + rr + ':1 R:R produces expectancy of +' + (E*100).toFixed(0) + 'p per ₹100 risked. Over 100 trades: +' + p100 + 'R expected. Optimal Half-Kelly position size: ' + (kelly/2).toFixed(1) + '% of capital per trade.';
+  } else if (E >= 0.10) {
+    col = 'var(--g)'; grade = 'SOLID EDGE';
+    desc = 'Good system. Expectancy +' + (E*100).toFixed(0) + 'p per ₹100. Expected +' + p100 + 'R per 100 trades. Your ' + (wr*100).toFixed(0) + '% win rate is ' + ((wr*100) - parseFloat(beWR)).toFixed(1) + '% above break-even (' + beWR + '%). Suggested Half-Kelly: ' + (kelly/2).toFixed(1) + '%.';
+  } else if (E >= 0) {
+    col = 'var(--a)'; grade = 'MARGINAL EDGE';
+    desc = 'Marginally profitable. Expectancy +' + (E*100).toFixed(0) + 'p per ₹100. Small edge — sensitive to costs and slippage. Improve R:R to 2:1+ or win rate by 5-10% before scaling size.';
+  } else if (E >= -0.10) {
+    col = 'var(--r)'; grade = 'LOSING SYSTEM';
+    desc = 'Negative expectancy: ' + (E*100).toFixed(0) + 'p per ₹100. You need either win rate above ' + beWR + '% or R:R above ' + (1/(wr===0?0.0001:wr) - 1).toFixed(1) + ':1 to break even. Do NOT increase size.';
+  } else {
+    col = 'var(--r)'; grade = 'CRITICAL — SYSTEM REVIEW NEEDED';
+    desc = 'Heavy negative expectancy: ' + (E*100).toFixed(0) + 'p per ₹100. This system loses money reliably. Stop live trading, review your setup selection and exit management before continuing.';
+  }
+
+  txt.innerHTML = '<span style="color:' + col + ';font-family:JetBrains Mono,monospace;font-size:10px;font-weight:700;letter-spacing:1.5px">' + grade + '</span><br><span style="color:var(--tx2)">' + desc + '</span>';
+}
 
 </script>
 
